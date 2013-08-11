@@ -1,0 +1,68 @@
+<apex:page controller="ForecastDispatchSalesQuotaReport" action="{!processReport}" >
+<head>
+
+<script type='text/javascript' src='https://www.google.com/jsapi' />
+
+   
+    <script type="text/javascript">
+    
+    
+    var rowsArr = [];   
+ 
+   
+     <apex:repeat value="{!rds}" var="r">
+             var rowObj = new Object();
+             rowObj.yearMonth = "" + {!r.yearMonth};
+                rowObj.SemiProcessedMaterials = {!r.SemiProcessedMaterials};
+                rowObj.SemiProcessedMaterialsf = {!r.SemiProcessedMaterialsf};  
+                rowObj.SemiProcessedMaterialsq = {!r.SemiProcessedMaterialsq};   
+                console.log({!r.yearMonth}, {!r.SemiProcessedMaterials},{!r.SemiProcessedMaterialsf},{!r.SemiProcessedMaterialsq});          
+               
+              rowsArr.push(rowObj);
+         
+        </apex:repeat>  
+    
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        
+        // we need a table to act as the datasource for the chart
+        var data = new google.visualization.DataTable();
+        
+        // the table needs two columns
+            data.addColumn('string', 'Period'); 
+            data.addColumn('number', 'Semi-Processed Materials');   
+            data.addColumn('number', 'Semi-Processed Materials Forecasted'); 
+            data.addColumn('number', 'Quota');       
+       
+
+        // add the rows of data which consist of a value and a formatted label
+        for (i=0;i<rowsArr.length;i++){
+        
+                data.addRow([rowsArr[i].yearMonth,  rowsArr[i].SemiProcessedMaterials,  rowsArr[i].SemiProcessedMaterialsf,  rowsArr[i].SemiProcessedMaterialsq]);       
+            
+        }
+        //data.addRow(['2008',10]);
+       var options = {
+           title: 'Company Performance',
+           hAxis: {title: 'Period'},
+           vAxis: {title: "Units"},
+           seriesType: "bars",
+           series: {2: {type: "line"}}
+        };
+
+        //assign the chart to the appropriate div and draw the chart
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+       
+        chart.draw(data, options);
+    };
+    </script>
+    </head>
+    <body>
+
+        <div id="chart_div" style="width: 1200px; height: 1000px;" />
+
+    </body>
+    
+</apex:page>

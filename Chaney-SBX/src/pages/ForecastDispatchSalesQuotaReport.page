@@ -1,0 +1,241 @@
+<apex:page controller="ForecastDispatchSalesQuotaReport" action="{!processReport}" >
+<head>
+
+<script type='text/javascript' src='https://www.google.com/jsapi' />
+
+   
+    <script type="text/javascript">
+    
+    var ref = 0;
+    
+    var rowsArr = [];   
+    
+     function drawchart(){
+        
+         
+              
+        // we need a table to act as the datasource for the chart  
+        alert("hello");
+        
+        var data = new google.visualization.DataTable();
+        
+
+        
+        // the table needs two columns
+      
+
+               
+        if(ref == 1)
+        {
+            alert("Case 1 selected so added Column");
+            data.addColumn('string', 'Period');         
+            data.addColumn('number', 'Processed Materials');   
+            data.addColumn('number', 'Processed Materials Forecasted');            
+        }
+        else if(ref == 2)
+        {
+            data.addColumn('string', 'Period'); 
+            data.addColumn('number', 'Processed Materials');   
+            data.addColumn('number', 'Processed Materials Forecasted');         
+        }
+        else if(ref == 3)
+        {
+            data.addColumn('string', 'Period'); 
+            data.addColumn('number', 'Processed Materials');   
+            data.addColumn('number', 'Processed Materials Forecasted');          
+        }        
+         else if(ref == 4)
+        {
+            data.addColumn('string', 'Period'); 
+            data.addColumn('number', 'Semi-Processed Materials');   
+            data.addColumn('number', 'Semi-Processed Materials Forecasted');            
+        }       
+        else if(ref == 5)
+        {
+            data.addColumn('string', 'Period'); 
+            data.addColumn('number', 'Stone Products');  
+            data.addColumn('number', 'Stone Products Forecasted');          
+                 
+        }        
+         else if(ref == 6)
+        {
+            data.addColumn('string', 'Period'); 
+            data.addColumn('number', 'Recycled Products');       
+            data.addColumn('number', 'Recycled Products Forecasted');       
+        }   
+        else if(ref == 7)
+        {
+            data.addColumn('string', 'Period'); 
+            data.addColumn('number', 'Concrete Mixes');        
+            data.addColumn('number', 'Concrete Mixes Forecasted');        
+        
+        }            
+
+
+        // add the rows of data which consist of a value and a formatted label
+        for (i=0;i<rowsArr.length;i++){
+        
+            if(ref == 1)
+            {
+                alert("Case 1 selected so add Row");
+                data.addRow([rowsArr[i].yearMonth,  rowsArr[i].ProcessedMaterials,  rowsArr[i].ProcessedMaterialsf]);      
+            }
+            else if(ref == 2)
+            {
+                 data.addRow([rowsArr[i].yearMonth,  rowsArr[i].ProcessedMaterials,  rowsArr[i].ProcessedMaterialsf]);      
+            }
+            else if(ref == 3)
+            {
+                data.addRow([rowsArr[i].yearMonth,  rowsArr[i].ProcessedMaterials,  rowsArr[i].ProcessedMaterialsf]);       
+            }        
+            else if(ref == 4)
+            {
+                data.addRow([rowsArr[i].yearMonth,  rowsArr[i].SemiProcessedMaterials,  rowsArr[i].SemiProcessedMaterialsf]);       
+            }       
+            else if(ref == 5)
+            {
+                data.addRow([rowsArr[i].yearMonth, rowsArr[i].StoneProducts,  rowsArr[i].StoneProductsf]);       
+            }        
+            else if(ref == 6)
+            {
+                data.addRow([rowsArr[i].yearMonth, rowsArr[i].RecycledProducts,  rowsArr[i].RecycledProductsf]);       
+            }   
+            else if(ref == 7)
+            {
+                data.addRow([rowsArr[i].yearMonth,  rowsArr[i].ConcreateMixes,  rowsArr[i].ConcreateMixesf]);        
+            }
+            
+        }
+        
+        //data.addRow(2010,100,200);
+        //data.addRow(2011,200,100);  
+        
+        alert('Going to draw chart OPTIONS');    
+   
+      var options = {
+           title: 'Company Performance',
+           hAxis: {title: 'Period'},
+           vAxis: {title: "Units"},
+           seriesType: "bars",
+           series: {7: {type: "line"},8: {type: "line"},9: {type: "line"},10: {type: "line"},11: {type: "line"},12: {type: "line"},13: {type: "line"},14: {type: "line"}}
+        };
+        
+        
+        
+        alert('Going to draw chart VAR CHART');    
+          //assign the chart to the appropriate div and draw the chart
+        
+         var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+         
+        alert('Going to draw chart CHART'); 
+        chart.draw(data, options);  
+        
+              
+
+    };
+
+    function runReport(menu){ 
+    
+       ref=menu.choice.options[menu.choice.selectedIndex].value;   
+        
+      
+       <apex:repeat value="{!rds}" var="r">
+        
+        var rowObj = new Object();
+
+        rowObj.yearMonth = "" + {!r.yearMonth};  
+         
+        if(ref == 1)
+        
+        {                
+                rowObj.ProcessedMaterials = {!r.ProcessedMaterials};
+                rowObj.ProcessedMaterialsf = {!r.ProcessedMaterialsf};    
+                
+                console.log({!r.yearMonth},{!r.ProcessedMaterials},{!r.ProcessedMaterialsf});
+                  
+         }
+         else if (ref == 2)         
+         {  
+                
+                rowObj.ProcessedMaterials = {!r.ProcessedMaterials};
+                rowObj.ProcessedMaterialsf = {!r.ProcessedMaterialsf}; 
+                console.log({!r.yearMonth},{!r.ProcessedMaterials},{!r.ProcessedMaterialsf});               
+                
+         }                 
+         else if (ref == 3)         
+         {   
+                                          
+              ;
+         
+                rowObj.ProcessedMaterials = {!r.ProcessedMaterials};
+                rowObj.ProcessedMaterialsf = {!r.ProcessedMaterialsf};   
+                console.log('ForecastCheck : ' ,{!r.yearMonth},{!r.ProcessedMaterials},{!r.ProcessedMaterialsf});               
+        }          
+         else if (ref == 4)         
+         {    
+                rowObj.SemiProcessedMaterials = {!r.SemiProcessedMaterials};
+                rowObj.SemiProcessedMaterialsf = {!r.SemiProcessedMaterialsf};   
+                console.log({!r.yearMonth}, {!r.SemiProcessedMaterials},{!r.SemiProcessedMaterialsf});               
+         }              
+         else if (ref == 5)         
+         {    
+                rowObj.StoneProducts = {!r.StoneProducts};
+                rowObj.StoneProductsf = {!r.StoneProductsf};    
+                console.log({!r.yearMonth},{!r.StoneProducts},{!r.StoneProductsf});                 
+         }         
+         else if (ref == 6)         
+         {    
+                rowObj.RecycledProducts = {!r.RecycledProducts}; 
+                rowObj.RecycledProductsf = {!r.RecycledProductsf};    
+                console.log({!r.yearMonth},{!r.RecycledProducts}, {!r.RecycledProductsf});                                 
+         }
+         else if (ref == 7)         
+         {    
+                rowObj.ConcreateMixes = {!r.ConcreateMixes};
+                rowObj.ConcreateMixesf = {!r.ConcreateMixesf};  
+                console.log({!r.yearMonth},{!r.ConcreateMixes}, {!r.ConcreateMixesf});                  
+         }              
+         
+         
+              rowsArr.push(rowObj);
+         
+        </apex:repeat>  
+    
+       
+        google.load("visualization", "1", {packages:["corechart"]});
+        
+       
+        google.setOnLoadCallback(drawchart);
+       
+        //drawchart();
+    }
+    
+   
+    </script>
+    </head>
+    
+    <h1>     Forecast Dispatch Quota Report: </h1><hr />
+    <body>
+        <div id = "selectReport" >
+            <br></br>
+            <form action="dummy" method="post" id="forecastRpt">
+                 
+                <select id="familySelected" name="choice" size="1">
+                    <option value="1">Processed Sand</option>
+                    <option value="2">Processed Gravel</option>
+                    <option value="3">Processed Mixed Product</option>
+                    <option value="4">Semi-Processed</option>
+                    <option value="5">Stone</option>
+                    <option value="6">Recycled Concrete Products, Waste Products</option>       
+                    <option value="7">Concrete Mixes</option>           
+        
+                </select><input TYPE="button" VALUE="GO!" onClick="runReport(this.form)"/>
+            
+            </form>
+            
+        </div>
+        <div id="chart_div" style="width: 1200px; height: 1000px;" />
+
+    </body>
+    
+</apex:page>
