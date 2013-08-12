@@ -1,0 +1,12 @@
+salesforce.schema
+.DS_Store
+.settings
+.settings/*
+.DS_Store
+.metadata
+.metadata/*
+.metadata
+.metadata/*
+.project
+Referenced\ Packages
+Referenced\ Packages/*
