@@ -14,12 +14,68 @@
 public with sharing class InsertDispatchDetails {
 	
   
+  
     /**
 	*  Process Dispatch Records and map them to the correct Quota 
 	*
 	**/
     public static void process(List<Dispatch_Sale__c> dsList){
        
+       	//Get the custom settings details from
+       	Dispatch_Sale_Quota__c dsq = Dispatch_Sale_Quota__c.getValues('Dispatch Sales Quota');
+       	Map<String,String> dsqMap = new Map<String,String>();
+       	if (dsq != null) {
+       		//Get Each value of the attribute and add it to the list
+       		String[] cmc = dsq.Concrete_Mixes__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.PFR_Other_Aggregates__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.PFR_Stone__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Processed_Gravel__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Processed_Mixed_Products__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Processed_Sand__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Recycled_Concrete_Products__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Rowe_Gravel__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Rowe_Recycled_Concrete__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Semi_Processed_Mixed_Products__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Semi_Processed_Other__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Semi_Processed_Sand__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.TCS__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Unprocessed_Materials__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		cmc = dsq.Waste_Products__c.split(',');
+       		dsqMap.put(cmc[0],cmc[1]);
+       		
+       		
+       	} else {
+       		//throw Exception('No Custom Settings found for Dispatch Sale Quota');
+       	}
+       	
          Map <String,Dispatch_Sale__c> accountNumberMap = new Map<String,Dispatch_Sale__c>();
          for (Dispatch_Sale__c ds : dsList){
             accountNumberMap.put(ds.Customer_Number__c,ds);
@@ -46,7 +102,7 @@ public with sharing class InsertDispatchDetails {
             System.debug(quotaMap.get(id).plant__c);
           
            
-             String ownerid = quotaMap.get(id).OwnerId;
+           String ownerid = quotaMap.get(id).OwnerId;
            
            String quotestr =   ownerid + '-' 
             						+ quotaMap.get(id).plant__c + '-' 
@@ -145,8 +201,20 @@ public with sharing class InsertDispatchDetails {
                         String monthYear = '';
                         System.debug('ds.Delivery_Date__c.month() ----> ' + ds.Delivery_Date__c.month());
                         System.debug('ds.Delivery_Date__c.year() ----> ' + ds.Delivery_Date__c.year());
+                        System.debug('ds.Product_Name__c ----> ' + ds.Product_Name__c);
                         monthYear = (ds.Delivery_Date__c.year()) + '' + ds.Delivery_Date__c.month() +  '01';
-                        Quotastring = u.id + '-' + ds.Plant__c + '-' + monthYear + '-' + ds.Product_Name__c;
+                        String productName = dsqMap.get(ds.Product_Name__c);
+                        if (null == productName || ''.equals(productName)) {
+                        	if (isAggregate){
+                        		//Aggregate Quota
+                        		productName = '	Concrete';
+                        	} else {
+                        		//Concrete Quota
+                        		productName = '	Misc';
+                        	}
+                        }
+                        
+                        Quotastring = u.id + '-' + ds.Plant__c + '-' + monthYear + '-' + productName;
                        
                         System.debug('Quotastring ---> '  + Quotastring);
                         System.debug('p.name ---> ' + p.name);
@@ -155,7 +223,7 @@ public with sharing class InsertDispatchDetails {
                         if (QuotaList != null) {
                             ds.Quota__c = QuotaList.id;
                         } else {
-                            Quotastring = '005700000013suNAAQ' + '-' + ds.Plant__c + '-' + monthYear + '-' + ds.Product_Name__c;
+                            Quotastring = '005700000013suNAAQ' + '-' + ds.Plant__c + '-' + monthYear + '-' + productName;
                             System.debug('Quotastring ---> '  + Quotastring);    
                             QuotaList = quotaNameMap.get(Quotastring);
                             if (QuotaList != null) {
@@ -165,7 +233,8 @@ public with sharing class InsertDispatchDetails {
                         
                     }   
                  } else {
-                    ds.addError('Product not found for ' + ds.Product__c  + ' Customer Number ' + ds.Customer_Number__c);
+                    ds.addError('Product not found for ' + ds.Product__c  + ' Customer Number ' 
+                    + ds.Customer_Number__c);
                 }
             } 
         }
