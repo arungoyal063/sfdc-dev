@@ -1,0 +1,264 @@
+<apex:page id="thepage" standardController="Idea" extensions="ExtjsIdeaController" readOnly="true" standardStylesheets="false" tabStyle="Idea" recordSetVar="Ideas" cache="true">
+  <apex:stylesheet value="{!$Resource.ExtJS4}/extjs-4.1.0/resources/css/ext-all.css" />
+  <apex:includeScript value="{!$Resource.ExtJS4}/extjs-4.1.0/ext-all.js"/>
+  <apex:includeScript value="{!$Resource.JqueryFile}"/>  
+   <apex:includeScript value="{!$Resource.ExtJS4}/extjs-4.1.0/override.js"/>    
+    <script>
+        
+        function  moveToRight(){
+            var leftPickList = document.getElementById('thepage:theForm:leftPickList');
+            var rightPickList = document.getElementById('{!$Component.theForm.rightPickList}');
+            
+            var count = rightPickList.length - 1;
+            
+            for (i=0; i<leftPickList.options.length; i++){  
+                if(leftPickList.options[i].selected){
+                    rightPickList.options.add(new Option(leftPickList[i].text, leftPickList[i].value));
+                    count++;
+                    rightPickList.options[count].selected = true;
+                    leftPickList.options[i] = null;
+                    i--;
+                }
+            }
+           
+            getRightPickListvalues(rightPickList);
+            sizePicklist(rightPickList);
+            sizePicklist(leftPickList);
+            rightPickList.focus();
+        } 
+        
+        function moveToLeft(){
+            var leftPickList = document.getElementById('thepage:theForm:leftPickList');
+            var rightPickList = document.getElementById('{!$Component.theForm.rightPickList}');
+            
+            var count = leftPickList.length - 1;
+            for (i=0; i<=rightPickList.options.length - 1; i++){
+                if(rightPickList.options[i].selected){
+                    leftPickList.options.add(new Option(rightPickList[i].text, rightPickList[i].value));
+                    count++;
+                    leftPickList.options[count].selected = true;
+                    rightPickList.options[i] = null;
+                    i--;
+                }
+            }
+            
+            getRightPickListvalues(rightPickList);
+            sizePicklist(rightPickList);
+            sizePicklist(leftPickList);
+            leftPickList.focus();
+        } 
+        
+        function SelectSort(SelList)
+        {
+            var ID='';
+            var Text='';
+            for (x=0; x < SelList.length - 1; x++)
+            {
+                for (y=x + 1; y < SelList.length; y++)
+                {
+                    if (SelList[x].text > SelList[y].text)
+                    {
+                        // Swap rows
+                        ID=SelList[x].value;
+                        Text=SelList[x].text;
+                        SelList[x].value=SelList[y].value;
+                        SelList[x].text=SelList[y].text;
+                        SelList[y].value=ID;
+                        SelList[y].text=Text;
+                    }
+                }
+            }
+        }
+        
+        function getRightPickListvalues(SelList){
+            var hiddencom = document.getElementById('{!$Component.theForm.getselectedId}'); 
+            var options = [];
+            for (x=0; x < SelList.length; x++)
+            {   
+                options.push(SelList[x].value);        
+            } 
+            hiddencom.value = options;
+        }
+            
+        function sizePicklist(SelList){
+            if(SelList.length > 0){
+                SelList.style.width="auto";                    
+            } else {
+  
+                SelList.style.width="100px";    
+            }
+        }
+        
+        function moveUpDown(direction){
+            var rightPickList = document.getElementById('{!$Component.theForm.rightPickList}');
+            var selIndex = rightPickList.selectedIndex;
+             if(-1 == selIndex) {
+                return;
+            }
+            var selValue = rightPickList.options[selIndex].value;
+            var selText = rightPickList.options[selIndex].text;
+            
+             if(direction == 'up')
+                increment = -1;
+             else
+                increment = 1;
+            
+               rightPickList.options[selIndex].value = rightPickList.options[selIndex + increment].value;
+               rightPickList.options[selIndex].text = rightPickList.options[selIndex + increment].text;             
+               rightPickList.options[selIndex + increment].value = selValue;
+               rightPickList.options[selIndex + increment].text = selText;             
+               rightPickList.selectedIndex = selIndex + increment;
+              
+               getRightPickListvalues(rightPickList);
+               rightPickList.focus();
+                
+        }  
+        
+       
+        function moveToTop(direction){
+            var rightPickList = document.getElementById('{!$Component.theForm.rightPickList}');
+            var selIndex = rightPickList.selectedIndex;
+            if(-1 == selIndex) {
+                return;
+            }    
+            var selValue = rightPickList.options[selIndex].value;
+            var selText = rightPickList.options[selIndex].text;
+           
+            
+            if(direction == 'top'){
+                for (i= selIndex-1; i >= 0; i--){
+                
+                    rightPickList.options[i + 1].text = rightPickList.options[i].text;
+                    rightPickList.options[i + 1].value = rightPickList.options[i].value;
+                } 
+                rightPickList.options[0].text= selText;
+                rightPickList.options[0].value= selValue;  
+                rightPickList.selectedIndex = 0; // set selected item to top
+                   
+            } else {
+                var listsize = rightPickList.options.length - 1;
+                for (i=  (rightPickList.selectedIndex + 1); i <= listsize; i++){
+                
+                    rightPickList.options[i - 1].text = rightPickList.options[i].text;
+                    rightPickList.options[i - 1].value = rightPickList.options[i].value;
+                } 
+                rightPickList.options[listsize].text= selText;
+                rightPickList.options[listsize].value= selValue;   
+                rightPickList.selectedIndex = listsize; // set selected item to bottom
+            }
+            getRightPickListvalues(rightPickList);
+            rightPickList.focus();
+        }   
+         
+          
+         $(document).ready(function(){
+          $("#configureColum").click(function(){
+          $(".multipick").toggle();
+          });
+        });
+          
+          
+    </script>
+    
+    <style >
+    .columnclass td  {
+        vertical-align: middle !important;
+        padding-left:5px;
+        padding-right:5px;
+    }
+   </style>
+  <apex:form id="theForm">
+      <apex:pageMessages ></apex:pageMessages>
+          <br />
+          <table><tr><td>
+                  <apex:outputLabel value="View:" style="font-weight:bold"></apex:outputLabel>
+              </td>
+               <td width="20px">
+               &nbsp;
+              </td>
+               <td>
+              <apex:selectList value="{!selListView}" multiselect="false" size="1" style="vertical-align: middle;font-size: 1.1em;">
+                  <apex:selectOptions value="{!ListViewList}"></apex:selectOptions>
+                  <apex:actionSupport action="{!retListView}" event="onchange" /> <!--  rerender="multiPanel" -->
+              </apex:selectList>
+               <span id="configureColum" style="cursor:pointer; display:inline-block; color:blue;text-decoration:underline;">Hide/Show Columns</span>
+                <apex:commandLink value="Refresh ListViews" action="{!gotoRefreshFilter}" style="margin-left:50px;color:blue" rendered="{!isMetadataPermission}" />
+             </td></tr>    
+                   
+          <tr class="multipick" style="display:none">
+          <td style="padding-top:20px;">
+              <apex:outputLabel value="Columns:" style="font-weight:bold"></apex:outputLabel><br/><br/> 
+          </td>
+          <td width="20px">
+               &nbsp;
+              </td>
+         <td style="padding-top:20px;">
+              <apex:panelGrid columns="4" id="multiPanel" styleClass="columnclass">
+                <apex:panelGroup >
+                    <apex:outputLabel value="Available" style="font-weight:bold;"></apex:outputLabel><br/>
+                    <select id="thepage:theForm:leftPickList" name="thepage:theForm:leftPickList" multiple="multiple" size="7" style="width:100px"></select>
+                </apex:panelGroup>
+    
+                <apex:panelGroup >
+                    <br/>
+                     
+                     <a onclick="moveToRight(); return false;">
+                       <img src="/s.gif" class="rightArrowIcon" title="Add"/>
+                     </a>
+                   
+                    <br/>
+                    <a onclick="moveToLeft(); return false;">
+                        <img src="/s.gif" class="leftArrowIcon" title="Remove"/>
+                    </a>
+                </apex:panelGroup>
+                
+                 <apex:panelGroup >
+                     <apex:outputLabel value="Chosen" style="font-weight:bold;"></apex:outputLabel><br/>
+                     <apex:selectList id="rightPickList" multiselect="true" style="{!IF(AND(rightPickListValues != null && rightPickListValues.size > 0),'','width:100px')}"  size="7">
+    
+                        <apex:selectOptions value="{!rightPickListValues}" />
+                     </apex:selectList>
+                </apex:panelGroup>
+                  <apex:panelGroup >
+                   <br/>
+                   <a onclick="moveToTop('top'); return false;">               
+                  <img src="/s.gif" alt="Top" class="doubleArrowUp" title="Top" />
+                   </a>
+                   <br/>
+                    
+                     <a onclick="moveUpDown('up'); return false;"> 
+                  <img src="/s.gif" alt="Down" class="upArrowIcon" title="Down" />    
+                  </a>
+                   <br/>
+                   
+                  <a onclick="moveUpDown('down'); return false;">
+                  <img src="/s.gif" alt="Up" class="downArrowIcon" title="Up" />
+                  </a>
+                   <br/>
+                   
+                  <a onclick="moveToTop('bottom'); return false;">
+                  <img src="/s.gif" alt="Bottom" class="doubleArrowDwn" title="Bottom" />
+                  </a>
+                 </apex:panelGroup>
+            </apex:panelGrid>
+         </td>
+         </tr>
+         <tr class="multipick" style="display:none">
+             <td colspan="2">
+                  &nbsp;  
+      
+             </td>
+              <td style="padding-top:10px;">
+                  <apex:commandButton value="Go" action="{!goClick}" reRender="pageBlock" style="width:70px;font-size:0.9em; font-weight: bold;vertical-align: middle;" />
+                  
+             </td>
+         </tr>
+        </table> 
+        <apex:inputHidden value="{!getSelectedValues}" id="getselectedId"/>
+        <br/>
+         <apex:pageBlock tabStyle="Idea" id="pageBlock">
+             <span style="display: inline-block;font-size: 13px; margin-bottom: 12px;">Field-level filtering options are available for each column.  To access filters, hover over the field name and click on the down arrow, then select the desired filters. </span>
+             <c:ExtjsIdeaComponent id="lwComp" title="{!OBJECTNAME}" object="{!OBJECTNAME}" viewlabel="{!selListView}" viewfilter="{!listViewFilter}" viewcols="{!collist}" viewscope="{!listViewScope}"  rows="20" minimized="false" />        
+         </apex:pageBlock>
+  </apex:form>  
+</apex:page>

@@ -1,0 +1,56 @@
+<apex:page standardController="Idea" extensions="ProductSelection" tabStyle="Idea">
+      
+    <apex:form >
+        <apex:sectionHeader title="Idea" subtitle="Post Idea"/>
+        <apex:pageBlock title="Describe Your Idea">
+            <apex:pageMessages />
+            <apex:pageBlockButtons id="buttons">
+                <apex:commandButton action="{!SaveIdea}" value="Post" id="btnSave"/>
+                <apex:commandButton action="{!doCancel}" value="Cancel" id="btnCancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Zone"></apex:outputLabel>
+                    <apex:outputLabel value="{!selComm}" style="font-weight:bold;"></apex:outputLabel>
+                </apex:pageBlockSectionItem>
+               
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Title"></apex:outputLabel>
+                <apex:outputPanel styleClass="requiredInput" layout="block" >                        
+                    <apex:outputPanel styleClass="requiredBlock"/>
+                    <apex:inputText value="{!ideaRecord.Title}" size="60"/>
+                 </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <!-- apex:inputField value="{!ideaRecord.IdeaThemeId}"/-->
+                <apex:inputField value="{!ideaRecord.Body}"/>
+                <apex:inputField value="{!ideaRecord.Categories}"/>    
+                <apex:inputField value="{!ideaRecord.Status}" rendered="{!$ObjectType.Idea.fields.Status.createable}"/>
+                <apex:pageBlockSectionItem rendered="{!NOT($ObjectType.Idea.fields.Status.createable)}">
+                    <apex:outputLabel value="{!$ObjectType.Idea.fields.Status.label}"></apex:outputLabel>
+                    <apex:outputText value="Open"></apex:outputText>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" title="Additional Information">
+                 <!-- <apex:inputField value="{!ideaRecord.IdeaTheme}"/>-->
+                 <apex:inputField value="{!ideaRecord.Institution__c}"/>
+                 <apex:inputField value="{!ideaRecord.Related_Product__c}"/>
+                 <apex:inputField value="{!ideaRecord.Language__c}"/>
+                 <apex:inputField value="{!ideaRecord.Version__c}"/> 
+                 <apex:inputField value="{!ideaRecord.Object_Process__c}"/>                 
+                 <apex:pageBlockSectionItem HelpText="{!$ObjectType.idea.fields.Business_Purpose__c.inlineHelpText}">
+                     <apex:outputLabel value="Business Purpose"></apex:outputLabel>
+                     <apex:outputPanel styleClass="requiredInput" layout="block" >                        
+                         <apex:outputPanel styleClass="requiredBlock"/>
+                         <apex:inputTextarea value="{!ideaRecord.Business_Purpose__c}" cols="70" rows="3" />  
+                     </apex:outputPanel>
+                 </apex:pageBlockSectionItem>           
+                 <apex:inputField value="{!ideaRecord.Change_Request__c}"/>
+                 <apex:inputField value="{!ideaRecord.Case__c}"/>
+                 <!--apex:inputField value="{!ideaRecord.Converted_RPE__c}"/-->
+                 <apex:inputField value="{!ideaRecord.Idea_Product__c}"/>
+                 <!-- <apex:inputField value="{!ideaRecord.Source__c}"/> -->
+                 <apex:inputField value="{!ideaRecord.CRM_CR_ID__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>    
+    </apex:form>
+</apex:page>

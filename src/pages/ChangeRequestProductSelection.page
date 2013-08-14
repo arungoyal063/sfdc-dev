@@ -1,0 +1,90 @@
+<apex:page standardController="Change_Request__c" extensions="ChangeRequestProductSelection_Ext">
+    <style>
+        td{
+            color: #4a4a56;
+        }
+    </style>
+    <apex:sectionHeader title="New Change Request" subtitle="Select Change Request Record Type And Product"/>    
+    <apex:form >
+        <apex:pageMessages id="errorMsgId"/>
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Next" action="{!odNext}" title="Next"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}" title="Next"/>
+                <apex:actionStatus startText="Processing..."  id="ajaxId"/>  
+                <apex:actionStatus startText="Saving..."  id="pStatus"/> 
+                <apex:actionStatus startText="Canceling..."  id="pStat"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Select Change Request Record Type" collapsible="false" columns="1"/>
+                <table class="detailList" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td class="labelCol requiredInput">
+                                <label for="recordTypeId" style="padding-left:55px;font-weight:bold;">Record Type of new record</label>
+                            </td>
+                            <td class="data2Col" colspan="3">
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"/>
+                                    <apex:selectList size="1" value="{!selectedRecordType}" id="recordTypeId">
+                                        <apex:selectOptions value="{!getRecordTypes}"/>
+                                    </apex:selectList>
+                                </div>
+                            </td>
+                        </tr>                       
+                    </tbody>
+                </table>
+            <apex:pageBlockSection title="Select Product" collapsible="false" columns="1"/>  
+              <!-- apex:pageBlockSection columns="3" -->
+                  <table  cellpadding="5px" cellspacing="0px" style="padding-left:55px;"  width="100%">
+                      <tr>
+                          <td width="40%">
+                                <apex:actionRegion >
+                                    <apex:outputLabel value="Product Line" for="pLinePick" style="font-weight:bold;"/><br/>
+                                    <div class="requiredInput"><div class="requiredBlock"></div>
+                                    <apex:selectList value="{!pls}" multiselect="false" label="Product Line" size="5" id="pLinePick" disabled="{!isReadOnly}">
+                                        <apex:selectOption itemLabel="-- Select --" itemValue="-- Select --" itemDisabled="true"></apex:selectOption>
+                                        <apex:selectOptions value="{!ProductLineItem}"/>
+                                        <apex:actionSupport action="{!getProductNameItems_new}" event="onchange" rerender="prodPick" status="ajaxId" />
+                                    </apex:selectList>
+                                    </div>
+                                </apex:actionRegion>
+                           </td> 
+                           <td width="10%">&nbsp;</td>
+                           <td width="50%" align="left">
+                                <apex:actionRegion >
+                                    <apex:outputLabel value="Product Name" for="prodPick" style="font-weight:bold;" /><br />
+                                    <div class="requiredInput"><div class="requiredBlock"></div>
+                                    <apex:selectList value="{!prd}" multiselect="false" label="Product Name" size="5" id="prodPick" disabled="{!isReadOnly}" onclick="onUnselect();">
+                                        <apex:selectOption itemLabel="-- Select --" itemValue="-- Select --" itemDisabled="true"></apex:selectOption>
+                                        <apex:selectOptions value="{!ProductItem}" />
+                                        <apex:actionSupport action="{!getModuleItems_new}" event="onchange" rerender="modPick,verPick" status="ajaxId"/>
+                                    </apex:selectList>
+                                    </div>
+                                </apex:actionRegion>
+                         </td> </tr>
+                         <tr><td colspan="3"> 
+                            <apex:actionRegion >
+                               <table width="100%"> 
+                                    <tr><td width="40%" >                                    
+                                        <apex:outputLabel value="Module" for="modPick" style="font-weight:bold;" /><br />
+                                           <apex:selectList value="{!module}" multiselect="false" label="Module" size="5" id="modPick" disabled="{!isReadOnly}">
+                                             <apex:selectOption itemLabel="-- Select --" itemValue="-- Select --" itemDisabled="true"></apex:selectOption>
+                                            <apex:selectOptions value="{!ModuleItem}"/>
+                                        </apex:selectList> 
+                                     </td>
+                                      <td width="10%">&nbsp; </td>
+                                     <td width="50%" align="left">
+                                        <apex:outputLabel value="Version" for="verPick" style="font-weight:bold;" /><br />
+                                        <apex:selectList value="{!version}" multiselect="false" label="Version" size="5" id="verPick" disabled="{!isReadOnly}">
+                                            <apex:selectOption itemLabel="-- Select --" itemValue="-- Select --" itemDisabled="true"></apex:selectOption>
+                                            <apex:selectOptions value="{!VersionItem}"/>
+                                        </apex:selectList>
+                                   </td></tr>
+                                </table>
+                            </apex:actionRegion>                            
+                        </td> </tr>  </table>
+            <!-- /apex:pageBlockSection -->
+            <apex:InputText disabled="TRUE" label="Product Selected" value="{!fProductSelected}" size="150"/>              
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,45 @@
+<apex:page standardController="Announcement_AT__kav" extensions="ArticleExtension">
+<div class="content">
+<img class="pageTitleIcon" alt="Article" title="Article" src="/s.gif"></img>
+<h1 class="pageType noSecondHeader" style="font-size:2em;">{!ArticleTitle}</h1>
+<div class="blank"></div>
+</div>
+<knowledge:articleRendererToolbar articleId="{!$CurrentPage.parameters.id}" canVote="true" showChatter="true" id="article"/>
+<!-- <script> var article= document.getElementById("{!$Component.Article}");alert(article.innerText);</script> -->
+<script>
+window.onload = function() {
+togglePanel(Ext.get('j_id0:article:j_id2:propertiesPanel'),'showProperties','hideProperties');
+};
+</script>
+<apex:outputPanel id="messages">
+<apex:messages />
+<div style="text-align:center;color:red;width:100%;font-weight:bold;">
+    {!PageMessage}
+</div>
+</apex:outputPanel>
+<apex:form ><div style="text-align:center"><br></br><apex:CommandButton Action="{!Email}" value="Email this Page" rerender="messages"/></div><br></br></apex:form>
+<apex:pageBlock title="Information">
+<table>
+<apex:repeat value="{!record}" var="r">
+    <apex:repeat value="{!dynamicFields}" var="df">
+        <tr>
+            <td><apex:outputText value="{!df.Label}"/></td>
+            <!-- <td><apex:outputText value="{!df.APIName}"/></td>  -->
+            <td><apex:outputText value="{!r[df.APIName]}" escape="false"/></td>
+        </tr>
+    </apex:repeat>
+    <apex:repeat value="{!dynamicAttachmentFields}" var="daf">
+        <tr>
+            <td><apex:outputText value="{!daf.Label}"/></td>
+            <!-- <td><apex:outputText value="{!df.APIName}"/></td>  -->
+            <!-- <td><apex:outputText value="{!r[daf.APIName]}" escape="false"/></td> -->
+            <td>
+                <apex:outputLink value="{!URLFOR($Action.Announcement_AT__kav.FileFieldDownload, 
+                    Announcement_AT__kav.id, ['field'=daf.FileAPIName])}">{!r[daf.APIName]}</apex:outputLink>
+            </td>
+        </tr>
+    </apex:repeat>
+</apex:repeat>
+</table>
+</apex:pageBlock>
+</apex:page>

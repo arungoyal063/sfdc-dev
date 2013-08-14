@@ -1,0 +1,92 @@
+<apex:page standardController="Change_Request__c" extensions="ProductSelectionOnCR" tabStyle="Change_Request__c" cache="False">
+
+<body>
+     <script type="text/javascript">
+         window.onload = function() {
+                if(Sarissa._SARISSA_IS_IE && parseFloat(navigator.appVersion.substring(navigator.appVersion.indexOf("MSIE")+5)) >=9) {    
+                    window.XMLSerializer = function(){};     
+                    window.XMLSerializer.prototype.serializeToString=function(oNode){return oNode.xml;
+                }
+            }
+          }
+         
+         function unselect() {
+             document.getElementById('{!$Component.thePage.mainForm.entireForm.pLinePick}').value = ''; 
+         }
+         function onUnselect() {         
+             var oSelect=document.getElementById('{!$Component.thePage.mainForm.entireForm.modPick}');
+                for(var i=0;i<oSelect.length;i++){
+                    oSelect.options[i].selected=false;
+                }
+         }
+     </script>
+    <apex:form id="mainForm" >
+        <apex:pageMessages id="msg"/>
+
+       
+        
+        
+        <apex:actionFunction action="{!isProductLineSelected}" name="prodLineSelected" rerender="prodPick"/>
+        <apex:pageBlock id="entireForm" mode="detail" title="Product Selection">
+            
+            <apex:pageBlockButtons id="buttons">
+            <!-- oncomplete="window.top.location.href = '{!redirectUrl}';" --> 
+                <apex:commandButton status="pStatus" action="{!productSelect}" oncomplete="window.top.location.href = '{!redirectUrl}';" value="Save"  rerender="mainForm"  disabled="{!isReadOnly}" /> <!--  -->
+                <apex:commandButton status="pStat" value="Cancel" action="{!doCancel}" onclick="unselect();" rerender="mainForm" />                                                   <!--  action="{!selectProuduct}"  value="{!editButtonLabel}" -->
+                <apex:actionStatus startText="Processing..."  id="ajaxId"/>  
+                <apex:actionStatus startText="Saving..."  id="pStatus"/> 
+                <apex:actionStatus startText="Canceling..."  id="pStat"/>             
+            </apex:pageBlockButtons>
+           
+            <!-- apex:pageBlockSection columns="3" -->
+                  <table cellpadding="5px" cellspacing="0px" width="100%">
+                      <tr> 
+                      <td width="40%">
+                                <apex:actionRegion >                                    
+                                    <apex:outputLabel value="Product Line" for="pLinePick" style="font-weight:bold;"/><br />
+                                    <div class="requiredInput"><div class="requiredBlock"></div>
+                                    <apex:selectList value="{!pls}" multiselect="false" label="Product Line" size="5" id="pLinePick" disabled="{!isReadOnly}">
+                                        <apex:selectOptions value="{!ProductLineItem}"/>
+                                        <apex:actionSupport action="{!getProductNameItems_new}" event="onchange" rerender="prodPick" status="ajaxId" />
+                                    </apex:selectList>
+                                    </div>
+                                </apex:actionRegion>
+                                
+                       </td> 
+                       <td width="10%">&nbsp;</td>
+                       <td width="50%" align="left">
+                                <apex:actionRegion >
+                                    <apex:outputLabel value="Product Name" for="prodPick" style="font-weight:bold;" /><br />
+                                    <div class="requiredInput"><div class="requiredBlock"></div>
+                                    <apex:selectList value="{!prd}" multiselect="false" label="Product Name" size="5" id="prodPick" disabled="{!isReadOnly}" onclick="onUnselect();">
+                                        <apex:selectOptions value="{!ProductItem}" />
+                                        <apex:actionSupport action="{!getModuleItems_new}" event="onchange" rerender="modPick,verPick" status="ajaxId"/>
+                                    </apex:selectList>
+                                    </div>
+                                </apex:actionRegion>
+                         </td> </tr><tr><td colspan="3"> 
+                            <apex:actionRegion >
+                                <table width="100%"> 
+                                    <tr><td width="40%">                                   
+                                        <apex:outputLabel value="Module" for="modPick" style="font-weight:bold;" /><br />
+                                        <apex:selectList value="{!module}" multiselect="false" label="Module" size="5" id="modPick" disabled="{!isReadOnly}">
+                                            <apex:selectOptions value="{!ModuleItem}"/>
+                                        </apex:selectList> 
+                                     </td>
+                                     <td width="10%">&nbsp; </td>
+                                     <td width="50%" align="left">
+                                        <apex:outputLabel value="Version" for="verPick" style="font-weight:bold;" /><br />
+                                        <apex:selectList value="{!version}" multiselect="false" label="Version" size="5" id="verPick" disabled="{!isReadOnly}">
+                                            <apex:selectOptions value="{!ProductVersionList}"/>
+                                        </apex:selectList>
+                                    </td></tr>
+                                </table>
+                            </apex:actionRegion>                            
+                        </td> </tr>  </table>
+            <!-- /apex:pageBlockSection -->
+            <apex:InputText disabled="TRUE" label="Product Selected" value="{!fProductSelected}" size="100"/>
+        </apex:pageBlock>
+    </apex:form>
+    </body>
+    
+</apex:page>

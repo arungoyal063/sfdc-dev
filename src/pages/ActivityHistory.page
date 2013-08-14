@@ -1,0 +1,67 @@
+<apex:page standardController="Case" extensions="ActivityHistory" sidebar="false" showHeader="false" >
+    <style>
+        .body{
+            overflow:scroll;
+        }
+    </style>
+    <script>
+      
+    </script>
+    <script src="../../soap/ajax/27.0/connection.js" type="text/javascript"></script>
+    
+    <apex:form styleClass="body">
+        <apex:pageBlock title="Activity History" helpTitle="Activity History Help" helpUrl="https://help.salesforce.com/htviewhelpdoc?id=activity_history.htm&siteLang=en_US" >
+            <apex:pageBlockButtons >
+                <div class="btn"><a href="/ui/core/activity/ViewAllActivityHistoryPage?retURL={!Case.Id}&id={!Case.Id}" style="text-decoration: none;" target="_blank">View All</a></div>
+                
+                <div class="btn" ><apex:commandLink action="{!logACall}" style="text-decoration: none;" value="Log A Call"  target="_parent" /></div>
+            </apex:pageBlockButtons>
+            <apex:repeat value="{!objCase}" var="ca" rows="1">
+                <apex:outputPanel rendered="{!IF(ca.ActivityHistories.size==0,false,true)}">
+                    <apex:pageBlockTable value="{!ca.ActivityHistories}" var="a">
+                        <apex:column width="25px">
+                            <apex:facet name="header">
+                                <input id="allBox" name="allBox" onclick="SelectAllOrNoneByCheckbox(Sfdc.Dom.getParent(this, 'FORM'), 'ids', this)" title="Toggle All Rows" type="checkbox" value=""/>
+                            </apex:facet>
+                            <input type="checkbox" name="ids" value="{!a.Id}" title="Select {!a.Billable_minutes__c}" onclick="updateToggleAllBox(this.form,'ids', 'allBox');"/>                     
+                        </apex:column>
+                        <apex:column headerValue="Action" style="white-space:nowrap;">
+                            <a href="/{!a.id}/e?retURL={!a.WhatId}" style="color: #015ba7;text-decoration: none;font-weight: normal;">Edit</a>&nbsp;|&nbsp;
+                            <apex:outputPanel rendered="{!!a.IsVisibleInSelfService}"><a href="/ui/core/activity/ActivityVisibilityEdit?id={!a.Id}&retURL=/apex/ActivityHistory?id={!ca.Id}&core.apexpages.devmode.url=1" style="cursor:pointer;cursor:hand;color: #015ba7;text-decoration: none;font-weight: normal;" class="actionLink">Make Public</a></apex:outputPanel>
+                            <apex:outputPanel rendered="{!a.IsVisibleInSelfService}"><a href="/ui/core/activity/ActivityVisibilityEdit?id={!a.Id}&retURL=/apex/ActivityHistory?id={!ca.Id}&core.apexpages.devmode.url=1" style="cursor:pointer;cursor:hand;color: #015ba7;text-decoration: none;font-weight: normal;" class="actionLink">Make Private</a></apex:outputPanel>
+                        </apex:column>
+                        <apex:column headerValue="Subject">
+                         <a href="/{!a.id}?retURL={!a.WhatId}">{!a.Subject}</a>
+                        </apex:column>
+                        <apex:column value="{!a.IsVisibleInSelfService}"/>
+                        <apex:column value="{!a.Billable_Minutes__c}"/>
+                        <apex:column value="{!a.WhoId}"/>
+                        <apex:column value="{!a.OwnerId }"/>
+                        <apex:column value="{!a.LastModifiedDate}"/>
+                        <apex:column value="{!a.CreatedDate}"/>
+                        <apex:column value="{!a.LastModifiedById}"/>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(ca.ActivityHistories.size==0,true,false)}">
+                    <div class="pbBody" id="RelatedHistoryList_body">
+                        <table class="list" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                                <tr class="headerRow">
+                                    <th scope="col" class="noRowsHeader">No records to display</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </apex:outputPanel>
+            </apex:repeat>
+        </apex:pageBlock>
+        <script>
+            
+        </script>
+        <!--apex:actionFunction name="selfService" action="{!makePublic}">
+            <apex:param assignTo="{!activityHistoryId}" name="activityHistoryId" value=""/>
+            <apex:param assignTo="{!isSelfService}" name="isSelfService" value=""/>
+        </apex:actionFunction-->
+    </apex:form>
+    
+</apex:page>

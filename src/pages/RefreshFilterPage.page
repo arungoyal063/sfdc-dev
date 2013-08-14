@@ -1,0 +1,26 @@
+<apex:page controller="ExtjsGridController" >
+
+    <apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip-load.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip-deflate.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip-inflate.js')}"/> 
+      
+    <apex:form id="form">
+       
+        <apex:commandButton value="Start Batch Job" action="{!init}" rerender="form"/>
+        <br/> <br/>
+        <apex:pageMessages id="messages"/>
+        <apex:actionPoller action="{!checkAsyncRequest}" interval="5" rerender="form" rendered="{!NOT(metadataRes)}"/>  
+        
+        <apex:outputPanel rendered="{!NOT(ISNULL(MetaDataRetrieveZip))}">
+            <apex:actionFunction name="receiveFile" action="{!receiveMetadataZipFile}" rerender="messages" oncomplete="unzip();">
+                <apex:param name="filename" assignTo="{!MetadataFileName}" value=""/>
+                <apex:param name="filedata" assignTo="{!MetadataFileData}" value=""/>
+            </apex:actionFunction>  
+            <apex:actionFunction name="receiveComplete" action="{!receiveComplete}" rerender="form"/>
+            
+            <c:unzip name="unzip" oncomplete="if(more) receiveFile(path, data); else receiveComplete();">{!MetaDataRetrieveZip}</c:unzip>
+        </apex:outputPanel>
+        
+    </apex:form> 
+</apex:page>

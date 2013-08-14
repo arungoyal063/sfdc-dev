@@ -1,0 +1,44 @@
+<apex:page controller="AnnouncementController"  tabStyle="Announcement__c" sidebar="false" showheader="false" id="thePage" >
+<apex:includeScript value="{!URLFOR($Resource.jqueryfancybox, '/jQueryfancybox/js/jquery-latest.min.js')}"/> 
+<apex:stylesheet value="{!URLFOR($Resource.jqueryfancybox, '/jQueryfancybox/css/jquery.fancybox.css')}"/>
+<apex:includeScript value="{!URLFOR($Resource.jqueryfancybox, '/jQueryfancybox/js/jquery.fancybox.pack.js')}"/> 
+
+    <style>
+         ul{
+               list-style-type: none;
+               padding: 0px;
+               margin: 0px;       
+         }
+         ul li{
+                padding-top:10px;
+         }
+    </style>
+    <script>  
+     $(".fancybox").fancybox({
+        openEffect: 'none',
+        closeEffect: 'none',
+        autoDimensions: false,
+        opacity:'true',
+        width:590,
+        height:600,
+  
+        afterLoad: function () { 
+            this.content =  this.content.html();
+        },
+        
+    });
+    </script>
+    <apex:form id="overlay_form">
+        <apex:pageBlock title="Announcements" tabStyle="Announcement__c">
+            <apex:pageMessages />
+            <apex:repeat value="{!annList}" var="annmnt">
+                <ul>
+                    <li class="fancybox" > 
+                        <div style="font-weight:bold ;font-size:12.5px;"><img src="{!$Resource.Announcements}" height="25px;"/>{!annmnt.Title__c}</div>
+                        <div  style="margin-left:50px;" title="Click Here To Get Detail!">{!annmnt.Description__c}</div>                        
+                    </li> 
+                </ul>
+            </apex:repeat> 
+        </apex:pageBlock>
+    </apex:form>
+    </apex:page>

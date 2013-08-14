@@ -1,0 +1,30 @@
+<apex:page standardController="Opportunity" extensions="AddBundleController">
+    <apex:form >
+        <apex:pageBlock title="My Content" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!add}" value="Add Bundles to Opportunity"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="My Content Section" columns="2">
+            
+                <apex:inputField id="selectBundle1" value="{!bundle1.Bundle__c}" />
+                <apex:inputField id="selectQuant1" value="{!bundle1.Quantity__c}" />
+                
+                <apex:inputField id="selectBundle2" value="{!bundle2.Bundle__c}" />
+                <apex:inputField id="selectQuant2" value="{!bundle2.Quantity__c}" />
+                
+                <apex:inputField id="selectBundle3" value="{!bundle3.Bundle__c}" />
+                <apex:inputField id="selectQuant3" value="{!bundle3.Quantity__c}" />
+                
+                <apex:inputField id="selectBundle4" value="{!bundle4.Bundle__c}" />
+                <apex:inputField id="selectQuant4" value="{!bundle4.Quantity__c}" />
+                
+                <apex:inputField id="selectBundle5" value="{!bundle5.Bundle__c}" />
+                <apex:inputField id="selectQuant5" value="{!bundle5.Quantity__c}" />
+                
+            
+            <apex:outputText value="{!errtxt}" style="color: red"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

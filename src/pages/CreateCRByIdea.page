@@ -1,0 +1,7 @@
+<apex:page standardController="Change_Request__c" extensions="CreateCROnIdea"  action="{!RedirectToCR}" >
+<apex:pageBlock >
+    <br></br><br></br>
+    <apex:messages />
+    
+</apex:pageBlock>
+</apex:page>

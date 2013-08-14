@@ -1,0 +1,208 @@
+<apex:page Standardcontroller="Contract_Billing__c" extensions="Ellu_SFDC_SAP_ContBill_Class02"  >
+  
+  <apex:form id="Form01"  >
+    
+    <apex:actionFunction name="DependencyPick" action="{!DependencyPick}" reRender="Form01:OPanel01:PBS01:PBSI04" />     
+   <apex:pageBlock title="Contract Billing Edit" id="PBlock01" >  
+   <b><apex:messages style="color:red"/></b> 
+      <apex:pageblockButtons rendered="{!ExectDateVald}" >
+          <apex:commandButton value="Save" action="{!Save}" reRender="PBlock01" />
+          <apex:commandButton value="Save and New" action="{!SaveAndNew}" reRender="PBlock01" />
+         <!-- <apex:commandButton value="Save & Create new Billing Service records" action="{! SaveAndCreateServiceBilling}" disabled="{!!BoolShowCrServBut}"/> -->
+      </apex:pageblockButtons> 
+      
+
+      <apex:outputPanel >
+          
+      
+      </apex:outputPanel>
+      <apex:outputPanel id="OPanel01" rendered="{!ExectDateVald}">
+      
+      <apex:pageBlockSection columns="3" id="PBS">
+              
+               
+              <apex:outputText value="{!VfVarNum}">
+              Screen no. 
+               </apex:outputText> 
+               <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                <apex:commandLink value="Link to related Opportunity" action="{!GoToOpportunity}" immediate="true"/>     
+          </apex:pageBlockSection>
+          
+      <apex:pageBlockSection id="PBS01" >
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Contract Name</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.ContractId__c}"/ >
+               
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+          <!--<apex:pageBlockSectionItem >
+              <apex:outputLabel >Currency</apex:outputLabel> 
+              <apex:inputField value="{!VfObjContBilling.CurrencyIsoCode}"/>
+          
+          </apex:pageBlockSectionItem>-->
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Product Family</apex:outputLabel>
+              <apex:outputPanel >
+              
+              
+              <apex:outputField value="{!VfObjContBilling.Billing_Type__c}"  />
+              <apex:actionSupport action="{!DependencyPick}" event="onclick" reRender="OPanel01:PBS01:PBSI04"/>
+              </apex:outputPanel>
+         </apex:pageBlockSectionItem>
+         <!--
+            <apex:pageBlockSectionItem rendered="{!!BoolVarBillTypeReadOnly}" >
+              <apex:outputLabel >Billing Type</apex:outputLabel>
+              
+              
+              
+              <apex:outputField value="{!VfObjContBilling.Billing_Type__c}"  />
+              
+              
+          </apex:pageBlockSectionItem>
+          -->
+          <apex:pageBlockSectionItem id="PBSI04" >
+              <apex:outputLabel >Item Type</apex:outputLabel>
+              <apex:OutputField value="{!VfObjContBilling.Item_Type__c}" />
+          </apex:pageBlockSectionItem>
+          <!--
+          <apex:pageBlockSectionItem rendered="{!!BoolVarReadOnly}">
+              <apex:outputLabel >Payment Type</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Item_Type__c}" />
+          </apex:pageBlockSectionItem>
+          -->
+         <apex:pageBlockSectionItem >
+              <apex:outputLabel >Payment Timing</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Payment_Timing__c}" >
+              <apex:actionSupport event="onchange" action="{!MethPayTiming}" reRender="OPanel01" />    
+              </apex:inputField>
+          </apex:pageBlockSectionItem>
+       <!--  <apex:pageBlockSectionItem >
+              <apex:outputLabel >Payment Timing</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Payment_Timing__c}" />
+          </apex:pageBlockSectionItem> -->
+          
+          
+       <!--   <apex:pageBlockSectionItem >
+              <apex:outputLabel >Payment Timing</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Payment_Timing__c}" />
+          </apex:pageBlockSectionItem> -->
+         <!-- <apex:pageBlockSectionItem >
+              <apex:outputLabel >Grouping Type</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Grouping_Type__c}"/>
+          </apex:pageBlockSectionItem> -->
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Billing Terms</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Billing_Terms__c}"/>
+          </apex:pageBlockSectionItem>
+     <!--     <apex:pageBlockSectionItem rendered="{!BoolVarReadOnly}" >
+              <apex:outputLabel >Billing Terms</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Billing_Terms__c}" required="true"/>
+          </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem rendered="{!!BoolVarReadOnly}">
+              <apex:outputLabel >Billing Terms</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Billing_Terms__c}" />
+          </apex:pageBlockSectionItem>-->
+          <apex:pageBlockSectionItem rendered="{!BoolVarReadOnly}">
+              <apex:outputLabel >Number Of Payments</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.NumberofPayments__c}"  />
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem rendered="{!!BoolVarReadOnly}">
+              <apex:outputLabel >Number Of Payments</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.NumberofPayments__c}" />
+          </apex:pageBlockSectionItem>  
+          
+          <!--
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Days From Event</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.DaysfromEvent__c}"/>
+          </apex:pageBlockSectionItem>
+          rendered="{!(BoolVarReadOnly)}"
+          -->
+          <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem id="PBSI7" rendered="{!!VarBoolPayTimOnExec}">
+              <apex:outputLabel >Payment Date</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.BillingDate__c}" />
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem rendered="{!VarBoolPayTimOnExec}">
+              <apex:outputLabel >Payment Date</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.BillingDate__c}" />
+          </apex:pageBlockSectionItem>
+          
+          <!--
+         <apex:pageBlockSectionItem rendered="{!BoolVarReadOnly}">
+              <apex:outputLabel >Billing Date</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.BillingDate__c}" required="true"/>
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem rendered="{!!BoolVarReadOnly}" >
+              <apex:outputLabel >Billing Date</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.BillingDate__c}" />
+          </apex:pageBlockSectionItem>
+          -->
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Total Amount</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Total_Amount__c}" />
+          </apex:pageBlockSectionItem>
+          <!--
+          <apex:pageBlockSectionItem rendered="{!!BoolVarReadOnly}">
+              <apex:outputLabel >Total Amount</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Total_Amount__c}" />
+          </apex:pageBlockSectionItem>
+          
+          -->
+         <apex:pageBlockSectionItem rendered="{!BoolVarReadOnly}">
+          
+              <apex:outputLabel >Percentage OR Amount</apex:outputLabel>
+              <apex:outputPanel >
+              <apex:inputField value="{!VfObjContBilling.Percentage_OR_Amount__c}" >
+              <apex:actionSupport event="onchange" action="{!PerOrAmount}" reRender="OPanel01"  />
+              </apex:inputField>
+              </apex:outputPanel>
+           
+          </apex:pageBlockSectionItem> 
+          <apex:pageBlockSectionItem rendered="{!!BoolVarReadOnly}" >
+          
+              <apex:outputLabel >Percentage OR Amount</apex:outputLabel>
+              
+              <apex:outputField value="{!VfObjContBilling.Percentage_OR_Amount__c}" />
+             
+           
+          </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+      <apex:pageBlockSection id="PBS02" >
+          
+          
+          
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Payment Percentage</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.PaymentPercentage__c}" rendered="{!BoolPercentage}" />
+          </apex:pageBlockSectionItem>
+          <!--
+          <apex:pageBlockSectionItem rendered="{!VarBoolSoftware}">
+              <apex:outputLabel >Payment Percentage</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.PaymentPercentage__c}" rendered="{!BoolPercentage}" />
+          </apex:pageBlockSectionItem>
+          -->
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Payment Amount</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Payment_Amount__c}" rendered="{!BoolPaymentAm}" />
+          </apex:pageBlockSectionItem>
+          <!--
+          <apex:pageBlockSectionItem rendered="{!VarBoolSoftware}">
+              <apex:outputLabel >Payment Amount</apex:outputLabel>
+              <apex:outputField value="{!VfObjContBilling.Payment_Amount__c}" rendered="{!BoolPaymentAm}" />
+          </apex:pageBlockSectionItem>
+          -->
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Comments</apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Comments__c}"/>
+          </apex:pageBlockSectionItem>
+         
+          </apex:pageBlockSection>
+      </apex:outputPanel>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

@@ -1,0 +1,53 @@
+<apex:page standardController="FAQ__kav" extensions="ArticleExtension">
+<apex:outputPanel id="messages">
+<apex:messages />
+<div style="text-align:center;color:red;width:100%;font-weight:bold;">
+    {!PageMessage}
+</div>
+</apex:outputPanel>
+<apex:form ><div style="text-align:center"><br></br><apex:CommandButton Action="{!Email}" value="Email this Page" rerender="messages"/></div><br></br></apex:form>
+<div class="content">
+<img class="pageTitleIcon" alt="Article" title="Article" src="/s.gif"></img>
+<font style="font-size:2em;">{!ArticleTitle}</font>
+<div class="blank"></div>
+</div>
+<knowledge:articleRendererToolbar articleId="{!$CurrentPage.parameters.id}" canVote="true" showChatter="true" id="article"/>
+<!-- <script> var article= document.getElementById("{!$Component.Article}");alert(article.innerText);</script> -->
+<script>
+window.onload = function() {
+togglePanel(Ext.get('j_id0:article:j_id2:propertiesPanel'),'showProperties','hideProperties');
+};
+</script>
+<apex:pageBlock title="Information">
+<table>
+<!--<apex:outputtext value="{!FAQ__kav.FAQ_Details__c}" escape="false"/>-->
+<apex:repeat value="{!record}" var="r">
+       <tr>
+            <td><apex:outputText value="Solution Details"/></td>
+            <!-- <td><apex:outputText value="{!df.APIName}"/></td>  -->
+            <td><apex:outputField value="{!FAQ__kav.FAQ_Details__c}"/> </td>
+        </tr>
+    <apex:repeat value="{!dynamicFields}" var="df">
+        <tr>
+            <td><apex:outputText value="{!df.Label}" rendered="{!df.Label!='Solution Details'}"/></td>
+            <!-- <td><apex:outputText value="{!df.APIName}"/></td>  -->
+            <td><apex:outputtext value="{!r[df.APIName]}" escape="false" rendered="{!df.APIName!='FAQ_Details__c'}"/> </td>
+        </tr>
+    </apex:repeat>
+    <apex:repeat value="{!dynamicAttachmentFields}" var="daf">
+        <tr>
+            <td><apex:outputText value="{!daf.Label}"/></td>
+            <!-- <td><apex:outputText value="{!df.APIName}"/></td>  -->
+            <!-- <td><apex:outputText value="{!r[daf.APIName]}" escape="false"/></td> -->
+            <td >
+                <apex:outputLink value="{!URLFOR($Action.FAQ__kav.FileFieldDownload, 
+                    FAQ__kav.id, ['field'=daf.FileAPIName])}">{!r[daf.APIName]}</apex:outputLink>
+               <!-- <embed src="/servlet/servlet.FileDownload?file={!daf.APIName}" autostart="false" autoplay="false" align="middle" width="200" height="150" defaultframe="rightFrame" showstatusbar="true">
+                </embed>    -->
+            </td>
+        </tr>
+    </apex:repeat>
+</apex:repeat>
+</table>
+</apex:pageBlock>
+</apex:page>

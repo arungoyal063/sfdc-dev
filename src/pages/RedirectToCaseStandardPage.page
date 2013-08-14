@@ -1,0 +1,1 @@
+<apex:page standardController="Case" extensions="RedirectToCase" sidebar="false" showHeader="false" action="{!pageRedirect}"/>

@@ -1,0 +1,26 @@
+<apex:page standardController="Contract"   renderAs="pdf">
+  <!--<apex:detail id="AcctOverRide_v1" relatedList="false">
+      <apex:relatedList id="activeContacts" list="Contacts" title="Contacts" subject="{!ActContacts}">
+          </apex:relatedList>
+  </apex:detail>
+  <apex:iframe src="http://www.androidmarket.com"/>
+  <apex:enhancedList type="Account" height="300" rowsPerPage="10" id="AccountList" customizable="true" listId="{!account}"/>
+-->
+<!--
+<apex:pageBlock >
+<apex:pageBlockSection columns="3">
+<apex:pageBlockSectionItem ><apex:outputLabel >Account Name    </apex:outputLabel>
+ </apex:pageBlockSectionItem>
+ <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+<apex:outputField value="{!Contract.AccountId}"/>
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+</apex:pageBlock>
+-->
+
+
+<apex:detail subject="{!Contract.id}" relatedList="true">
+</apex:detail>
+
+</apex:page>

@@ -1,0 +1,14 @@
+<apex:page Controller="Total_Billable_Minutes"  > 
+  <apex:pageBlock title="Total Bilable Minutes">
+  <apex:pageBlockSection title="Total Available Minutes Type Wise" collapsible="false">
+      <apex:pageBlockTable value="{!listOBJ}" var="varList" columns="2">      
+                <apex:column headerValue="Type">
+                <apex:outputLabel value="{!varList['Type__c']}"/>
+                </apex:column>
+                <apex:column headerValue="Total Billable Minutes">
+                <apex:outputLabel value="{!varList['Billable_Minutes']}"/>
+                </apex:column>
+      </apex:pageBlockTable>
+  </apex:pageBlockSection>
+  </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,126 @@
+<apex:page standardController="ContractLine__c" extensions="Ellu_SFDC_SAP_ContractLineFilterClass2">
+ <apex:form >
+    <apex:pageBlock id="PB" title="Contract Line Filter/Grouping Page" >
+        
+        
+         <b><apex:messages style="color:red"/ ></b>
+        <apex:pageBlockSection columns="3">
+         
+        <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+        
+         
+                
+           
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="6">
+        
+        
+        <apex:pageBlockSectionItem >
+                <apex:outputLabel >Product Family</apex:outputLabel>
+               <apex:inputField value="{!VfObjContBilling.Billing_Type__c}"   >
+               <apex:actionSupport action="{!runAssign}" event="onchange" reRender="OPpannel" />  
+               </apex:inputField>
+         </apex:pageBlockSectionItem>
+          
+         <apex:pageBlockSectionItem Id="Item_Type" >
+              <apex:outputLabel >Item Type </apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Item_Type__c}" >
+              <apex:actionSupport action="{!runAssign}" event="onchange" reRender="OPpannel" />
+              </apex:inputField>
+          </apex:pageBlockSectionItem>
+          <!--rendered="{!renderBillingTerm}" -->
+          <apex:pageBlockSectionItem id="Billing_Terms" >
+              <apex:outputLabel >Billing Terms </apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Billing_Terms__c}" >
+              <apex:actionSupport action="{!runAssign}" event="onchange" reRender="OPpannel"  />
+              </apex:inputField>
+          </apex:pageBlockSectionItem>
+
+         <!--
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel >Payment Timing </apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Payment_Timing__c}" required="true"/>
+          </apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem >
+              <apex:outputLabel >Grouping Type </apex:outputLabel>
+              <apex:inputField value="{!VfObjContBilling.Grouping_Type__c}" />
+          </apex:pageBlockSectionItem>
+          -->
+          <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:commandButton value="Refresh" action="{!RollupDetails}" reRender="PB:OPpannel"/>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <!--  <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>-->
+               
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel > Contract Name</apex:outputLabel>
+                <apex:outputField value="{!VfObjContBilling.ContractId__c}"/> 
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+            <apex:commandLink value="Link to related Opportunity" action="{!GoToOpportunity}" immediate="true"/>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        
+        
+        
+     <apex:outputPanel id="OPpannel"  >
+     
+     <apex:pageBlockTable id="Table" align="center" value="{!AllAssignConLineRecords}" var="record" columns="7" rowClasses="odd,even" styleClass="tableClass">
+         <apex:column colspan="1" >
+   <!--       <apex:facet name="Header" >
+              <apex:commandLink action="{!WrapperMethodForContLine}" value="Contract Line  Name{!IF(sortExpression=='Name',IF(sortDirection='ASC','?','?'),'')}" id="cmdSort" reRender="table" rendered="true">
+                    <apex:param value="Name" name="column" assignTo="{!sortExpression}" ></apex:param>
+              </apex:commandLink> 
+          </apex:facet> -->
+          <apex:facet name="header"> Contract Line Item Number</apex:facet>
+             <apex:outputLink value="/{!record.Id}" target="_blank">{!record.Name}</apex:outputLink>
+         </apex:column>
+         <apex:column >
+              <apex:facet name="header"> Product Name</apex:facet>
+             <apex:outputField value="{!record.ProductId__c}"></apex:outputField>
+         </apex:column>
+          <apex:column >
+              <apex:facet name="header"> Product Family</apex:facet>
+             <apex:outputField value="{!record.Product_Family__c}"></apex:outputField>
+         </apex:column> 
+         <apex:column >
+             <apex:facet name="header"> Item Type</apex:facet>
+             <apex:outputField value="{!record.Item_Type__c}" ></apex:outputField>
+         </apex:column>
+          <apex:column >
+             <apex:facet name="header">Billing Terms</apex:facet>
+             <apex:outputField value="{!record.BillingTerms__c}" ></apex:outputField>
+         </apex:column>
+         <apex:column >
+             <apex:facet name="header"> Quantity </apex:facet>
+             <apex:outputField value="{!record.Quantity__c}" ></apex:outputField>
+         </apex:column>
+         <apex:column >
+             <apex:facet name="header"> Total Price </apex:facet>
+             <apex:outputField value="{!record.TotalPrice__c}" ></apex:outputField>
+         </apex:column>
+     </apex:pageBlockTable>
+     <apex:commandButton value="Previous" action="{!previousBtnClick}"  disabled="{!previousButtonEnabled}" reRender="OPpannel"></apex:commandButton>
+     <apex:commandButton value="Next" action="{!nextBtnClick}" disabled="{!NextButtonDisabled}" reRender="OPpannel"  ></apex:commandButton>
+     
+     <apex:pageBlockSection ></apex:pageBlockSection>
+     <apex:pageBlockSection ></apex:pageBlockSection>
+     <apex:pageBlockSection ></apex:pageBlockSection>
+     
+     <apex:pageBlockSection columns="1" > 
+     
+     <apex:outputText value="{!TotalContLineSize}"> <b>Total number of Contract Line items  ::</b> </apex:outputText>
+     
+     
+     <apex:outputText value="{!TotalAmount}"> <b> Total Amount  ::</b> $ </apex:outputText>
+    </apex:pageBlockSection> 
+     
+      <apex:commandButton value="Continue to create Billing records for above Contract Line Items" action="{!ContinueToCreateBillRecords}"/>
+     </apex:outputPanel>
+     
+    </apex:pageBlock>
+    
+    
+ </apex:form>
+</apex:page>

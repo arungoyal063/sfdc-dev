@@ -1,0 +1,488 @@
+<apex:component controller="Extjs_Bank_Statement" allowDML="true">
+ 
+
+    <!-- A Visualforce component implementing an ExtJS4 grid backed by JS Remoting from a controller -->
+    <!-- Jeff Trull 8/10/2011 -->
+    <apex:attribute name="object" type="String" description="sObject to generate a grid for" required="true"/>
+    <apex:attribute name="viewlabel" type="String" description="ListView to generate a grid for" required="true"/>
+    <apex:attribute name="viewfilter" type="String" description="ListView Filter to generate a grid for"/>
+    <apex:attribute name="viewcols" type="String" description="ListView Columns to generate a grid for"/> 
+    <apex:attribute name="viewscope" type="String" description="ListView Scope to generate a grid for"/>    
+    <apex:attribute name="rows" type="int" description="how many rows to display in grid" default="19"/>
+    <apex:attribute name="minimized" type="Boolean" description="whether to initially render the grid in minimized state" default="false"/>
+    <apex:attribute name="title" type="String" description="title of the grid" required="true"/>
+   
+    <style type="text/css">   
+        .x-column-header-text {font-weight: bold; color: #333}
+        
+        .ux-rangemenu-icon {
+            margin-top: 0;
+        }
+        .ux-rangemenu-gt {
+            background-image: url('{!$Resource.ExtJS4}/extjs-4.1.0/examples/ux/grid/images/greater_than.png') !important; 
+        }
+        .ux-rangemenu-lt {
+            background-image: url('{!$Resource.ExtJS4}/extjs-4.1.0/examples/ux/grid/images/less_than.png') !important;
+        }
+        .ux-rangemenu-eq {
+            background-image: url('{!$Resource.ExtJS4}/extjs-4.1.0/examples/ux/grid/images/equals.png') !important;
+        }
+        
+       </style>
+   
+    <script>
+       
+        Visualforce.remoting.timeout = 120000;
+        var entURL = '{!$Api.Enterprise_Server_URL_280}';
+        var hostUrl = entURL.substring(0, entURL.indexOf('services/Soap'));      
+       
+        // configure whether filter query is encoded or not (initially)
+        var encode = true; // where filtering data to encode in json or not
+       
+       // configure whether filtering is performed locally or remotely (initially)
+       var local = false;
+       Ext.Loader.setPath('Ext.ux', '{!$Resource.ExtJS4}/extjs-4.1.0/examples/ux');
+   
+       Ext.require([
+        'Ext.grid.*',
+        'Ext.data.*',
+        'Ext.ux.grid.FiltersFeature',
+        'Ext.toolbar.Paging',
+        'Ext.ModelManager',
+        'Ext.tip.QuickTipManager'
+       ]);
+       
+       
+       
+        
+        var filters = {
+            ftype: 'filters',       
+            encode: encode, // json encode the filter query
+            local: local,   // defaults to false (remote filtering)
+            filters: [{
+                type: 'string',
+                dataIndex: 'Severity'
+            }]
+        };
+    
+    
+      
+       
+       
+        Ext.data.proxy.Direct.prototype.createRequestCallback =
+            function(request, operation, callback, scope){
+                var me = this;
+               
+                return function(data, event){
+                    // supply "data" (properly processed data), not "event", as fourth arg
+                    me.processResponse(event.status, operation, request,
+                                       {data: data}, callback, scope);
+                };
+            };
+
+       
+        Extjs_Bank_Statement.query.directCfg.method.getArgs = Ext.direct.RemotingMethod.prototype.getArgs;
+                               
+        Ext.Date.parseFunctions["SFDC"] = function(v) {
+               if ((v == null) || (v == ''))
+                   return null;
+               date_as_sent = new Date(parseInt(v));
+               return new Date(date_as_sent.getUTCFullYear(),
+                                 date_as_sent.getUTCMonth(),
+                                 date_as_sent.getUTCDate());
+        };
+        // not necessary to define a parseFunction here as SFDC seems happy to accept JSON date format
+       
+        var fieldlist;
+        var fields = '{!viewcols}';
+       
+        if ((fields == null) || (fields == '') || (fields == '[]')) {
+            Ext.Msg.alert('no fields were supplied to this component');
+           
+        }
+        if (fields.substr(0, 1) == '[') {
+            // a fieldset - remove brackets and split on comma+space
+            fieldlist = fields.substr(1, fields.length - 2).split(', ');
+        } else {
+            fieldlist = fields.split(',');
+        }
+        
+        
+        (function() {  // protect global namespace (and other grids) from stuff local to us
+        
+      
+          Extjs_Bank_Statement.describeFields('{!object}',fieldlist,
+                function(fieldData, e) {
+                    if (!e.status) {
+                        Ext.Msg.alert('Server error', e.message);
+                        return;
+                    }
+                    
+                    
+                    // define a Model using the information returned from the SObject describe call
+                    var extfields = []; 
+                    var dateTypeMap = {};                   
+                    
+                    if (fieldlist.indexOf('Id') == -1) {
+                        extfields.push({
+                            name: 'Id',
+                            // Workaround: in Ext 3 (nonexistent) id property was removed from phantom records
+                            persist: false  // make sure we don't try to output this on create.
+                        }); // always include ID in the store
+                    }
+                   
+                    for (var i = 0; i < fieldData.length; i++) {
+                        
+                        var field = {name: fieldData[i].name, type: fieldData[i].fieldType};
+                        
+                                                               
+                        if (fieldData[i].fieldType == "datetime") {
+                            
+                            field.dateFormat = "SFDC";    // Force.com date serialization uses javascript time value
+                            field.type = "date";
+                            
+                            dateTypeMap[fieldData[i].name] = fieldData[i].fieldType; // dateTypeMap for date and datetime fields
+                            
+                        } else if (fieldData[i].fieldType == "date") {                            
+                            field.type = "date";
+                            field.dateFormat = "SFDC";    // use special format defined above
+                            
+                            dateTypeMap[fieldData[i].name] = fieldData[i].fieldType;
+                        } else if (fieldData[i].fieldType == "double") {
+                            field.type = "float";
+                        } else if (fieldData[i].fieldType == "boolean") {
+                            field.type = "bool";
+                        } else if ((fieldData[i].fieldType == "integer") || (fieldData[i].fieldType == "currency") || (fieldData[i].fieldType == "boolean")) {
+                            field.type = fieldData[i].fieldType;
+                        } else if (fieldData[i].fieldType == "reference") {
+                            
+                            fieldlist.push(fieldData[i].relatedField);                           
+                        } 
+                        else {
+                            field.type = "string";
+                        }
+                        if (field.name == 'Id') {
+                            field.persist = false;
+                        }
+                        
+                        // TODO add validations (list of valid values, regex, min/max) if possible
+                        // known possible checks: precision, scale, updateable/createable, max length for strings
+                        
+                        extfields.push(field);
+                    }
+                    
+                   // remove extra field from fieldlist
+                   fieldlist = removeExtraFields(fieldlist);  
+                     
+                    // TODO add associations to other models
+                    var modelName = Ext.String.capitalize("{!object}");                   
+                    var extraParams = {sobjname: '{!object}', fields: fieldlist.join(','), queryfilter: '{!viewfilter}', queryscope: '{!viewscope}', fieldTypeMap : dateTypeMap};    // will be sent along with start, limit, etc.                                      
+                   
+                    
+                    Ext.define(modelName, {
+                        extend: 'Ext.data.Model',
+                        fields: extfields,
+                        idProperty: 'Id',
+                        proxy: {
+                            type: 'direct',
+                            api: {read:     Extjs_Bank_Statement.query
+                                 },
+                            limitParam: 'recordCount',   // because "limit" is an Apex keyword
+                            sortParam: 'sortParams',     // because "sort" is a keyword too
+                            pageParam: undefined,        // suppress sending "page", we don't need it                           
+                            reader: {type: 'json',
+                                     root: 'records',
+                                     messageProperty: 'errorMessage'
+                                    },
+                         
+                            listeners: {
+                                
+                                exception: {fn: function(proxy, response, operation) {
+                                                    
+                                                    // TODO: some errors are still not propagated correctly to the user by this code...
+                                                    // investigation needed
+                                                    console.log('got exception with response=', response, 'operation=', operation);
+                                                    if (response.data) {
+                                                        if (response.data.errorMessage) {
+                                                            // my custom field is present; let's use it
+                                                            Ext.Msg.alert('Error', response.data.errorMessage);
+                                                        } else {
+                                                            Ext.Msg.alert('Error', operation.action + ' failed: ' + response.data.message);
+                                                        }
+                                                    }
+                                                }
+                                           }},
+                            extraParams: extraParams
+                        }});
+                    
+                    var pagesize = parseInt('{!rows}'); // otherwise we end up with a string value, which subtly fails
+                    
+                    
+                    /***** Extjs data store - start ******/
+                    
+                    // create a store that uses the Model
+                    var store = new Ext.data.Store({
+                        model: Ext.String.capitalize("{!object}"),
+                        pageSize: pagesize,
+                        remoteSort: true,
+                        remoteFilter:true,
+                        autoLoad: {!!minimized},
+                        // Instead of using store's "autoSync" feature, sync to server on update and remove,
+                        // but not add/create, as the initial record will be blank and probably fail validation
+                        listeners: {
+                            remove: {fn: function() {
+                                            store.sync();
+                                        }},
+                            update: {fn: function() {
+                                            store.sync();
+                                        }}
+                        }});
+                        
+                   /***** ExtJS data store - end ******/     
+                        
+                    store.sort('CreatedDate', 'DESC');
+                    // and a grid that uses the Store
+                    // define its columns using previously accessed metadata
+                    
+                    
+                 /*** ExtJs columns - start ****/ 
+                    
+                    var columns = [];
+                    var columnMap = {};
+                    for (var i = 0; i < fieldData.length; i++) {
+                        
+                        var collabel = fieldData[i].label;
+                        
+                        /** set up column width **/                        
+                        var winwidth =  (Ext.getBody().getWidth(true)-280)/(fieldData.length);
+                        var colwidth;
+                        
+                        if(winwidth > 120){
+                            colwidth =  winwidth;  
+                        } else {
+                            colwidth = 120;    
+                        }
+                        /** set up column width **/  
+                        
+                        var col = {
+                            dataIndex: fieldData[i].name,
+                            text: fieldData[i].label,
+                            sortable: fieldData[i].sortable,
+                            filterable: fieldData[i].filterable,                                                    
+                            width: colwidth                         
+                            
+                        }
+                       columnMap[fieldData[i].name] = fieldData[i].label;
+                       
+                       if(fieldData[i].name == "CaseNumber") {
+                            col.renderer  = function(myValue, myDontKnow, myRecord) {                            
+                                var recordURL = hostUrl + myRecord.data.Id;
+                                return '<a href="' + recordURL+'">'+ myValue + '</a>';
+                            }
+                       }
+                        
+                       else if(fieldData[i].name == "Name") {
+                            col.renderer  = function(myValue, myDontKnow, myRecord) {                            
+                                var recordURL = hostUrl + myRecord.data.Id;
+                                return '<a href="' + recordURL+'"  >'+ myValue + '</a>';
+                            }
+                        }
+                        
+                       else if(fieldData[i].fieldType == "reference") {
+                           col.dataIndex = fieldData[i].relatedField;
+                           columnMap[fieldData[i].relatedField] = fieldData[i].label;
+                                                   
+                           col.renderer  = function(myValue, metadata, myRecord, rowIndex, colIndex, doctorOrderStore) { 
+                              var reffield = fieldData[colIndex].name;
+                              var relObj = fieldData[colIndex].relationName;                                                                  
+                                if(myRecord.data[reffield] && myRecord.data[reffield] != '' && myRecord.raw[relObj]){ 
+                                           
+                                    var recordURL = hostUrl + myRecord.raw[relObj]['Id'];                               
+                                    return '<a href="' + recordURL+'" >'+ myRecord.raw[relObj][fieldData[colIndex].relatedField.split('.')[1]] + '</a>';
+                                   
+                                }
+                            }  
+                       }
+                        
+                        // use data type from above to determine type of Editor and xtype to use
+                        else if ((fieldData[i].fieldType == "picklist")) {
+                           
+                            var optionarr = [];
+                            for (var j=0;j<fieldData[i].picklistValues.length; j++){
+                                var temparr = [];
+                                temparr.push(fieldData[i].picklistValues[j][1], fieldData[i].picklistValues[j][0]);
+                                optionarr.push(temparr);
+                            } 
+                            
+                            
+                                                 
+                            col.filter = {
+                              type: 'list',
+                              options: optionarr                          
+                            } 
+                        }
+                        
+                        
+                        else if ((fieldData[i].fieldType == "currency")) {
+                            col.xtype = 'numbercolumn';  
+                            col.renderer = 'usMoney';  
+                            
+                        }
+                        else if ((fieldData[i].fieldType == "integer") || (fieldData[i].fieldType == "double")) {
+                            col.xtype = 'numbercolumn';
+                            if (fieldData[i].fieldType == "integer") {
+                                // do not show decimals
+                                col.format = '0,000';
+                            }
+                        } else if (fieldData[i].fieldType == "boolean") {
+                            col.xtype = 'booleancolumn';
+                            col.trueText = 'Yes';
+                            col.falseText = 'No';
+                        } else if (fieldData[i].fieldType == "date" || fieldData[i].fieldType == "datetime")  {
+                            col.xtype = 'datecolumn';
+                        } else if(fieldData[i].fieldType == "string"){
+                             col.renderer  = function(fieldValue) {
+                                 
+                                 return fieldValue.replace(/(https?:\/\/\S+)/g, '<a href="$1">$1</a>');        
+                             }
+                                 
+                        }                     
+                        
+                       
+                        columns.push(col);
+                    }
+                    
+                    /*** ExtJs columns - end  ****/
+                    
+                    /*** ExtJs grid - start ****/  
+                    Ext.onReady(function() {  // defer creation of UI elements
+                        var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+                                            clicksToEdit: 2 // to more easily distinguish editing from row selection ----------modelName
+                                        });
+                        var grid = Ext.create('Ext.grid.Panel', {
+                            id : 'maingrid',
+                            title: '{!title}',
+                            store: store,
+                            columns: columns,
+                            selModel: {xtype : 'rowmodel',
+                                       mode : 'MULTI'},
+                            collapsed: {!minimized},
+                            enableColumnHide : false,
+                            listeners: {
+                                // if we begin minimized, load upon expansion
+                                expand: function() {
+                                    store.load();
+                                },
+                                columnmove:function(container, coulmn, from , to){
+                                    var movedColumn = fieldData[from];
+                                    if(to > from){                                        
+                                        for(var c=(from + 1) ; c < to ; c++ ){
+                                            fieldData[c - 1] = fieldData[c];                 
+                                        }
+                                        fieldData[to-1] = movedColumn;
+                                                                             
+                                    } else {
+                                        for(var c=(from - 1) ; c >= to ; c-- ){
+                                            fieldData[c + 1] = fieldData[c];                 
+                                        } 
+                                        fieldData[to] = movedColumn;     
+                                    }
+                                }}, 
+                                            
+                            // paging toolbar at bottom
+                            bbar: Ext.create('Ext.PagingToolbar', {
+                                store: store,
+                                displayInfo: true,
+                                displayMsg: 'Displaying objects {0} - {1} of {2}',
+                                emptyMsg: 'no records found'      
+                            }),                            
+                            height: 460,
+                            loadMask: true,
+                            features: [filters],                           
+                            renderTo: '{!$Component.myGrid}',
+                            layout: 'fit'                  
+                        });
+                        
+                       overrideFilters();
+                       
+                           /* custom button section - start */
+                        // add some buttons to bottom toolbar just for demonstration purposes
+                        grid.child('[dock=bottom]').add([
+                            '->',
+                         /*   {
+                                text: 'Encode: ' + (encode ? 'On' : 'Off'),
+                                tooltip: 'Toggle Filter encoding on/off',
+                                enableToggle: true,
+                                handler: function (button, state) {
+                                    var encode = (grid.filters.encode !== true);
+                                    var text = 'Encode: ' + (encode ? 'On' : 'Off'); 
+                                    grid.filters.encode = encode;
+                                    grid.filters.reload();
+                                    button.setText(text);
+                                } 
+                            },
+                            {
+                                text: 'Local Filtering: ' + (local ? 'On' : 'Off'),
+                                tooltip: 'Toggle Filtering between remote/local',
+                                enableToggle: true,
+                                handler: function (button, state) {
+                                    var local = (grid.filters.local !== true),
+                                        text = 'Local Filtering: ' + (local ? 'On' : 'Off'),
+                                        newUrl = local ? url.local : url.remote,
+                                        store = grid.view.getStore();
+                                     
+                                    // update the GridFilter setting
+                                    grid.filters.local = local;
+                                    // bind the store again so GridFilters is listening to appropriate store event
+                                    grid.filters.bindStore(store);
+                                    // update the url for the proxy
+                                    store.proxy.url = newUrl;
+                    
+                                    button.setText(text);
+                                    store.load();
+                                } 
+                            }, */
+                            {
+                                text: 'Display Applied Filters',
+                                tooltip: 'Get Filter Data for Grid',
+                                handler: function () {
+                                    if(grid.filters.getFilterData().length > 0){
+                                        var data = grid.filters.getFilterData();
+                                        for(var c=0; c < data.length; c++){
+                                            data[c].field = columnMap[data[c].field];   
+                                        }
+                                       Ext.Msg.alert('All Filter Data',Ext.encode(data));
+                                   }  else {
+                                        Ext.Msg.alert('All Filter Data','No Filters Added');   
+                                   }  
+                                } 
+                            },{
+                                text: 'Clear Filter Data',
+                                handler: function () {
+                                    grid.filters.clearFilters();
+                                } 
+                            }, /*{
+                                text: 'Add Columns',
+                                handler: function () {
+                                    if (grid.headerCt.items.length < 6) {
+                                        grid.headerCt.add(createHeaders(6, 4));
+                                        grid.view.refresh();
+                                        this.disable();
+                                    }
+                                }
+                            } */   
+                        ]);
+                     /* custom button section - end */
+                            
+                         Ext.EventManager.onWindowResize(grid.doLayout, grid);  
+                    });
+               /*** ExtJs grid - end ****/  
+            });
+      
+    })();  // end IIFE
+    </script>
+    <apex:outputPanel id="myGrid" layout="block"/>
+    
+    
+    
+</apex:component>

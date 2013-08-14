@@ -1,0 +1,15 @@
+<apex:page StandardController="Opportunity"  extensions="Ellu_SFDC_SAP_Create_Contract_Class" >
+ <apex:form >
+ <b><apex:messages style="color:red"/ ></b>
+ <apex:pageBlock >
+ <b>Creating a new Contract will override the any existing Contract related to this Opportunity.
+    Are you sure you want to create a new contract?</b>
+ <apex:pageBlockSection >
+ <apex:pageBlockSectionItem >
+ <apex:commandButton value="Yes" action="{!CreateContract}"/>
+ <apex:commandButton value="No" action="{!Cancel}"/>
+ </apex:pageBlockSectionItem>
+ </apex:pageBlockSection>
+ </apex:pageBlock>
+ </apex:form>
+</apex:page>
