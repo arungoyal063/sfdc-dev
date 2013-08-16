@@ -1,0 +1,285 @@
+<apex:page standardController="GTMAccessToken__c" extensions="GTMConsoleExtension"> 
+<apex:includeScript value="{!$Resource.jquery161}"/>
+
+    <style type="text/css">
+     .slider-frame {
+          position: relative;
+          display: block;
+          margin: 0 auto;
+          width: 84px;
+          height: 27px;
+          background-color:#E0F2F7;<!-- rgb(246, 249, 251);-->
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+          -webkit-box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
+          -moz-box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
+          box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
+        }
+    .slider-button {
+          display: block;
+          width: 43px;
+          height: 27px;
+          line-height: 27px;
+          background: #A9E2F3;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+          -webkit-transition: all 0.25s ease-in-out;
+          -moz-transition: all 0.25s ease-in-out;
+          transition: all 0.25s ease-in-out;
+          color:#000;
+          font-family:sans-serif;rounded
+          font-size:11px;
+          font-weight:bold;
+          text-align: Center;
+          cursor: pointer;
+          -webkit-box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
+          -moz-box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
+          box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
+        }
+    .slider-button.on {
+          margin-left: 40px;
+          background: #D8D8D8;
+        }
+    .rounded-corners {
+             -moz-border-radius: 7px;
+            -webkit-border-radius: 7px;
+            -khtml-border-radius: 7px;
+            border-radius: 7px;
+        }
+    .square {
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+        
+    .rounded {
+            -webkit-border-radius: 50px;
+            -moz-border-radius: 50px;
+            border-radius: 50px;
+        }
+    .button {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            color: #FFFFFF;
+            padding: 8px 55px;
+            margin: 0 20px;
+            text-shadow: 2px 2px 1px #595959;
+            filter: dropshadow(color=#595959, offx=1, offy=1);
+            text-decoration: none;
+            background:#1797c0 url('img/alohaSkin/appHeader_r.png') repeat-x;
+        }
+        
+    .effect-2 {
+            transition: border-radius 2s;
+            -webkit-transition: border-radius 2s;
+            -moz-transition: border-radius 2s;
+            -o-transition: border-radius 2s;
+            -ms-transition: border-radius 2s;
+        }
+        
+    .effect-2:hover {
+            -webkit-border-radius: 50px;
+            -moz-border-radius: 50px;
+            border-radius: 50px;
+        }
+        
+    .effect-3 {
+            transition: border-radius 1s;
+            -webkit-transition: border-radius 1s;
+            -moz-transition: border-radius 1s;
+            -o-transition: border-radius 1s;
+            -ms-transition: border-radius 1s; 
+            -moz-box-shadow: 3px 3px 4px #000;
+            -webkit-box-shadow: 3px 3px 4px #000;
+            box-shadow: 3px 3px 4px #000; 
+        }
+        
+    .effect-3:hover {
+            color:#fff;
+            -moz-box-shadow: 1px 1px 2px #000;
+            -webkit-box-shadow: 1px 1px 2px #000;
+            box-shadow: 1px 1px 2px #000;                        
+        }
+      body,iframe{
+         
+        color: #333;
+        text-shadow: 0 1px 0 #eee;
+        background: rgb(226, 226, 226);
+        /*background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#eee));
+        background-image: -webkit-linear-gradient(#f9f9f9,#eee);
+        background-image: -moz-linear-gradient(#f9f9f9,#eee);
+        background-image: -ms-linear-gradient(#f9f9f9,#eee);
+        background-image: -o-linear-gradient(#f9f9f9,#eee);
+        background-image: linear-gradient(#f9f9f9,#eee);*/
+    }
+    #popup1{
+            border: solid 1px #F78181;
+            border-radius: 5px;
+            background: #F5A9A9;
+            width: 374px;
+            height: 40px;
+            padding: 5px;
+            box-shadow: 3px 8px 8px #000;
+            position: absolute;
+            top: 127px;
+            left: 70%;
+        }        
+        #popup{
+            border: solid 1px #F78181;
+            border-radius: 5px;
+            background: #F5A9A9;
+            width: 374px;
+            height: 60px;
+            padding: 5px;
+            box-shadow: 3px 8px 8px #000;
+            position: absolute;
+            top: 67px;
+            left: 70%;
+        }
+    </style>
+    
+    <script type="text/javascript"> 
+            $(document).ready(function(){
+                $('.slider-button').toggle(
+                    function(){
+                        $(this).addClass('on').html('Yes');                     
+                        var flag = 0;
+                        $('.slider-button').each(function(index){
+                            if($(this).text() == 'Yes'){
+                                flag++;
+                            }
+//                            if(flag == 2){
+                              if(flag == 1){
+                                $('#bottomSectionId').show();
+                            }                                                                              
+                        });
+                        if($(this).attr('Id') == 'a2'){                
+                            $('#popup').hide();
+                        }else{                                                      
+                            $('#popup1').hide();                                                           
+                        }
+                    },
+                    function(){
+                        $(this).removeClass('on').html('No');
+                        if($(this).attr('Id') == 'a1'){                
+                            $('#popup1').show();  
+                        }
+                        if($(this).attr('Id') == 'a2'){                
+                            $('#popup').show();  
+                        }                    
+                        $('#bottomSectionId').hide();                               
+                });
+                $('#next').bind('click', function(){ 
+                    if ('{!$Label.API_Key}' == null || '{!$Label.API_Key}' =='')
+                    {
+                         $('#errMsgId1').show();
+                    }
+                    else
+                    {
+                        //Redirect url changed to event object
+                        var urlloc = 'https://api.citrixonline.com/oauth/authorize?client_id='+'{!$Label.API_Key}'+'&redirect_uri=/00U/e?retURL=%2Fhome%2Fhome.jsp';
+                        //alert(urlloc);
+                        window.location = urlloc;
+                    }
+                }); 
+                $('#cancel').bind('click', function(){
+                    var canUrlLoc = '/00U/e?retURL=%2Fhome%2Fhome.jsp';
+                    window.location = canUrlLoc;                    
+                });                               
+            }); 
+            function validateMsg(src){
+                $('#errMsgId1').hide();
+                if($(src).val() != null && $(src).val().trim() != ''){
+                     $('#errMsgId').show();
+                }else{                     
+                     $('#errMsgId').hide();
+                }
+            } 
+                       
+    </script>
+    <apex:pageMessages />
+    <apex:messages id="messages"/>  
+    <body>
+        <center>
+        <div style="font-weight:bold;font-size:20px;padding-top:50px;">Console</div><br/>
+        <div>
+        <apex:outputPanel rendered="{!showAlreadyExisting}">
+                    <div style='color:blue;'>Note: You already have a valid GTM Access Token. Completing this registration will update your current GTM Access Token</div><br></br>
+        </apex:outputPanel>
+            <table>
+                <tr>
+                    <td style="vertical-align: middle !important;">
+                        <b>Do You Have GoToMeeting Account?</b>&nbsp;
+                    </td>
+                    <td>
+                        <div class="slider-frame" >
+                            <span class="slider-button" id="a2">No</span>
+                        </div>
+                    </td>                
+                </tr>
+                <tr/>                
+                <tr/>
+<!--      
+                <tr>
+                    <td>
+                        <b>Do You Have a API User Account</b>
+                    </td>
+                    <td>
+                        <div class="slider-frame" >
+                            <span class="slider-button" id="a1">No</span>
+                        </div>                        
+                    </td>
+                </tr>
+-->       
+             </table><br/><br/>
+             <div id="bottomSectionId" style="display:none;">
+<!--
+                 <table>   
+                    <tr>
+                        <td style="width:150px;">
+                            <b>Enter Your api Key</b>
+                        </td>
+                        <td >
+                            <input type="text" name="fname" id="apiKey" onkeyup="validateMsg(this);"></input>
+                        </td>
+                        
+                    </tr>
+                </table>
+                    <br/>
+                        <div id="errMsgId" style="width:31%;display:none;padding-left: 25px;" >
+                            <apex:pageMessage summary="You are almost There! Click 'Next' to proceed to Enter API" severity="Confirm" strength="2"/>
+                        </div>
+                        <div id="errMsgId1" style="width:31%;display:none;padding-left: 25px;" >
+                            <apex:pageMessage summary="Please Enter an API key!" severity="Error" strength="2"/>
+                        </div>
+                    <br/><br/>
+-->
+                <table>
+                    <tr>
+                        <td align="center"> <a href="#" style="text-decoration:none;" class="button rounded red effect-3" id="cancel">Cancel</a></td>
+                        <td align="center"><a href="#" style="text-decoration:none;" class="button rounded red effect-3" id="next">Next</a></td>
+                    </tr>
+                  
+                </table>
+            </div>
+        </div>
+        </center>
+        <div id="popup1" style="display:none;" >
+            <table>
+                <tr>
+                    <td><img src="{!URLFOR($Resource.warning)}" style="width:20px;height:20px;"/></td>
+                    <td>OOPS! Contact Goto Meeting Administrator to create a API User Account</td>
+                </tr>
+            </table>
+        </div>
+        <div id="popup" style="display:none;" >
+            <table>
+                <tr>
+                    <td><img src="{!URLFOR($Resource.warning)}" style="width:20px;height:20px;"/></td>
+                    <td>OOPS! Contact Goto Meeting Administrator to create a Goto Meeting Account</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</apex:page>
