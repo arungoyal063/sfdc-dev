@@ -1,0 +1,12 @@
+<apex:page standardController="Lead" extensions="DemoAssignLExtension">
+<apex:messages id="errors"/>
+    <apex:form > <h1>Select Queue </h1>
+        <apex:selectList value="{!selectedqueue}" multiselect="false" size="1">
+            <apex:selectOptions value="{!availablequeues}"></apex:selectOptions>
+            <apex:actionSupport event="onchange" action="{!CheckSelection}" reRender="AssignButton"/>
+        </apex:selectList>
+        <apex:outputPanel id="AssignButton">
+            <apex:commandLink value="Assign" action="{!assign}" rendered="{!canSave}" target="_top" />
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

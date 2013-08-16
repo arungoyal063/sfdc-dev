@@ -1,3 +1,0 @@
-<apex:page showHeader="false" title="{!$Label.site.in_maintenance}" cache="false">
-    
-</apex:page>
