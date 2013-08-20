@@ -1,0 +1,71 @@
+<apex:page standardController="Opportunity" extensions="OpptyLineItemEditControllerAll" sidebar="false">
+    <script type="text/javascript">
+        
+        //Function is used to get splash status bar when server side call is going on
+        function startSplash() {
+            var divObj = document.getElementById('splashDiv');
+            //var msgSplash =document.getElementById('waitMsg');
+            divObj.style.display='table-cell';
+               
+        }
+            
+        //Function will make the splash status to be stopped.    
+        function endSplash() {            
+            document.getElementById('splashDiv').style.display='none';
+        }
+         
+    </script>
+    <apex:sectionHeader title="Edit Products for {!opp.Name}"/>
+    <apex:outputLabel value="Edit products for this project." /><br/><br/>
+    <apex:form id="formId">
+        <apex:outputPanel id="errorPanel" >
+            <apex:pageMessages />
+        </apex:outputPanel>
+        <apex:actionStatus id="splashStatus" onstart="startSplash()" onstop="endSplash()"/>
+        <apex:pageBlock id="pgBlk">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!SaveOLI}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockTable id="pbTable" value="{!wrapList}" var="w" width="100%" cellpadding="0" cellspacing="2">
+                <apex:column headerValue="Product">
+                    <b><apex:outputText value="{!w.prodName}"  style="width:300px;" id="prodname"/></b>
+                </apex:column>
+                <apex:column headerValue="Product Code">
+                    <apex:outputText value="{!w.prodCode}"  style="width:60px;" id="prodCode"/>
+                </apex:column>
+                <apex:column headerValue="List Price" >
+                    <apex:outputField value="{!w.oli.PricebookEntry.UnitPrice}"  style="width:60px;"/>
+                </apex:column>
+                <apex:column headerValue="Unit Price">
+                    <apex:inputField value="{!w.oli.UnitPrice}" style="width:60px;"/>
+                </apex:column>
+                <apex:column headerValue="Quantity">
+                   <apex:inputField value="{!w.oli.Quantity}" style="width:60px;"/>
+                </apex:column>
+                <apex:column headerValue="Style Description">
+                     <apex:inputField value="{!w.oli.Style_Description__c}" />
+                </apex:column>
+                <apex:column headerValue="Bk">
+                    <apex:inputField value="{!w.oli.Bk__c}" style="width:60px;"/>
+                </apex:column>
+                <apex:column headerValue="Size" >
+                    <apex:inputField value="{!w.oli.Size__c}" style="width:60px;"/>
+                </apex:column>
+                <apex:column headerValue="Color Description" width="150px">
+                    <apex:selectList value="{!w.oli.Color_Description__c}" size="1" rendered="{!w.isCustomProduct}">
+                        <apex:selectOptions value="{!w.colorDescOptions}" />
+                        <apex:actionSupport event="onchange" action="{!fetchProductCode}" reRender="prodname,prodCode,errorPanel" status="splashStatus">
+                        <apex:param value="{!w.oli.Id}" name="oliSelected" />
+                        </apex:actionSupport>
+                        </apex:selectList>
+                        <apex:inputField value="{!w.oli.Color_Description__c}" rendered="{!NOT(w.isCustomProduct)}"/>                       
+                </apex:column>
+                <apex:column headerValue="Description">
+                    <apex:inputField value="{!w.oli.Description}" />
+                </apex:column>              
+            </apex:pageBlockTable>          
+        </apex:pageBlock>
+    </apex:form>
+    <div id="splashDiv" style="display:none; position:absolute; left:50%; top:50%; z-index: 100;"><img src="/img/loading.gif" /></div>
+</apex:page>

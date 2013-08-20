@@ -1,0 +1,173 @@
+<!--
+//Copyright (c) 2009, Mark Sivill, Sales Engineering, Salesforce.com Inc.
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+//Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+//Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+//Neither the name of the salesforce.com nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+//THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+//INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+//LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+//CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+//EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+//
+// History
+//
+// Version  Date            Author          Comments
+// 1.0      05-01-2009      Mark Sivill     Initial version
+// 1.1		30-07-2009		Mark Sivill		Update setup instructions for S-control dashboard tracking
+//
+// Overview
+//
+// Set up instructions
+//
+-->
+<apex:page >
+
+<apex:sectionHeader title="Web Analytics Setup" subtitle=""></apex:sectionHeader>
+
+<apex:pageBlock title="Google Analytics Setup">
+
+<apex:pageBlockSection title="Google Analytics" columns="1">
+
+<ol>
+	<li>Setup <a href="http://www.google.com/analytics/">Google Analytics (GA)</a> account.</li>
+	<li>Set web profile in GA to point to salesforce instance for your organisation for example</li>
+	<ul>
+		<li>https://emea.salesforce.com</li>
+		<li>https://na1.salesforce.com</li>
+		<li>https://na6.salesforce.com</li>
+	</ul>
+	<li>Make a note of the UA number it will be in the form of UA-XXXXXXX-X and will be displayed in the GA generated code and in the web profile.</li>
+</ol>
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+<apex:pageBlock title="Salesforce Setup">
+
+<apex:pageBlockSection title="Sidebar tracking" columns="1">
+
+<p>
+Using the following instructions all web pages that display the sidebar will be tracked.
+</p>
+
+<ol>
+	<li>Install the Web Analytics application from Appexchange if not already done.</li>
+	<li>Update installed code to your new UA number (1 line change)</li>
+	<ol>
+		<li>Navigate to Setup -> App Setup -> Customize -> Home Page Components -> Web Analytics (click edit)</li>
+		<li>Check "Show HTML" box</li>
+		<li>Replace UA-XXXXXXX-X with your UA number (which is towards the end of the text)</li>
+		<li>Click "Save"</li>
+	</ol>
+	<li>Add "Web Analytics" to Home Page Layouts</li>
+	<ol>
+		<li>Navigate to Setup -> App Setup -> Customize -> Home Page Layouts</li>
+		<li>Edit page layouts that you want to add page tagging on</li>
+		<li>Check "Web Analytics" box</li>
+		<li>Click "Next"</li>
+		<li>Position "Web Analytics" in Narrow Column</li>
+		<li>Click "Save"</li>
+	</ol>
+	<li>Ensure Sidebar Component is always displayed (so GA can work)</li>
+	<ol>
+		<li>Navigate to Setup -> App Setup -> Customize -> User Interface</li>
+		<li>Check "Show Custom Sidebar Components on All Pages"</li>
+		<li>Click "Save"</li>
+	</ol>
+</ol>
+
+<p>
+Pages that will not be tracked using this method include.
+</p>
+<ul>
+	<li>Setup</li>
+	<li>Help</li>
+	<li>Dashboards</li>
+	<li>Reports</li>
+</ul>
+
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="Dashboard tracking" columns="1">
+
+<p>Use the following steps so individual Dashboards can also be tracked</p>
+<ol>
+	<li>Install the Web Analytics application from Appexchange if not already done.</li>
+	<li>Update installed code to use your new UA number (1 line change)</li>
+	<ol>
+		<li>Navigate to Setup -> App Setup -> Develop -> S-Controls -> Web Analytics Dashboard Tracker (click edit)</li>
+		<li>In the "Content" box replace UA-XXXXXXX-X with your UA number (which is towards the end of the text)</li>
+		<li>Click "Save"</li>
+	</ol>
+	<li>Add Dashboard component to Dashboards that are to be tracked</li>
+	<ol>
+		<li>Navigate to Dashboard tab, then select Dashboard to track</li>
+		<li>Click "Edit"</li>		
+		<li>Click "Add Component" in one of the columns</li>		
+		<li>Select "Custom S-Control" radio button</li>		
+		<li>In Custom S-Control select "Web Analytics Dashboard Tracker"</li>		
+		<li>For Height (in pixels) enter 25</li>		
+		<li>Click "Save"</li>	
+		<li>Move Component within the Dashboard, don't move to top line as Dashboard may be displayed
+			on home page, where the home page with be counted twice in Google Analytics (once by sidebar
+			tracking and once by Dashboard tracking)</li>				
+	</ol>	
+</ol>
+<p>
+To see debug message for the component increase the Height (in pixels) to be 350
+</p>
+
+</apex:pageBlockSection>
+
+</apex:pageBlock>
+
+<apex:pageBlock >
+
+<apex:pageBlockSection title="Notes" columns="1">
+
+<ol>
+	<li>The only pages that will be tracked are the ones where the installed "Web Analytics" Home Page Component is displayed. Pages that will not be tracked include</li>
+	<ul>
+		<li>Setup</li>
+		<li>Help</li>
+		<li>Some Dashboard screens</li>
+		<li>Some Report screens</li>
+	</ul>
+	<li>To track Dashboards use the "Web Analytics" S-Control Dashboard Tracker.</li>
+	<li>GA currently takes 24 hours to show page tagging information.</li>
+	<li>By adding "Web Analytics" Home Page Component to different Page Layouts and assigning these layouts to different profiles, you can selectively add tracking to different profiles.</li>
+</ol>
+
+</apex:pageBlockSection>
+
+</apex:pageBlock>
+
+<apex:pageBlock title="Version History">
+
+<apex:pageBlockSection title="1.1" columns="1">
+<p>
+Summary of changes -
+</p>
+<ul>
+<li>Added S-Control to allow individual Dashboards to be tracked</li>
+<li>Minor name changes</li>
+<li>Removed "Web Analytics" application</li>
+</ul>
+
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="1.0" columns="1">
+<p>
+Initial version.
+</p>
+</apex:pageBlockSection>
+
+</apex:pageBlock>
+
+</apex:page>

@@ -1,0 +1,191 @@
+<apex:page StandardController="Quote" extensions="QuoteController">
+	<script type="text/javascript">
+        
+        var temp = false;
+        var submit = false;
+        
+        //Function is used to get splash status bar when server side call is going on
+        function startSplash() {
+            var divObj = document.getElementById('splashDiv');
+            //var msgSplash =document.getElementById('waitMsg');
+            divObj.style.display='table-cell';
+               
+        }
+            
+        //Function will make the splash status to be stopped.    
+        function endSplash() {            
+            document.getElementById('splashDiv').style.display='none';
+        }
+        
+        function populate(ele) {
+        	//alert('cal'+ele);
+        	if(ele.value != null && ele.value != '') {
+        		//populateAddr();
+        	}
+        }
+        
+        function decideAndSubmit() {
+        	//alert('temp: '+temp);
+		    if(temp) {
+		        if(!submit){
+		            return false;
+		        } else {
+		            temp = false;
+		            return true;
+		        }
+		    } else {
+		        return false;
+		    }
+		}
+		
+		function setSubmit() {
+	        submit = true;
+	        temp = true;
+		}
+		
+		function unsetSubmit() {
+			submit = false;
+		}
+		
+		function fetchAddress(ele) {
+			if(ele.value != null && ele.value != '') {
+				setSubmit();
+			} else {
+				unsetSubmit();
+			}
+		}
+		
+		function setContactId(ele) {
+			//alert('ele value: '+ele.value);
+			var eleId = ele.id + '_lkid';
+			//alert('eleid: '+eleId + ' -- ' + document.getElementById(eleId).value);
+			document.getElementById('cont').value = document.getElementById(eleId).value;
+		}
+    </script>
+	<apex:sectionHeader title="Quote" subtitle="New Quote"/>
+	<apex:form id="formId" onsubmit="return decideAndSubmit();">
+		<apex:outputPanel id="errorPanel" >
+			<apex:pageMessages />
+		</apex:outputPanel>
+		<input type="hidden" name="cont" id="cont" value="" />
+		<apex:actionFunction name="populateAddr" reRender="errorPanel" status="splashStatus" immediate="true"/>
+		<apex:actionStatus id="splashStatus" onstart="startSplash()" onstop="endSplash()"/>
+		<apex:pageBlock id="pgBlock" title="Quote Edit" mode="edit" >
+			<apex:pageBlockButtons id="pgBlkBtn" >
+				<apex:commandButton id="saveBtn" value="Save" action="{!saveQuote}" onclick="setSubmit();" />
+				<apex:commandButton id="cnclBtn" value="Cancel" action="{!cancel}" onclick="setSubmit();" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection id="pgBlkSection1" title="Quote Information" columns="2">
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Quote Name" />
+					<apex:inputField value="{!q.Name}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Expiration Date" />
+					<apex:inputField value="{!q.ExpirationDate}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Opportunity Name" />
+					<apex:outputText value="{!opptyName}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Syncing" />
+					<apex:inputField value="{!q.IsSyncing}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Account Name" />
+					<apex:outputText value="{!accName}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Status" />
+					<apex:inputField value="{!q.Status}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Approved" />
+					<apex:inputField value="{!q.Approved__c}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Description" />
+					<apex:inputField value="{!q.Description}" style="width:200px" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Notes" />
+					<apex:inputField value="{!q.Notes__c}" style="width:200px" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Payment Terms" />
+					<apex:inputField value="{!q.Payment_Terms__c}" style="width:200px" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Contract #" />
+					<apex:inputField value="{!q.Contract_Number__c}" style="width:200px" />
+				</apex:pageBlockSectionitem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection id="pgBlkSection2" title="Totals" columns="2">
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Sub Total" />
+					<apex:outputText value="${!subTtl}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Tax" />
+					<apex:inputField value="{!q.Tax}" />
+				</apex:pageBlockSectionitem>
+				<!-- 
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Discount" />
+					<apex:outputText value="0.00%" />
+				</apex:pageBlockSectionitem>
+				 -->
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Total Price" />
+					<apex:outputText value="${!subTtl}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Shipping and Handling" />
+					<apex:inputField value="{!q.ShippingHandling}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Grand Total" />
+					<apex:outputText value="${!subTtl}" />
+				</apex:pageBlockSectionitem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection id="pgBlkSection3" title="Prepared For" columns="2">
+				<apex:pageBlockSectionitem id="pgBlkSec3Itm1">
+					<apex:outputLabel value="Contact Name" />
+					<apex:actionRegion >
+					<apex:inputField id="qCont" value="{!q.Contact_Name__c}">
+						<apex:actionSupport event="onchange" action="{!populateAddress}" onsubmit="fetchAddress(this);" reRender="errorPanel, qPhone, qEmail, qFax, qBilName, qShipName, qBilStr, qShipStr, qBilCity, qShipCity, qShipS, qBilS, qBilPC, qShipPC, qBilCty, qShipCty" status="splashStatus"/>
+					</apex:inputField>
+					</apex:actionRegion>
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Phone" />
+					<apex:inputField id="qPhone" value="{!q.Phone}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Email" />
+					<apex:inputField id="qEmail" value="{!q.Email}" />
+				</apex:pageBlockSectionitem>
+				<apex:pageBlockSectionitem >
+					<apex:outputLabel value="Fax" />
+					<apex:inputField id="qFax" value="{!q.Fax}" />
+				</apex:pageBlockSectionitem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection id="pgBlkSection4" title="Address Information" columns="2">
+				<apex:inputField id="qBilName" value="{!q.BillingName}" />
+				<apex:inputField id="qShipName" value="{!q.ShippingName}" />
+				<apex:inputField id="qBilStr" value="{!q.BillingStreet}" />
+				<apex:inputField id="qShipStr" value="{!q.ShippingStreet}" />
+				<apex:inputField id="qBilCity" value="{!q.BillingCity}" />
+				<apex:inputField id="qShipCity" value="{!q.ShippingCity}" />
+				<apex:inputField id="qBilS" value="{!q.BillingState}" />
+				<apex:inputField id="qShipS" value="{!q.ShippingState}" />
+				<apex:inputField id="qBilPC" value="{!q.BillingPostalCode}" />
+				<apex:inputField id="qShipPC" value="{!q.ShippingPostalCode}" />
+				<apex:inputField id="qBilCty" value="{!q.BillingCountry}" />
+				<apex:inputField id="qShipCty" value="{!q.ShippingCountry}" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+	<div id="splashDiv" style="display:none; position:absolute; left:50%; top:50%; z-index: 100;"><img src="/img/loading.gif" /></div>
+</apex:page>
