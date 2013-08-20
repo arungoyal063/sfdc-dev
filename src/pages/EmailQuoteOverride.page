@@ -1,9 +1,0 @@
-<apex:page standardController="Quote" extensions="EmailQuoteController" action="{!autoRun}">  
-<apex:sectionHeader title="Error Sending Quote Email"/>  
-    <apex:outputText value="{2}">
-       <apex:param value="{!quoteId}"/>
-       <apex:param value="{!quoteName}"/>
-       <apex:param value="{!message}"/>
-    </apex:outputText>
-    <a href="/{!quoteId}" >{!quoteName}</a>
-</apex:page>

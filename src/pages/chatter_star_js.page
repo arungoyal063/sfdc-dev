@@ -1,0 +1,37 @@
+<apex:page contentType="text/javascript" controller="ChatterStarJsController" action="{!Action}">
+{!Script}
+
+<apex:outputText rendered="{!setup}">
+CStar = function() {};
+CStar.star12Url="{!$Resource.star12_png}";
+CStar.setupStarSpans = function() {
+  var starspans=CCA.getElementsByClassName(document.getElementById("section_header"),"cstars","span");
+  for(var i=0; i < starspans.length; i++) {
+    CStar.setupStars(starspans[i].id.replace("_star_cstars",""));
+  }
+};
+CStar.setupStars = function(fiId) {
+  var stars = CCA.getElementsByClassName(document.getElementById(fiId + "_star_cstars"),"cstar","img");
+  for (var j=0; j < stars.length; j++) {
+    CStar.setupStar(stars[j], fiId, j+1);
+    CStar.highlight(fiId, document.getElementById(fiId + "_star_rating").value, "#ffe800");
+  }
+};
+CStar.setupStar = function(img, fiId, pos) {
+  img.src=CStar.star12Url;
+  img.style.zIndex=3;
+  img.style.position="relative";
+  img.onclick=function() {CCA.action("star", fiId, pos, "");};
+  img.style.cursor="pointer";
+  img.onmouseover=function() { CStar.highlight(fiId, pos, "#ff8822") };
+  img.onmouseout=function() { CStar.highlight(fiId, document.getElementById(fiId + "_star_rating").value, "#ffe800"); };
+}
+
+CStar.highlight = function(fiId, rating, color) {
+  var barStyle = document.getElementById(fiId + "_star_cstarbar").style;
+  barStyle.width = (rating*12) + 'px';
+  barStyle.backgroundColor = color;
+};
+</apex:outputText>
+<apex:outputText rendered="{!draw}">CStar.setupStarSpans();</apex:outputText>
+</apex:page>

@@ -3,7 +3,7 @@
    Guest users are never able to access this page.
  */
 @IsTest public with sharing class MyProfilePageControllerTest {
-    /*@IsTest(SeeAllData=true) static void testSetContactFields() {
+    @IsTest(SeeAllData=true) static void testSetContactFields() {
         User u = [select title, firstname, lastname, email, phone, mobilephone, fax, street, city, state, postalcode, country
                            FROM User WHERE id =: UserInfo.getUserId()];
 
@@ -71,5 +71,5 @@
             System.assert(existingPortalUser.fax == randFax);
             System.assert(existingPortalUser.Contact.fax == randFax);
         }
-    }*/
+    }
 }

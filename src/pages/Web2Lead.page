@@ -1,0 +1,150 @@
+<apex:page >     
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+<title>Rainmaker Associates - Washington DC -based salesforce.com Select Integrator providing salesforce design, customization, data migration, integration and training.</title>
+<style type="text/css"> 
+<!-- 
+body  {
+    font: 100% Verdana, Arial, Helvetica, sans-serif;
+    margin: 1200; 
+    padding: 0;
+    text-align: center; 
+    color: #000000;
+    background-color: #333333;
+}
+
+
+.thrColElsHdr #container {
+    width: 979px;  
+    background: #FFFFFF; 
+    border: 1px solid #000000;
+    text-align: left; 
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+} 
+.thrColElsHdr #header {
+    background: #DDDDDD;
+    padding: 0 0px; 
+    text-align: center;
+} 
+.thrColElsHdr #header1 {
+    background: #ff9900;
+    padding: 10px 0px;  
+    text-align: center;
+    font-size: 14px;
+} 
+.thrColElsHdr #header h1 {
+    margin: 0; 
+    padding: 0px 0; 
+}
+
+
+.thrColElsHdr #sidebar1 {
+    float: left; 
+    width: 31em; 
+    background: #ffffff; 
+    padding: 15px 0; 
+}
+.thrColElsHdr #sidebar2 {
+    float: right; 
+    width: 30em; 
+    background: #ffffff; 
+    padding: 15px 0; 
+}
+.thrColElsHdr #sidebar1 h3, .thrColElsHdr #sidebar1 p, .thrColElsHdr #sidebar2 p, .thrColElsHdr #sidebar2 h3 {
+    margin-left: 10px; 
+    margin-right: 10px;
+}
+
+.thrColElsHdr #mainContent {
+    margin: 0 12em 0 12em; 
+} 
+.thrColElsHdr #footer { 
+    padding: 0 0px; 
+    background:#DDDDDD;
+} 
+.thrColElsHdr #footer p {
+    margin: 0; 
+    padding: 10px 0; 
+    font-size: small;
+}
+
+
+.fltrt { 
+    float: right;
+    margin-left: 8px;
+}
+.fltlft { 
+    float: left;
+    margin-right: 8px;
+}
+.clearfloat { 
+    clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+--> 
+</style>
+</head>
+
+<body class="thrColElsHdr">
+
+<div id="container">
+  <div id="header">
+    <h1><img src="https://na1.salesforce.com/servlet/servlet.ImageServer?id=01530000001NXGb&oid=00D300000000XnU&lastMod=1269222253000" width="979" height="233" /></h1>
+  <!-- end #header --></div>
+  <div id="header1"> <strong><a href="index.html">Home</a></strong></div>
+  <!-- end #header1 -->
+  <div id="sidebar1">
+    <h3>&nbsp;</h3>
+    <h3>To request information about Rainmaker's products or services, please fill out the following form and we will be in touch shortly!</h3>
+  <!-- end #sidebar1 --></div>
+  <div id="sidebar2">
+    <p>&nbsp;</p>
+    <form action="https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
+
+    <input type=hidden name="oid" value="00D300000000XnU">
+    <input type=hidden name="retURL" value="http://www.rainmaker-llc.com">
+
+    <label for="first_name">First Name</label><input  id="first_name" maxlength="40" name="first_name" size="20" type="text" /><br>
+
+    <label for="last_name">Last Name</label><input  id="last_name" maxlength="80" name="last_name" size="20" type="text" /><br>
+
+    <label for="email">Email</label><input  id="email" maxlength="80" name="email" size="20" type="text" /><br>
+
+    <label for="company">Company</label><input  id="company" maxlength="40" name="company" size="20" type="text" /><br>
+
+    <label for="state">State/Province</label><input  id="state" maxlength="20" name="state" size="20" type="text" /><br>
+
+    <label for="phone">Phone</label><input  id="phone" maxlength="40" name="phone" size="20" type="text" /><br>
+
+    Interest:<select  id="00N30000000jmSe" multiple="multiple" name="00N30000000jmSe" title="Interest"><option value="Admin Training">Admin Training</option>
+    <option value="Blueprint Development">Blueprint Development</option>
+    <option value="CRM Implementation">CRM Implementation</option>
+    <option value="Fit Analysis">Fit Analysis</option>
+
+    <option value="User Training">User Training</option>
+    <option value="Webinar Management">Webinar Management</option>
+    </select><br>
+
+    Problem Areas:<textarea  id="00N30000000wCbj" name="00N30000000wCbj" rows="6" type="text" wrap="soft"></textarea><br>
+
+    <input type="submit" name="submit">
+
+    </form>
+</p>
+  <!-- end #sidebar2 --></div>
+  <div id="mainContent">
+    <!-- end #mainContent -->
+  </div>
+<br class="clearfloat" />
+   <div id="footer">
+    <p align="Left">©Rainmaker Associates, LLC2008-2009 Make it rain.</p>
+  <!-- end #footer --></div>
+<!-- end #container --></div>
+    <c:SiteFooter />
+</apex:page>

@@ -1,0 +1,16 @@
+<apex:page >
+<head> 
+<apex:insert name="header">
+     <img src="https://na1.salesforce.com/servlet/servlet.ImageServer?id=0153000000112BU&oid=00De0000001KDkl&lastMod=1263339483000" width="1050" height="240"/>
+    
+    <hr/>
+</apex:insert>
+</head> 
+<body> 
+PLEASE LOGIN<br><br />
+<b>Please log in to your member account.</b>
+</form> 
+    <c:SiteLogin id="siteLogin"/>
+</body> 
+</html>
+</apex:page>

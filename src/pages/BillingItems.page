@@ -1,0 +1,11 @@
+<apex:page standardController="Appirio_PSAe__Proj__c" extensions="vfxProjectBillingItems" showHeader="true" sidebar="true" id="page">
+  
+  <apex:form id="input">
+    <apex:inputField id="invoicedate" value="{!b.Date__c}" />
+    <p />
+    <apex:commandButton action="{!pushbill}" value="Create Billing Records" />
+
+  </apex:form>
+ 
+
+</apex:page>

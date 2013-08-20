@@ -1,0 +1,99 @@
+<apex:page sidebar="true" controller="ChatterShelfController" title="Chatter Shelf">
+  <style>
+    a { color: #015BA7; font-weight: bold; text-decoration: none; }
+    .posttd { padding: 3px; padding-top: 8px; }
+    .profpic { border: 1px solid #CCCCCC; }
+    .title { font-size: 18px; font-weight: bold; }
+  </style>
+  
+  <br/><span class="title">Shelved Posts</span><br/>
+  
+  <apex:form >
+    <table><tr>
+    <td style="vertical-align: middle">View another user's shelf: </td>
+    <td><apex:inputField value="{!CB.Owner}" id="user" required="true" onkeypress="return (event.keyCode ? event.keyCode : event.which ? event.which : event.charCode) != 13"/></td>
+    <td><apex:commandButton reRender="postspanel" immediate="true" action="{!Redraw}" value="Open"/></td>
+    </tr></table>
+  </apex:form><br/>
+  
+  <apex:outputPanel id="postspanel">
+  <table>
+  <apex:repeat value="{!Posts}" var="post"><tr>
+    <apex:outputText rendered="{!IF(post.NF.CreatedById==null,true,false)}">
+      <td class="posttd"></td><td class="posttd">Deleted or inaccessible post
+        <apex:outputText rendered="{!LoggedInUser}"><apex:form >
+          <apex:commandLink action="{!Unshelf}" reRender="postspanel" style="font-weight: normal; font-size: 90%;">Unshelf</apex:commandLink><apex:inputHidden value="unshelf_{!post.CB.Id}"/>
+        </apex:form></apex:outputText>
+      </td>
+    </apex:outputText>
+    <apex:outputText rendered="{!IF(post.NF.CreatedById==null,false,true)}">
+      <td class="posttd">
+        <img src="/userphoto?id={!post.NF.CreatedById}&v=1&s=T" height="45" width="45" class="profpic"/>
+      </td>
+      <td class="posttd">
+        <apex:outputText rendered="{!IF(post.NF.FeedTrackedChanges.size>0 || post.NF.Type=='TextPost', true, false)}">
+          <a href="/{!URLFOR(post.NF.ParentId)}">{!post.NF.Parent.Name}</a> — 
+        </apex:outputText>
+        
+        <a href="/{!URLFOR(post.NF.CreatedById)}">{!post.NF.CreatedBy.FirstName} {!post.NF.CreatedBy.LastName}</a> 
+    
+        <apex:outputText rendered="{!IF(post.NF.FeedTrackedChanges.size>0, false, true)}">
+          {!post.NF.FeedPost.Body}
+          <apex:outputText rendered="{!IF(post.NF.Type=='ContentPost', true, false)}">
+            <apex:outputText rendered="{!IF(post.NF.FeedPost.Body=='', true, false)}">
+              posted a new file.
+            </apex:outputText>
+            <br/><br/>&nbsp;&nbsp;<b>{!post.NF.FeedPost.Title}</b>&nbsp;&nbsp;<a href="javascript:alert('Content download is not supported yet');">[Download]</a>
+          </apex:outputText>
+          <apex:outputText rendered="{!IF(post.NF.Type=='LinkPost', true, false)}">
+            <br/><br/>&nbsp;&nbsp;<a href="{!post.NF.FeedPost.LinkUrl}">{!post.NF.FeedPost.Title}</a>
+          </apex:outputText>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!IF(post.NF.FeedTrackedChanges.size>0, true, false)}">
+          <apex:repeat value="{!post.NF.FeedTrackedChanges}" var="ftc">
+            <apex:outputText rendered="{!IF(ftc.FieldName=='created', true, false)}">
+              created this record.
+            </apex:outputText>
+            <apex:outputText rendered="{!IF(ftc.FieldName=='created', false, true)}">
+              changed {!SUBSTITUTE(ftc.FieldName, '.', ' ')} to {!ftc.NewValue}
+            </apex:outputText>
+          </apex:repeat>
+        </apex:outputText>
+        
+        <br/><br/>
+        <table><tr>
+        <td><span style="color:#777777;"><apex:outputField value="{!post.NF.createdDate}"/></span> — 
+        <b>Shelved on&nbsp;<apex:outputField value="{!post.CB.createdDate}"/></b>&nbsp;</td>
+        <apex:outputText rendered="{!LoggedInUser}">
+          <td><apex:form ><apex:commandLink action="{!Unshelf}" reRender="postspanel" style="font-weight: normal; font-size: 90%;">Unshelf</apex:commandLink><apex:inputHidden value="unshelf_{!post.CB.Id}"/></apex:form></td>
+        </apex:outputText>
+        </tr></table>
+        
+        <apex:outputText rendered="{!IF(post.NF.FeedComments.size>0,true,false)}">
+        <table><apex:repeat value="{!post.NF.FeedComments}" var="comment"><tr>
+          <td class="posttd">
+            <img src="/userphoto?id={!comment.CreatedById}&v=1&s=T" height="45" width="45" class="profpic"/>
+          </td>
+          <td class="posttd">
+            <a href="/{!URLFOR(comment.CreatedById)}">{!comment.CreatedBy.FirstName} {!comment.CreatedBy.LastName}</a> 
+            {!comment.CommentBody}<br/><br/>
+            <span style="color:#777777;"><apex:outputField value="{!comment.createdDate}"/></span>
+          </td>
+        </tr></apex:repeat></table>
+      </apex:outputText>
+      
+    </td>
+    </apex:outputText>
+  </tr></apex:repeat>
+  </table>
+  
+  <br/><br/>
+  <apex:form >
+    <apex:commandLink reRender="postspanel" action="{!Latest}" rendered="{!IF(Page>1,true,false)}">&lt;&lt;&lt; Latest</apex:commandLink>
+    &nbsp;&nbsp; {!Pagination} &nbsp;&nbsp;
+    <apex:commandLink reRender="postspanel" action="{!Older}" rendered="{!IF(Page<MaxPage,true,false)}">Older &gt;</apex:commandLink>
+  </apex:form>
+  </apex:outputPanel>
+
+</apex:page>

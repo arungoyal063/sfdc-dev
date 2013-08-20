@@ -1,0 +1,152 @@
+<apex:component >
+<apex:attribute name="leftPickList" description="Left PickList Values" type="selectOption" required="true"/>
+<apex:attribute name="rightPickList" description="Right PickList Values" type="selectOption" required="true"/>
+<apex:attribute name="getSelectedValues" description="Get Selected Values PickList Values" type="String" required="true"/>
+<apex:attribute name="uniqueId" description="particular section" type="String" required="true"/>
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'jquery-ui-1.10.1.custom/js/jquery-1.9.1.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.min.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.jquery, 'jquery-ui-1.10.1.custom/css/smoothness/jquery-ui-1.10.1.custom.css')}"/>
+    <style type="text/css">
+    table.layout {
+        padding: 4px 1px 4px 1px;
+        align: center;
+        width: 100%;
+    }
+    
+    table.layout td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 1px;
+    }
+    
+    table.layout  th {
+        text-align: center;
+        vertical-align: middle;
+        padding: 4px;
+        background-color: lightgray;
+    }
+    
+    table.layout select {
+        letter-spacing: 1px;
+        width: 200px;
+    }    
+    
+    .selectCell {
+        padding-top: 10px;
+        vertical-align: bottom;
+    }
+    </style> 
+    
+    <script>
+        j$ = jQuery.noConflict();
+        
+        var moveToRight{!uniqueId} = function(){};
+        var moveToLeft{!uniqueId} = function(){};;
+        j$(document).ready(function(){
+            var selectedCoachingPlanViewUsers = null;
+            
+            moveToRight{!uniqueId} = function moveToRight{!uniqueId}() {            
+            j$('td#getselectedId{!uniqueId} :input[id$=getselectedId]').val(''); 
+               selectedCoachingPlanViewUsers = new Array();        
+               j$('td#rightPickListId{!uniqueId} :input[id$=rightPickListId] option').each(function(){
+                    selectedCoachingPlanViewUsers.push(j$(this).val())   
+               });
+               j$('td#leftPickListId{!uniqueId} :input[id$=leftPickListId]  option:selected').each(function() {
+                    j$('td#rightPickListId{!uniqueId} :input[id$=rightPickListId]').append("<option value='"+j$(this).val()+"'>"+j$(this).text()+"</option>");                 
+                    selectedCoachingPlanViewUsers.push(j$(this).val());
+                    j$(this).remove();
+               });
+               j$('td#getselectedId{!uniqueId} :input[id$=getselectedId]').val(selectedCoachingPlanViewUsers);
+               
+               if('{!uniqueId}' == 'ProjectMgr') {
+                   loadEngMnger();                   
+               }
+               
+               if( '{!uniqueId}' == 'EngagementMgr'){
+				   loadProject();
+               }
+            };
+             
+            // Delete item 
+            moveToLeft{!uniqueId} = function moveToLeft{!uniqueId}() {
+                selectedCoachingPlanViewUsers = new Array();  
+                j$('td#getselectedId{!uniqueId} :input[id$=getselectedId]').val('');
+                j$('td#rightPickListId{!uniqueId} :input[id$=rightPickListId] option:selected').each(function() {                
+                    j$('td#leftPickListId{!uniqueId} :input[id$=leftPickListId]').append("<option value='"+j$(this).val()+"'>"+j$(this).text()+"</option>"); 
+                    j$(this).remove();            
+                });
+                
+                j$('td#rightPickListId{!uniqueId} :input[id$=rightPickListId] option').each(function(){
+                    selectedCoachingPlanViewUsers.push(j$(this).val());  
+                });
+                j$('td#getselectedId{!uniqueId} :input[id$=getselectedId]').val(selectedCoachingPlanViewUsers);
+                 
+               if('{!uniqueId}' == 'ProjectMgr') {               		
+                   loadEngMnger();      
+                   loadProject();             
+               }
+               
+               if( '{!uniqueId}' == 'EngagementMgr'){
+				   loadProject();
+               }
+            };
+            
+            //All Select Users
+            /*j$('.selectAll').live('click',function(){
+                if(this.checked) {
+                    j$('td#leftPickListId{!uniqueId} :input[id$=leftPickListId] option').attr('selected','selected');
+                    moveToRight{!uniqueId}();
+                    
+                } else {
+                    j$('td#rightPickListId{!uniqueId} :input[id$=rightPickListId] option').attr('selected','selected');   
+                    moveToLeft{!uniqueId}();
+                }            
+            });*/           
+        });
+        
+    
+    </script>
+    <table class="layout">
+        <!-- <thead>
+            <tr>
+                <th>Available</th>
+                <th></th>
+                <th>Selected</th>
+            </tr>
+        </thead>-->
+        <tbody>
+            <tr>
+                <td class="selectCell" id="leftPickListId{!uniqueId}">
+                    <apex:selectList size="4" multiselect="true" id="leftPickListId" ondblclick="moveToRight{!uniqueId}();">
+                        <apex:selectOptions value="{!leftPickList}"> 
+                        </apex:selectOptions>
+                    </apex:selectList>
+               </td>
+               <td>
+                    <a onclick="moveToRight{!uniqueId}(); return false;">
+                        <img src="/s.gif" class="rightArrowIcon" title="Add"/>
+                    </a>
+                    <br/>
+                    <a onclick="moveToLeft{!uniqueId}(); return false;">
+                        <img src="/s.gif" class="leftArrowIcon" title="Remove"/>
+                    </a>
+                </td>
+                <td class="selectCell selectedPickList" id="rightPickListId{!uniqueId}">
+                    <apex:SelectList size="4" multiselect="true" id="rightPickListId" value="{!getSelectedValues}" ondblclick="moveToLeft{!uniqueId}();" >
+                        <apex:selectOptions value="{!rightPickList}"/>                     
+                    </apex:SelectList>                                        
+                </td>
+                <td id="getselectedId{!uniqueId}">
+                    <apex:inputHidden value="{!getSelectedValues}" id="getselectedId"/>
+                </td>
+            </tr>
+            <!-- <tr>
+                <td colspan="3">
+                    <div>
+                        <input type="checkbox" class="selectAll" id="selectAllId"/><label style="font-weight:bold;" for="selectAllId">Select All Available </label >
+                    </div>
+                </td>
+            </tr>-->
+        </tbody>
+    </table>    
+</apex:component>

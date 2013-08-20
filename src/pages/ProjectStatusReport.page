@@ -1,0 +1,55 @@
+<apex:page controller="ProjectStatusReport" sidebar="false">
+    <apex:sectionHeader subtitle="Project Status report"/>
+    <apex:form >
+    <table>
+        <tr>
+            <td>
+                <label>Start Date</label>
+            </td>
+            <td>
+                <apex:inputField value="{!milestoneProject.Kickoff__c}" >
+                    <apex:actionSupport event="onchange" reRender="prjMngrPickList,engMngrPickList,projectPickList" />
+                </apex:inputField>
+            </td>
+            <td>
+                <label>End Date</label>
+            </td>
+            <td>
+                <apex:inputField value="{!milestoneProject.Deadline__c}" >
+                    <apex:actionSupport event="onchange" reRender="prjMngrPickList,engMngrPickList,projectPickList" />
+                </apex:inputField>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Project Manager :</label>
+            </td>
+            <td>                
+                <c:multiSelectPicklist id="prjMngrPickList" leftPickList="{!AllLeftOptionsProjectMgr}" rightPickList="{!rightOptionsProjectMgr}" getSelectedValues="{!selectedValuesProjectMgr}" uniqueId="ProjectMgr" />
+               
+            </td>
+            <td>
+                <label>Engagement Manager :</label>
+            </td>
+            <td>
+                <c:multiSelectPicklist id="engMngrPickList" leftPickList="{!AllLeftOptionsEngagementMgr}" rightPickList="{!rightOptionsEngagementMgr}" getSelectedValues="{!selectedValuesEngagementMgr}" uniqueId="EngagementMgr"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Project :</label>
+            </td>
+            <td>
+                <c:multiSelectPicklist id="projectPickList" leftPickList="{!AllLeftOptionsProject}" rightPickList="{!rightOptionsProject}" getSelectedValues="{!selectedValuesProject}" uniqueId="Project"/>
+            </td>           
+        </tr>
+    </table>
+    <div align="center">
+    	<apex:commandButton value="Generate Report" action="{!generateReport}"/>
+    	<apex:commandButton value="Generate PDF Report" action="{!generatePdfReport}"/>
+    </div>     
+    <apex:actionFunction name="loadEngMnger" reRender="engMngrPickList" />
+    <apex:actionFunction name="loadProject" reRender="projectPickList" />
+    </apex:form>
+    
+</apex:page>

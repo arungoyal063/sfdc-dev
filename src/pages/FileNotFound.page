@@ -1,18 +1,18 @@
-<apex:page showHeader="false" title="{!$Label.site.file_not_found}" cache="false">
+<apex:page showHeader="false" title="{!$Label.site.file_not_found}">
   <apex:composition template="{!$Site.Template}">
-    <apex:define name="body">
+    <apex:define name="body">  
       <center>
-        <apex:panelGrid bgcolor="white" columns="1">
+        <apex:panelGrid bgcolor="white" columns="1" style="align: center;"> 
           <br/>
           <br/>
-          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer">
+          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" style="border:1px solid #ccc;"> 
             <br/>
-            <apex:outputPanel layout="block" styleClass="topPanel">
-              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="3">
-                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
-                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/warning.gif')}"/>
+            <apex:outputPanel layout="block" style="background-color: white; border: 1px solid #ccc; padding: 0px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px;">
+              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="3"> 
+                <apex:image url="{!$Site.Prefix}{!$Label.site.img_path}/clock.png"/>
+                <apex:image url="{!$Site.Prefix}{!$Label.site.img_path}/warning.gif"/>
                 <apex:panelGroup >
-                  <apex:outputText styleClass="title" value="{!$Label.site.page_not_found_detail}">
+                  <apex:outputText style="font-size: larger; font-weight: bold;" value="{!$Label.site.page_not_found_detail}">      
                    <apex:param value="{!$Site.OriginalUrl}"/>
                   </apex:outputText>
                   <br/>
@@ -23,13 +23,15 @@
                    <apex:param value="{!$Label.site.email_us}"/>
                   </apex:outputText>
                 </apex:panelGroup>
-              </apex:panelGrid>
+              </apex:panelGrid> 
              </apex:outputPanel>
-            <c:SitePoweredBy />
-          </apex:panelGrid>
+            <c:SiteFooter />
+          </apex:panelGrid> 
+          <br/>
+          <apex:messages />
+          <br/>
         </apex:panelGrid>
       </center>
     </apex:define>
   </apex:composition>
-  <site:previewAsAdmin />
 </apex:page>

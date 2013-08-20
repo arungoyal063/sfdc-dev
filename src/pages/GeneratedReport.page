@@ -1,0 +1,194 @@
+<apex:page controller="GeneratedReport" sidebar="false">
+    <style type="text/css">
+        tbody table{
+            background-color: #FFFFFE;
+        }
+        table {
+            padding: 4px 1px 4px 1px;
+            align: center;
+            width: 75%;                     
+        }
+        
+        table td {          
+            vertical-align: middle;
+            padding: 1px;
+            min-width: 100px;
+            width:200px;          
+        }
+       
+        table tr td:nth-child(odd){
+            min-width: 100px;            
+        }
+        table tr td:nth-child(odd) label{
+            font-weight: bold;
+            font-size:12px;          
+        } 
+        .Yellow{
+            background-color:yellow;            
+        }
+        .Green{
+            background-color:Green;         
+        }
+        .Red{
+            background-color:Red;
+        }
+    </style>
+    <apex:repeat value="{!objProjectM}" var="objProject">
+        <table id="mainTable" style="border:1px black solid;margin: 0 auto;">
+            <tr>
+                <td>
+                    <label>Project Name</label>
+                </td>
+                <td>
+                    {!objProject.objMilestone1Project.Name}
+                </td>
+                <td>
+                    <label>Account Name</label>
+                </td>
+                <td>
+                    {!objProject.objMilestone1Project.Account__r.Name}
+                </td>               
+            </tr>
+            <tr>
+                <td>
+                    <label>Relationship Status</label>
+                </td>
+                <td>
+                    <apex:outputPanel rendered="{!IF(AND(objProject.objMilestone1Project.Status__c == 'Active', objProject.objRelationshipStatus.size == 0),true,false)}">
+                        NO STATUS
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!IF(AND(objProject.objRelationshipStatus.size != 0 ,objProject.objRelationshipStatus[0] != null, objProject.objRelationshipStatus[0].Status__c != null),true,false)}">
+                        <div style="margin-right:6px;height:15px;width:15px;display:inline-block;border:solid 1px #000;" class="{!objProject.objRelationshipStatus[0].Status__c}">
+                        </div><span style="vertical-align: top;">{!objProject.objRelationshipStatus[0].Status__c}</span>
+                    </apex:outputPanel>
+                </td>
+                <td>
+                    <label>Project Status</label>
+                </td>
+                <td>
+                    <apex:outputPanel rendered="{!IF(AND(objProject.objMilestone1Project.Status__c == 'Active', objProject.objPMStatus.size == 0),true,false)}">
+                        NO STATUS
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!IF(AND(objProject.objPMStatus.size != 0, objProject.objPMStatus[0] != null, objProject.objPMStatus[0].Status__c != null),true,false)}">
+                        <div style="margin-right:6px;height:15px;width:15px;display:inline-block;border:solid 1px #000;" class="{!objProject.objPMStatus[0].Status__c}">
+                        </div><span style="vertical-align: top;">{!objProject.objPMStatus[0].Status__c}</span>
+                    </apex:outputPanel>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Engagement Manager</label>
+                </td>
+                <td>
+                    {!objProject.objMilestone1Project.Account__r.Owner.Name}
+                </td>
+                <td>
+                    <label>Project Manager</label>
+                </td>
+                <td>
+                    {!objProject.objMilestone1Project.Opportunity__r.Project_Manager__r.Name}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Project Start Date</label>
+                </td>
+                <td>
+                    <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!objProject.objMilestone1Project.Kickoff__c}" /> 
+                    </apex:outputText>                  
+                </td>
+                <td>
+                    <label>Project End Date</label>
+                </td>
+                <td>
+                    <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!objProject.objMilestone1Project.Deadline__c}" /> 
+                    </apex:outputText>                  
+                </td>
+            </tr>
+            
+            <apex:repeat value="{!objProject.objCurrentMilestone}" var="currentMileStone">
+                <tr>
+                    <td>
+                        <label>Current Milestone</label>
+                    </td>
+                    <td>
+                        {!currentMileStone.Name}
+                    </td>               
+                </tr>
+                <tr>
+                    <td>
+                        <label>Current Start Date</label>
+                    </td>
+                    <td>
+                        <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                            <apex:param value="{!currentMileStone.Kickoff__c}" /> 
+                        </apex:outputText>                  
+                    </td>
+                    <td>
+                        <label>Current End Date</label>
+                    </td>
+                    <td>
+                        <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                            <apex:param value="{!currentMileStone.Deadline__c}" /> 
+                        </apex:outputText>                  
+                    </td>
+                </tr>
+            </apex:repeat>
+            
+            <apex:repeat value="{!objProject.objNextMilestone}" var="nextMileStone">
+                <tr>
+                    <td>
+                        <label>Next Milestone</label>
+                    </td>
+                    <td>
+                        {!nextMileStone.Name}
+                    </td>
+                </tr>
+            </apex:repeat>          
+            
+            <tr>
+                <td style="vertical-align:top;">
+                    <label>Status Summary</label>
+                </td>
+                <td colspan="3" style="font-weight:normal !important;">
+                    <table>
+                        <apex:repeat value="{!objProject.objPMStatus}" var="PMststus">
+                        <tr>
+                            <td>
+                            <apex:outputPanel rendered="{!IF(PMststus.Status_Summary__c != '',true,false)}">
+                                <fieldset style="border: 1px black solid;box-shadow: 4px 5px 4px #888;">
+                                <legend>
+                                    {!PMststus.LastModifiedBy.Name},&nbsp;
+                                    <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">                                       
+                                        <apex:param value="{!PMststus.LastModifiedDate}" /> 
+                                    </apex:outputText>
+                                </legend>
+                                {!PMststus.Status_Summary__c}
+                                </fieldset>
+                            </apex:outputPanel>
+                            </td>
+                        </tr>
+                        </apex:repeat>
+                    </table>                        
+                </td>           
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">
+                    <label>Risk</label>
+                </td>
+                <td colspan="3" style="font-weight:normal !important;">
+                    <table>
+                        <apex:repeat value="{!objProject.objRisk}" var="risk">
+                        <tr>
+                            <td>{!risk.Description__c}</td>
+                        </tr>
+                        </apex:repeat>
+                    </table>                    
+                </td>           
+            </tr>
+        </table>
+        <br/><br/>
+    </apex:repeat>
+</apex:page>

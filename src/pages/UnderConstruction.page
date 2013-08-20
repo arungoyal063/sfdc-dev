@@ -1,10 +1,10 @@
 <apex:page showHeader="false" title="{!$Label.site.site_under_construction}">
   <apex:composition template="StdExceptionTemplate">
     <apex:define name="icon">
-      <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/tools.gif')}"/>
+      <apex:image url="{!$Site.Prefix}{!$Label.site.img_path}/tools.gif"/>
     </apex:define>
     <apex:define name="error">
-      <apex:outputText escape="false" styleClass="title" value="{!$Label.site.under_construction}">
+      <apex:outputText escape="false" style="font-size: larger; font-weight: bold;" value="{!$Label.site.under_construction}">
         <apex:param value="{!$Site.CurrentSiteUrl}"/>
 	  </apex:outputText>
       <br/>

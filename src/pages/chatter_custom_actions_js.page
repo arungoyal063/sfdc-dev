@@ -1,0 +1,3 @@
+<apex:page contentType="text/javascript" controller="ChatterCustomActionsJsController">
+var oldOnLoad = window.onload;window.onload=function(){oldOnLoad();CCA.actions=[{!ActionsConfig}];CCA.init();};
+</apex:page>

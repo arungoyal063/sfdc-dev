@@ -1,0 +1,4 @@
+<apex:page >    
+    <apex:enhancedList type="User_Story__c" height="730" rowsPerPage="25"
+        customizable="true" />
+</apex:page>

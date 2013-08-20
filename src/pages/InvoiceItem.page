@@ -1,0 +1,43 @@
+<apex:page standardController="RMA_Invoice__c" extensions="vfxInvoiceBillingItems" showHeader="true" sidebar="true" id="page">
+	<apex:form id="input">
+		<apex:pageBlock title="Create Invoice Line Items" >
+			<apex:dataTable cellpadding="10" border="1" value="{!theLineItemsToInvoice}" var="LineItem" >
+                <apex:facet name="header">Billing Line Items for {!theInvoice.Account__r.Name}</apex:facet>
+				
+				<apex:column style="text-align:center" >
+                        <apex:facet name="header">Date</apex:facet>
+                        <apex:outputField value="{!LineItem.Date__c}"/>
+                </apex:column>
+                <apex:column style="text-align:left" >
+                        <apex:facet name="header">Project</apex:facet>
+                        <apex:outputField value="{!LineItem.Project__r.Name}"/>
+                </apex:column>
+                <apex:column style="text-align:left" >
+                        <apex:facet name="header">Resource</apex:facet>
+                        <apex:outputField value="{!LineItem.Timecard__r.Appirio_PSAe__SFDC_Resource__r.Name}"/>
+                </apex:column>
+                
+                <apex:column style="text-align:right" >
+                        <apex:facet name="header">Hours</apex:facet>
+                        <apex:outputField value="{!LineItem.Hours__c}"/>
+                </apex:column>
+                <apex:column style="text-align:right" >
+                        <apex:facet name="header">Rate</apex:facet>
+                        <apex:outputField value="{!LineItem.Rate_per_Hour__c}"/>
+                </apex:column>
+                <apex:column style="text-align:right" >
+                        <apex:facet name="header">Charge</apex:facet>
+                        <apex:outputField value="{!LineItem.Line_Item_Charge__c}"/>
+                </apex:column>
+                <apex:column style="text-align:left" >
+                        <apex:facet name="header">Notes</apex:facet>
+                        <apex:outputField value="{!LineItem.Notes__c}"/>
+                </apex:column>
+				
+			</apex:dataTable>
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!CompleteInvoice}" value="Attach Displayed Line Items" />
+			</apex:pageBlockButtons>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

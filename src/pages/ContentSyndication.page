@@ -1,0 +1,43 @@
+<apex:page showHeader="false" id="SiteTemplate">
+  <apex:insert name="header">
+     <img src="https://na1.salesforce.com/servlet/servlet.ImageServer?id=0153000000112BU&oid=00D300000000XnU&lastMod=1263339483000" width="1260" height="240"/>
+    
+    <hr/>
+    
+<script runat="server">
+' Do not edit below this line
+' ---------------------------------------------------------------------------
+Public Sub SVShowContent()
+  Try
+    Dim strURLToGet As String = "http://salesforce.sharedvue.net/sharedvue/"
+    Dim strQuerystring As String = Request.QueryString.ToString()
+    Dim strReturn As String = ""
+    Dim strSVHost As String = ""
+  
+    If strQuerystring.Length > 0 Then
+      strSVHost += System.Web.HttpUtility.UrlEncode("?" + strQuerystring)
+    End If
+  
+    strURLToGet += "?svhost=" + Request.ServerVariables("server_name") + Request.ServerVariables("script_name") + strSVHost
+  
+    Dim reqSVRemote As System.Net.HttpWebRequest
+    Dim resSVRemote As System.Net.HttpWebResponse
+    Dim srSVRemote As System.IO.StreamReader
+    reqSVRemote = System.Net.WebRequest.Create(strURLToGet)
+    resSVRemote = reqSVRemote.GetResponse()
+    srSVRemote = New System.IO.StreamReader(resSVRemote.GetResponseStream())
+    strReturn = srSVRemote.ReadToEnd
+
+    srSVRemote.Close()
+    resSVRemote.Close()
+    
+    Response.Write(strReturn)
+  Catch ex As Exception
+    Response.Write("<!-- SharedVue Output: " + ex.Message + " -->")
+  End Try
+End Sub
+' ---------------------------------------------------------------------------
+</script>
+    <c:SiteFooter />
+  </apex:insert>
+</apex:page>
