@@ -1,0 +1,260 @@
+<apex:page Id="AccountPlanSummaryDoc" 
+        standardController="Territory_Map_Account_Family__c"
+        extensions="AccountPlanSummaryDocController"
+        renderAs="{!IF($CurrentPage.parameters.render='pdf','pdf','')}" 
+        contentType="{!IF($CurrentPage.parameters.render='doc','application/msword#AccountPlanSummaryFor'+SUBSTITUTE(Territory_Map_Account_Family__c.name,' ','')+'.doc','')}" 
+        showHeader="false" 
+        standardStylesheets="false"
+        title="Account Plan Summary for"
+        cache="true" > 
+      
+      <title>Account Plan Summary for {!Territory_Map_Account_Family__c.name}</title>
+    
+    <apex:includeScript value="{!URLFOR($Resource.DocumentPrintViewResource,'js/jquery143min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DocumentPrintViewResource,'js/easing13.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.DocumentPrintViewResource,'js/main.js')}" />
+
+    <style>
+        {!CascadeDeclaration}
+    </style>
+    
+    
+    <body class="printableView"> 
+        
+        <div class="print">
+        
+            <!-- Print Controls -->
+        
+            <div class="printHeader">
+            
+                <apex:outputPanel id="sliderWrap" styleClass="sliderWrap" layout="block" rendered="{!AND($CurrentPage.parameters.render!='pdf',$CurrentPage.parameters.render!='doc')}">
+                    <div id="slider">
+                        <div id="openCloseWrap">
+                            <a href="javascript:;" class="topMenuAction" id="topMenuImage">
+                                Print Options
+                            </a>
+                        </div>
+                        <div id="sliderContent" class="sliderContent">
+                            <ul>
+                                <li><a href="{!$CurrentPage.URL}&render=pdf" target="_blank">Export to PDF</a><img src="{!URLFOR($Resource.DocumentPrintViewResource, 'img/pdf.png')}" /></li>
+                                <li><a href="{!$CurrentPage.URL}&render=doc">Export to DOC</a><img src="{!URLFOR($Resource.DocumentPrintViewResource, 'img/doc.png')}" /></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                
+              
+                 
+                
+            </div>
+            
+            
+    
+    <h1>Account Plan Summary for {!Territory_Map_Account_Family__c.name}</h1><br/>
+    <apex:pageBlock title="Account Plan Information">
+                <apex:pageBlockSection columns="2">
+                    <!-- Shared Fields -->
+                    <apex:outputField value="{!Territory_Map_Account_Family__c.Country__c}"/>
+                    <apex:outputField value="{!Territory_Map_Account_Family__c.Region__c}"/>
+                    <!-- Account Family Fields -->
+                                
+                    <!-- CS Fields -->
+                    <apex:outputField rendered="{!Territory_Map_Account_Family__c.RecordType.Name=='Corporate Sales'}" value="{!Territory_Map_Account_Family__c.OwnerId}"/>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            
+            
+     <!-- Start Account Plan Background -->
+            
+            <apex:pageBlock title="Account Background">
+                <apex:pageBlockSection columns="2">
+                    <!-- Shared Fields -->
+                    <apex:outputField value="{!Territory_Map_Account_Family__c.Annual_Revenue__c}"/>
+                    <apex:outputField value="{!Territory_Map_Account_Family__c.Number_of_Employees__c}"/>
+                    <!-- CS Fields -->
+
+                </apex:pageBlockSection>
+                <!-- One Column Section -->
+                <apex:pageBlockSection columns="1">
+                    <!-- Shared Fields -->
+                    <apex:PageBlockSectionItem labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')} stripedCell">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Company_Overview__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Company_Overview__c}"/>
+                    </apex:PageBlockSectionItem>
+                    <!-- CS Fields -->
+                    <apex:PageBlockSectionItem rendered="{!Territory_Map_Account_Family__c.RecordType.Name=='Corporate Sales'}" labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')}">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.IT_preferences_background__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.IT_preferences_background__c}"/>
+                    </apex:PageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            
+       <!-- Start Market Conditions -->
+            
+            <apex:pageBlock title="Market Conditions">
+                <apex:pageBlockSection columns="1">
+                    <!-- CS Fields -->
+                  
+                    <!-- Account Family Fields -->
+                    <apex:PageBlockSectionItem rendered="{!Territory_Map_Account_Family__c.RecordType.Name=='Account Family'}" labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')} stripedCell">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Business_Conditions__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Business_Conditions__c}"/>
+                    </apex:PageBlockSectionItem>
+                    
+                    <!-- Shared Fields -->
+                    <apex:PageBlockSectionItem labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')}">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Competitive_Conditions__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Competitive_Conditions__c}"/>
+                    </apex:PageBlockSectionItem>
+                    
+                    <apex:PageBlockSectionItem labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')} stripedCell">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Financial_Conditions__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Financial_Conditions__c}"/>
+                    </apex:PageBlockSectionItem>
+                    
+                </apex:pageBlockSection>
+            </apex:pageBlock> 
+            
+            
+            <!-- Start Business Value -->
+            
+            <apex:pageBlock title="Business Value">
+                <apex:pageBlockSection columns="1">
+                
+                    <!-- Account Family Fields -->
+  
+                    
+                    <apex:PageBlockSectionItem rendered="{!Territory_Map_Account_Family__c.RecordType.Name=='Account Family'}" labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')}">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Business_Impact_of_That_Value__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Business_Impact_of_That_Value__c}"/>
+                    </apex:PageBlockSectionItem>
+                    
+                    <!-- Shared Fields -->
+                    <apex:PageBlockSectionItem labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')} stripedCell">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Account_Specific_Value_Statement__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Account_Specific_Value_Statement__c}"/>
+                    </apex:PageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            
+            <!-- Start Revenue Potential -->
+            
+            <apex:pageBlock title="Revenue Potential">
+                <apex:pageBlockSection columns="2">
+                    <!-- Shared Fields -->
+         
+                    <apex:outputField value="{!Territory_Map_Account_Family__c.Call_Center__c}"/>
+          
+                    <apex:outputField value="{!Territory_Map_Account_Family__c.Total_Revenue_Potential__c}"/>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            
+            <!-- Start Action Plan -->
+            
+            <apex:pageBlock title="Action Plan">
+                <apex:pageBlockSection columns="1">
+                    <!-- Shared Fields -->
+                    <apex:PageBlockSectionItem labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')} stripedCell">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Long_term_Account_strategy__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Long_term_Account_strategy__c}"/>
+                    </apex:PageBlockSectionItem>
+                    
+                    <apex:PageBlockSectionItem labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')}">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.XAction_Plan_Tactics__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.XAction_Plan_Tactics__c}"/>
+                    </apex:PageBlockSectionItem>
+                    
+                    <apex:PageBlockSectionItem labelStyleClass="accFamilyLabel" dataStyleClass="{!IF($CurrentPage.parameters.render='pdf','accFamilyDataPDF','accFamilyData')} stripedCell">
+                        <apex:outPutLabel value="{!$ObjectType.Territory_Map_Account_Family__c.fields.Challenges_to_Overcome__c.label}"/>
+                        <apex:outputField value="{!Territory_Map_Account_Family__c.Challenges_to_Overcome__c}"/>
+                    </apex:PageBlockSectionItem>
+                    
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            
+            <!-- Start Account Planning Team -->
+            <apex:outputPanel layout="none" rendered="{!displayAccountTeam}">
+            <div class="bPageBlock">
+                <h2>Account Planning Team</h2>
+                <table class="detailTable">
+                    <colgroup span="1" class="labelCol"></colgroup>
+                    <colgroup span="1" class="dataCol"></colgroup>
+                    <colgroup span="1" class="labelCol"></colgroup>
+                    <colgroup span="1" class="dataCol"></colgroup>
+                    <thead>
+                        <th>Member</th>
+                        <th>Role</th>
+                        <th>Member</th>
+                        <th>Role</th>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!AccountPlanningTeamList}" 
+                                    var="aptRow">
+                                <tr>
+                                    <td><apex:outputText value="{!aptRow.memberFirst}"/></td>
+                                    <td><apex:outputText value="{!aptRow.roleFirst}"/></td>
+                                    <td><apex:outputText value="{!aptRow.memberSecond}"/></td>
+                                    <td><apex:outputText value="{!aptRow.roleSecond}"/></td>
+                                </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </div>          
+            </apex:outputPanel>
+            
+            <!-- Start Open Activities -->
+            
+            <apex:outPutPanel rendered="{!OpenActivitiesList.size>0}" layout="none">
+                <div class="bPageBlock">
+                    <h2>Open Activities</h2>
+                    <table class="detailTable">
+                        
+                        <colgroup span="1" class="labelCol"></colgroup>
+                        <colgroup span="1" class="dataCol"></colgroup>
+                        <colgroup span="1" class="labelCol"></colgroup>
+                        <colgroup span="1" class="dataCol"></colgroup>
+                        
+                        <thead>
+                            <th>Subject</th>
+                            <th>Assigned To</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                        </thead>
+                        
+                        <tbody>
+                             
+                            <apex:repeat value="{!OpenActivitiesList}" 
+                                        var="Activity">
+                                    <tr>    
+                                        <td><apex:outputText value="{!Activity.Subject}"/></td>
+                                        <td><apex:outputText value="{!Activity.Owner.Name}"/></td>
+                                        <td><apex:outputText value="{!Activity.Status}"/></td>
+                                        <td><apex:outputText value="{!Activity.ActivityDate}"/></td>
+                                    </tr>
+                            </apex:repeat>
+                             
+                        </tbody>
+                        
+                    </table>    
+                
+                </div>
+            </apex:outPutPanel>
+            
+            <!-- Start Action Plan -->
+            <apex:pageBlock title="Planning Sessions">
+                <apex:pageBlockSection columns="2">
+                    <!-- Account Family Fields -->
+                    <apex:outputField rendered="{!Territory_Map_Account_Family__c.RecordType.Name=='Account Family'}" value="{!Territory_Map_Account_Family__c.Session_Lead__c}"/>
+                    <apex:outputField rendered="{!Territory_Map_Account_Family__c.RecordType.Name=='Account Family'}" value="{!Territory_Map_Account_Family__c.Date_Completed__c}"/>
+                    <apex:outputField rendered="{!Territory_Map_Account_Family__c.RecordType.Name=='Account Family'}" value="{!Territory_Map_Account_Family__c.Planning_Session_Status__c}"/>
+                    <!-- Shared Fields -->
+                  
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            
+            </div>
+    </body>
+            
+    
+</apex:page>

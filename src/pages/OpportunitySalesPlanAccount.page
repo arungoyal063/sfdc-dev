@@ -1,0 +1,48 @@
+<apex:page standardController="Opportunity" Extensions="OpportunitySalesPlanController" >
+    <script type="text/javascript">
+       
+        window.onload = function() {
+                if(Sarissa._SARISSA_IS_IE && parseFloat(navigator.appVersion.substring(navigator.appVersion.indexOf("MSIE")+5)) >=9) {    
+                    window.XMLSerializer = function(){};     
+                    window.XMLSerializer.prototype.serializeToString=function(oNode){return oNode.xml;
+                }
+            }
+          }
+       
+        function redirectNext(redURL) {
+           if(redURL != "") {
+                window.location.href = redURL;       
+           }  
+           return true;
+        }
+    </script>
+    <apex:form rendered="{!IF(redirectURL != NULL, false, true)}">
+        <apex:sectionHeader subtitle="Select Account" title="Create Opportunity Step 2"/>
+        <apex:pageMessages id="msg" />
+        <apex:pageBlock >
+            <apex:outputPanel >
+                <center>
+                    <table>
+                        <tr>
+                            <th>
+                                <label>Account</label>
+                            </th>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                <apex:inputField value="{!oppObj.AccountId}" required="true"/> 
+                            </td>
+                        </tr>
+                    </table>                   
+                </center>
+            </apex:outputPanel> 
+            
+            <apex:pageBlockButtons location="bottom" style="padding-left:200px;">
+                <apex:commandButton value="Next" action="{!doAccountNext}" reRender="msg,ajaxId"  oncomplete="redirectNext('{!redirectURL}');" />
+                <apex:commandButton value="Cancel" action="{!onCancel}" immediate="true"/>&nbsp;
+                <apex:actionStatus startText="Processing..." stopStyle="" id="ajaxId"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

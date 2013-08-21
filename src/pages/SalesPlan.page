@@ -1,0 +1,21 @@
+<apex:page standardController="Opportunity" Extensions="SalesPlanController" action="{!doLoad}">
+    <apex:form >
+        <apex:sectionHeader subtitle="Select Sales Plan" title="Create Opportunity Step 1"/>
+        <apex:pageMessages />
+        <apex:pageBlock rendered="{!IF(salesPlanList == null,false,true)}">
+            <apex:outputPanel >
+                <center>
+                    <b><label >Sales Plan </label></b>
+                    <apex:inputField value="{!Opportunity.Sales_Plan__c}"/>                    
+                    <!--apex:selectList size="1" value="{!selectedSalesPlan}">
+                        <apex:selectOptions value="{!salesPlanList}" />                   
+                    </apex:selectList -->
+                </center>
+            </apex:outputPanel>  
+            <apex:pageBlockButtons location="bottom" style="padding-left:200px;">
+                <apex:commandButton value="Next" action="{!doNext}"/>
+                <apex:commandButton value="Cancel" action="{!onCancel}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

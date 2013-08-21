@@ -1,0 +1,72 @@
+<apex:page standardController="Opportunity" Extensions="OpportunitySalesPlanController" >
+<Script src="/soap/ajax/15.0/connection.js"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function() {
+            var redURL = '{!redirectURL}';
+            if(redURL != "") {
+                window.location.href = redURL;       
+            }  
+        }
+        
+        function redirectNext(redURL) {
+           if(redURL != "") {
+                window.location.href = redURL;       
+           }  
+           return true;
+        }
+        
+      
+    </script>
+    <apex:form rendered="{!IF(redirectURL != NULL, false, true)}">
+        <apex:sectionHeader subtitle="Select Sales Plan" title="Create Opportunity Step 1"/>
+        <apex:pageMessages id="msg" />
+        <apex:pageBlock >
+            <apex:outputPanel >
+                <center>
+                    <table>
+                        <tr>
+                            <th>
+                                <label>Sales Plan</label>
+                            </th>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>    
+                                 <apex:inputField value="{!Opportunity.Sales_Plan__c}" required="true" />                           
+                                <!--apex:selectList value="{!selectedSalesPlan}" size="1" style="width: 156px;" required="true">
+                                    <apex:selectOptions value="{!salesPlanList}"/>
+                                </apex:selectList-->                               
+                            </td>
+                        </tr>
+                        
+                        <!--tr>
+                            <th>
+                                <label>Account</label>
+                            </th>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                <apex:inputField value="{!Opportunity.AccountId}" required="true"/> 
+                            </td>
+                        </tr-->
+                    </table>                   
+                </center>
+                    <!--b><label >Sales Plan</label>&nbsp;</b>
+                    <apex:inputField value="{!Opportunity.Sales_Plan__c}" required="true"/><br/>
+                    <b><label >Account</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                    <apex:inputField value="{!Opportunity.AccountId}" required="true"/>                  
+               <center></center-->
+               
+            </apex:outputPanel> 
+            
+            <apex:pageBlockButtons location="bottom" style="padding-left:200px;">
+                <apex:commandButton value="Next" action="{!doNext}" reRender="msg" status="ajaxId" oncomplete="redirectNext('{!redirectURL}');" />
+                <apex:commandButton value="Cancel" action="{!onCancel}" immediate="true"/>&nbsp;
+                <apex:actionStatus startText="Processing..." stopStyle="" id="ajaxId"/>
+            </apex:pageBlockButtons>
+            <!--apex:actionFunction action="{!isAccountTrue1}" name="isAccountTrue1"/-->
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
