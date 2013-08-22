@@ -1,0 +1,41 @@
+<apex:page standardController="Profile__c"  extensions="NewProfileController" tabStyle="Profile__c">
+    <apex:form >
+        <apex:sectionHeader title="New Profile"/>
+        <apex:pageMessages id="errId"/>
+        <apex:pageblock >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!onSave}"/>
+            </apex:pageBlockButtons>
+            <apex:pageblocksection title="New Profile" collapsible="false">
+                <apex:inputfield value="{!profileobj.Name}" required="true" />
+                <apex:inputfield value="{!profileobj.Type__c}" />
+                <apex:inputfield value="{!profileobj.Account__c}" />
+                <apex:inputfield value="{!profileobj.Start_Date__c}" />
+            </apex:pageblocksection>
+            <apex:pageblocksection title="Select Template" collapsible="false">
+                <apex:pageblocksectionItem >
+                    <apex:outputtext value="Do You want to use a Template?" />
+                    <apex:outputPanel >
+                        <apex:SelectList value="{!useTemplate}" multiselect="false" size="1">
+                            <apex:actionSupport event="onchange" action="{!selectTemplate}" rerender="op1" immediate="true" status="ajaxStatus"/>
+                            <apex:selectOption itemValue="true" itemLabel="Yes"/>
+                            <apex:selectOption itemValue="false" itemLabel="No"/>
+                        </apex:SelectList>&nbsp;
+                        <apex:actionStatus id="ajaxStatus">
+                            <apex:facet name="start">
+                                <apex:image value="{!$Resource.ajaxLoad}"/>
+                            </apex:facet>                            
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+            </apex:pageblocksection>
+            <apex:outputpanel id="op1" rendered="true">
+                <apex:outputpanel rendered="{!showTemplate}" >
+                    <apex:selectRadio value="{!selectedTemplate}" layout="pageDirection">
+                        <apex:selectOptions value="{!templatelist}"/>
+                    </apex:selectRadio>
+                </apex:outputpanel>
+            </apex:outputpanel>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

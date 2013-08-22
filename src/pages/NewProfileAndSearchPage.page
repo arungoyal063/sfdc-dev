@@ -1,0 +1,35 @@
+<apex:page tabStyle="Profile__c" controller="NewProfileAndSearchController">
+    <apex:sectionHeader title="Search Panel"/>
+    <apex:pageMessages id="pmerr"/>
+    <apex:form >
+        <apex:pageblock title="New Profile" >
+            <apex:pageblocksection title="New Profile" collapsible="false">
+                <apex:inputfield value="{!profObj.Name}" required="true" />
+                <apex:inputfield value="{!profObj.Type__c}" />
+                <apex:inputfield value="{!profObj.Account__c}" />
+                <apex:inputfield value="{!profObj.Start_Date__c}" />
+            </apex:pageblocksection>
+            <apex:pageBlockSection title="Search Panel" collapsible="false" columns="1"  >
+                <apex:outputPanel >      
+                    <apex:outputText value="Search" />
+                    <apex:inputText value="{!searchInput}"  />
+                </apex:outputPanel>
+                <apex:pageBlockTable value="{!objProfileOrderChoice}" var="objProC" style="width:300px;" >
+                    <iframe scrolling="yes">    
+                    <apex:column style="width:80%;" headerValue="Order Choices Name">
+                        <apex:outputText value="{!objProC.objProfileOrder.name}"/>
+                    </apex:column>
+                    <apex:column headerValue="To be Added" >
+                        <apex:inputCheckbox value="{!objProC.isAdded}"/>
+                    </apex:column>
+                    </iframe>    
+                 </apex:pageBlockTable>
+              </apex:pageblocksection>    
+             <apex:pageBlockButtons location="bottom" >
+                 <apex:commandButton value="Save"/>
+                 <apex:commandButton value="Save And More"/>
+             </apex:pageBlockButtons>
+        
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

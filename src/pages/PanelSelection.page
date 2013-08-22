@@ -1,0 +1,94 @@
+<apex:page controller="PanelSelectionController" tabStyle="Profile__c" id="pagId">
+    <apex:form >
+        <apex:sectionHeader title="Profile Order Choice"/>
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                     <apex:commandButton value="Save" action="{!onRemoveAll}"/>
+                     <apex:commandButton value="Save and Add Panel" action="{!onSaveAndAddPanel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Profile Information " collapsible="false">
+                <apex:outputText value="{!objProfile.name}"/> 
+                <apex:outputText value="{!objProfile.Type__c}"/>
+                <apex:outputText value="{!objProfile.Account__r.name}" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Profile Order Chice " collapsible="false" columns="1">
+                <apex:actionRegion >
+                    <apex:outputPanel id="ocId"> 
+                        <apex:pageBlockTable value="{!objProfileOrderChoice}" var="poc">
+                             <apex:column style="width:3%;">
+                                 <apex:inputCheckbox value="{!poc.isSelected}"/>
+                             </apex:column>
+                             <apex:column headerValue="Name">
+                                <apex:outputText value="{!poc.objPOC.Name}"/>
+                              </apex:column>  
+                             <apex:column style="width:7%;">
+                                <a value="Remove" onclick="onRemove('{!poc.objPOC.Id}')">Remove</a>                    
+                             </apex:column>   
+                        </apex:pageBlocktable><br/>                            
+                        <apex:actionStatus startText="Deleting....." id="ajaxSatus"/>                    
+                    </apex:outputPanel>
+                    <apex:actionFunction action="{!onRemove}" name="onRemove" reRender="ocId" immediate="true" status="ajaxSatus"> 
+                        <apex:param assignTo="{!selectedProfileOrderChoiceId}" value="" name="pId"/>
+                    </apex:actionFunction>
+                </apex:actionRegion>
+            </apex:pageBlockSection>
+        </apex:pageblock>
+    </apex:form>  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!--apex:form >
+    <apex:sectionHeader subtitle="Profile Order Choice" title="Step 2"/>
+    <apex:pageBlock >      
+        <apex:pageBlockSection title="Profile Information " collapsible="false">
+               <apex:repeat value="{!objPro}" var="obj">
+                      <apex:outputText value="{!obj.name}"/> 
+                      <apex:outputText value="{!obj.Type__c}"/>
+                      <apex:outputText value="{!obj.Account__r.name}" />   
+                </apex:repeat>
+        </apex:pageBlockSection>
+    <apex:actionRegion >
+        <apex:outputPanel id="ocId">
+            <apex:outputPanel >
+                <apex:pageBlockSection title="Profile Order Choice " collapsible="false" columns="1">
+                <apex:pageBlockTable value="{!objWra}" var="abc">
+                     <apex:column headerValue="To Be Selected" >
+                         <apex:inputCheckbox value="{!abc.objBoo}"/>
+                     </apex:column>
+                     <apex:column headerValue="Name">
+                        <apex:outputText value="{!abc.objPro.name}"/>
+                      </apex:column>  
+                     <apex:column >
+                        <a href="#" value="Remove" onclick="onRemove('{!abc.objPro.Id}')">Remove</a>                    
+                     </apex:column>   
+                </apex:pageBlocktable>
+                <apex:actionStatus startText="Deleting....." id="ajaxSatus"/>
+                </apex:pageBlockSection> 
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:actionRegion>  
+    </apex:pageBlock>
+    <center>
+        <apex:commandButton value="Remove Selected" action="{!onDelete}" />
+    </center>   
+    <apex:actionFunction action="{!onRemove}" name="onRemove" status="ajaxSatus" reRender="ocId"  > 
+            <apex:param assignTo="{!profileOrderChoice}" value="" name="pId"/>
+        </apex:actionFunction>
+        
+        
+    </apex:form--> 
+    
+</apex:page>
