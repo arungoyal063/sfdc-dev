@@ -1,0 +1,5 @@
+{!Contact.Name} has reached the gift limit.  See details below:
+
+Contact Name: {!Contact.Name}
+Current Year Gift Total: {!Contact.Current_Year_Gift_Total__c}
+More Details: {!Contact.Link}

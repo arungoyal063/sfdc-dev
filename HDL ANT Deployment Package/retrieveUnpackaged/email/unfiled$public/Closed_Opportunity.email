@@ -1,0 +1,3 @@
+An Opportunity for {!Opportunity.Account} has been closed.  Please click the link below for details.  
+
+{!Opportunity.Link}

@@ -1,0 +1,5 @@
+{!Contact.Name} is approaching the gift limit.  See details below:
+
+
+Current Year Gift Total: {!Contact.Current_Year_Gift_Total__c}
+More Details: {!Contact.Link}
