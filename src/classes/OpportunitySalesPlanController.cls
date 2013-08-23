@@ -159,7 +159,7 @@ public with sharing class OpportunitySalesPlanController {
                 System.debug('###' + redirectURL);               
                 /*pageReference prf = new pageReference(pr); 
                 prf.setRedirect(true);
-                return prf; */
+                return prf;*/ 
               
             }
         } else {
@@ -273,7 +273,7 @@ public with sharing class OpportunitySalesPlanController {
                      if (labelToId.containsKey(label)) {
                         
                          for(String str : valueList) {
-                             paramStr = paramStr + '&' + labelToId.get(label) + '=' + str;
+                             paramStr = paramStr + '&' + labelToId.get(label) + '=' + EncodingUtil.urlEncode(str, 'UTF-8');
                              
                          }
                      }
@@ -283,7 +283,7 @@ public with sharing class OpportunitySalesPlanController {
                 
                 if (lkidvalue != null) {
                     if (labelToId.containsKey(label)) {
-                        paramStr = paramStr + '&' + labelToId.get(label) + '_lkid=' + lkidvalue;
+                        paramStr = paramStr + '&' + labelToId.get(label) + '_lkid=' + EncodingUtil.urlEncode(lkidvalue, 'UTF-8');
                      }    
                 }
             }
