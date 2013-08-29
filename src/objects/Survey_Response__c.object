@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Datacloud assessment survey from snappages website</description>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <fields>
+        <fullName>Background_Any_Other_Issues__c</fullName>
+        <description>Please provide background on any other issues you have experienced.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please provide background on any other issues you have experienced.</inlineHelpText>
+        <label>Background Any Other Issues</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Survey Response</relationshipLabel>
+        <relationshipName>Survey_Response</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Difficulty_Aggregating_Data_Mult_Source__c</fullName>
+        <description>Difficulty Aggregating Data from Multiple Systems for Reporting in SFDC</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Difficulty Aggregating Data from Multiple Systems for Reporting in SFDC</inlineHelpText>
+        <label>Difficulty Aggregating Data Mult. Source</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1--Not An Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5--Business Critical</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Duplication__c</fullName>
+        <description>Duplication of data is 1, &quot;not an issue,&quot; to 5, &quot;business critical.&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>How important is duplication of business data from 1-5, with 1 being &quot;not an issue,&quot; to 5 being &quot;business critical?&quot;</inlineHelpText>
+        <label>Duplication Of Data</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1--Not An Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5--Business Critical Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Email</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>First Name</label>
+        <length>80</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Inability_To_Report__c</fullName>
+        <description>Examples include lack of visibility into marketing ROI, support response times, forecast accuracy, etc.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Examples include lack of visibility into marketing ROI, support response times, forecast accuracy, etc.</inlineHelpText>
+        <label>Inability To Report On KPI</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1--Not An Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5--Business Critical Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Inadequate_Turnaround_Reports_Data__c</fullName>
+        <externalId>false</externalId>
+        <label>Inadequate Turnaround Reports &amp; Data</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1--Not An Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5--Business Critical Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Last_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Name</label>
+        <length>80</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Survey Response</relationshipLabel>
+        <relationshipName>Survey_Response</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>Phone</label>
+        <required>false</required>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Quantitative_Data_Accuracy__c</fullName>
+        <description>Examples of quantitative data accuracy include inaccurate sales reporting, support metrics, etc.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Examples of quantitative data accuracy include inaccurate sales reporting, support metrics, etc.</inlineHelpText>
+        <label>Quantitative Data Accuracy</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1--Not An Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5--Business Critical Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Rep_Data_Req_By_Bus_Cant_Be_Deliv__c</fullName>
+        <description>Reports or Data Requested by Business Users Can&apos;t be Delivered</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Reports or Data Requested by Business Users Can&apos;t be Delivered</inlineHelpText>
+        <label>Rep. Data Req. By Bus. Cant Be Deliv</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1--Not An Issue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5--Business Critical</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Title__c</fullName>
+        <externalId>false</externalId>
+        <label>Title</label>
+        <length>80</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Whats_Primary_Role__c</fullName>
+        <description>What primary role do you play in managing and/or using salesforce.com?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What primary role do you play in managing and/or using salesforce.com?</inlineHelpText>
+        <label>Whats Primary Role</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Executive/Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT Executive/Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>System Admin</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Administration/Support (e.g. Executive Admin, Sales Admin, etc.)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <label>Survey Response</label>
+    <nameField>
+        <label>Survey Response Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Survey Response</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

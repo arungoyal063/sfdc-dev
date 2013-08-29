@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <fields>
+        <fullName>Access_to_current_system_screen_shots__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Access to current system/screen shots</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Access_to_data_for_migration_confirmed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Access to data for migration confirmed</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Account_Link__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account Link</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>DreamTeam  Projects</relationshipLabel>
+        <relationshipName>R00N30000000unmmEAA</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Admin_UN_PW_Received__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Admin UN/PW Received</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Archive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Archive</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Billable_Rate__c</fullName>
+        <externalId>false</externalId>
+        <label>Billable Rate</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Campaign_Link__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Campaign Link</label>
+        <referenceTo>Campaign</referenceTo>
+        <relationshipLabel>DreamTeam  Projects</relationshipLabel>
+        <relationshipName>R00N30000000unvSEAQ</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Client_Agreement_with_SOW__c</fullName>
+        <externalId>false</externalId>
+        <label>Client Agreement with SOW</label>
+        <picklist>
+            <controllingField>SOW_Discussed__c</controllingField>
+            <picklistValues>
+                <fullName>Agreed and anxious</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Agreed and tentative</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Expressed reservations</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Expressed disinterest</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Complete__c</fullName>
+        <externalId>false</externalId>
+        <label>Complete</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Cost_Baseline__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost Baseline</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Expansion__c</fullName>
+        <externalId>false</externalId>
+        <label>Expansion</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Extra_Field__c</fullName>
+        <externalId>false</externalId>
+        <label>Extra Field</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Finish_Baseline__c</fullName>
+        <externalId>false</externalId>
+        <label>Finish Baseline</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Finish__c</fullName>
+        <externalId>false</externalId>
+        <label>Finish Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Folder_Link__c</fullName>
+        <externalId>false</externalId>
+        <label>Folder Link</label>
+        <length>40</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Key_Points_of_Contact__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Key Points of Contact Identified</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Mktg_Materials_Received__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Mktg Materials Received</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Link__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity Link</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>DreamTeam  Projects</relationshipLabel>
+        <relationshipName>R00N30000000unwfEAA</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Org_Chart_Received__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Org Chart Received</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Project_Live__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Project Live</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Reasons__c</fullName>
+        <externalId>false</externalId>
+        <label>Reasons</label>
+        <picklist>
+            <controllingField>Client_Agreement_with_SOW__c</controllingField>
+            <picklistValues>
+                <fullName>Level of understanding</fullName>
+                <controllingFieldValues>Agreed and anxious</controllingFieldValues>
+                <controllingFieldValues>Agreed and tentative</controllingFieldValues>
+                <controllingFieldValues>Expressed disinterest</controllingFieldValues>
+                <controllingFieldValues>Expressed reservations</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Design documentation</fullName>
+                <controllingFieldValues>Agreed and anxious</controllingFieldValues>
+                <controllingFieldValues>Agreed and tentative</controllingFieldValues>
+                <controllingFieldValues>Expressed disinterest</controllingFieldValues>
+                <controllingFieldValues>Expressed reservations</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Outstanding issues/questions</fullName>
+                <controllingFieldValues>Agreed and anxious</controllingFieldValues>
+                <controllingFieldValues>Agreed and tentative</controllingFieldValues>
+                <controllingFieldValues>Expressed disinterest</controllingFieldValues>
+                <controllingFieldValues>Expressed reservations</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Timeline</fullName>
+                <controllingFieldValues>Agreed and anxious</controllingFieldValues>
+                <controllingFieldValues>Agreed and tentative</controllingFieldValues>
+                <controllingFieldValues>Expressed disinterest</controllingFieldValues>
+                <controllingFieldValues>Expressed reservations</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cost estimate</fullName>
+                <controllingFieldValues>Agreed and anxious</controllingFieldValues>
+                <controllingFieldValues>Agreed and tentative</controllingFieldValues>
+                <controllingFieldValues>Expressed disinterest</controllingFieldValues>
+                <controllingFieldValues>Expressed reservations</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>SOW_Discussed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>SOW Discussed</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Schedule__c</fullName>
+        <externalId>false</externalId>
+        <label>Schedule</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Start_Baseline__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Baseline</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Start__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Professional Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Product Development</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Event Planning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Marketing Campaign</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales Campaign</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Technical Support</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Engagement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>User_Pass_Confirmed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>User/Pass Confirmed</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Vacation_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Vacation Days</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Version__c</fullName>
+        <externalId>false</externalId>
+        <label>Version</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Work_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Work Days</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <label>DreamTeam Project</label>
+    <nameField>
+        <label>DFDT Project Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>DreamTeam Projects</pluralLabel>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Finish__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Start__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>GanttChart</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Gantt Chart</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>https://www.dreamfactory.com/dreamteam/project_manager.html? 
+sessionid={!API_Session_ID}&amp; 
+serverurl={!API_Partner_Server_URL_60}&amp; 
+username={!User_Username}&amp; 
+fullname={!User_FullName}&amp; 
+userid={!User_ID} 
+linkid={!DFDT_Project_ID}</url>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>SIGN_Agreement</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Agreement_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Agreement Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Design</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Implementation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Migration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Map Confirmation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Migration Sign Off</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Change Order</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Support</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Partnership/Alliance Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Professional Services Agreement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mutual NDA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unilateral NDA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>AutoUpdate__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Auto Update</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Cc__c</fullName>
+        <externalId>false</externalId>
+        <label>Email a Copy to</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipName>R00N30000001RxRdEAK</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>DateSentDate__c</fullName>
+        <externalId>false</externalId>
+        <formula>DateSent__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Date Sent (Date)</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>DateSent__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Sent</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>DateSignedDate__c</fullName>
+        <externalId>false</externalId>
+        <formula>DateSigned__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Date Signed (Date)</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>DateSigned__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Signed</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>DateViewedDate__c</fullName>
+        <externalId>false</externalId>
+        <formula>DateViewed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Date Viewed (Date)</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>DateViewed__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Viewed</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>DaysUnsigned__c</fullName>
+        <externalId>false</externalId>
+        <formula>NOW() - DateSent__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days Unsigned</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DaysUntilSigned__c</fullName>
+        <externalId>false</externalId>
+        <formula>DateSigned__c - DateSent__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days Until Signed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Document__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(AND(LEN(SignedPDF__c) &gt; 0, ISPICKVAL( Status__c , &quot;Signed&quot;)), HYPERLINK( SignedPDF__c ,   IMAGE(&quot;https://www.echosign.com/images/salesforce-pdf-icon.gif&quot;, &quot;PDF&quot;) &amp; &quot; &quot; &amp; Name  &amp; &quot; - signed.pdf&quot;), &quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Document</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ErrorMessage__c</fullName>
+        <externalId>false</externalId>
+        <label>Error Message</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LastEventId__c</fullName>
+        <externalId>false</externalId>
+        <label>LastEventId</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Message__c</fullName>
+        <description>Optional message to recipient.</description>
+        <externalId>false</externalId>
+        <label>Message</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipName>R00N30000001RxReEAK</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PasswordProtectPDF__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Password required to view PDF</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PasswordProtectSign__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Password required to sign</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Password__c</fullName>
+        <externalId>false</externalId>
+        <label>Password</label>
+        <length>10</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Percent_Signed__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL( Status__c , &quot;Signed&quot;),100,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Percent Signed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Recipient__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Recipient</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>R00N30000001RxRcEAK</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Result__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( AND(LEN(ErrorMessage__c) &gt; 0,  ISPICKVAL( Status__c , &quot;Draft&quot;)), IMAGE(&quot;https://www.echosign.com/images/salesforce-error.gif&quot;, &quot;Error&quot;) &amp; &quot; &quot; &amp; ErrorMessage__c, IF(AND(LEN(SignedPDF__c) &gt; 0,  ISPICKVAL( Status__c , &quot;Signed&quot;)), HYPERLINK( SignedPDF__c ,  IMAGE(&quot;https://www.echosign.com/images/salesforce-pdf-icon.gif&quot;, &quot;PDF&quot;) &amp; &quot; &quot; &amp; Name  &amp; &quot; - signed.pdf&quot;), &quot;&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Result</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SenderSigns__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>I also need to sign this document</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SignatureOrder__c</fullName>
+        <externalId>false</externalId>
+        <label>Signature Order</label>
+        <picklist>
+            <controllingField>SenderSigns__c</controllingField>
+            <picklistValues>
+                <fullName>Recipient signs, then I sign</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>I sign, then the Recipient signs</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>SignatureType__c</fullName>
+        <externalId>false</externalId>
+        <label>Signature Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Written Signature</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>e-Signature</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>SignedPDF__c</fullName>
+        <externalId>false</externalId>
+        <label>Signed PDF</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>StatusVisible__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL( Status__c , &quot;Draft&quot;), HYPERLINK(&quot;/servlet/servlet.Integration?lid=00b30000000sJ2t&amp;eid=&quot; &amp; Id, IMAGE(&quot;https://www.echosign.com/images/salesforce-send.gif&quot;, &quot;Send&quot;)), IF(ISPICKVAL( Status__c , &quot;Out for Signature&quot;),   IF( AutoUpdate__c , &quot;Out for Signature&quot;, HYPERLINK(&quot;/servlet/servlet.Integration?lid=00b30000000sJ2u&amp;eid=&quot; &amp; Id, IMAGE(&quot;https://www.echosign.com/images/salesforce-out-for-signature-update.gif&quot;, &quot;Out for Signature&quot;))),  IF(ISPICKVAL( Status__c , &quot;Signed&quot;), &quot;Signed&quot; , IF(ISPICKVAL( Status__c , &quot;Cancelled / Declined&quot;), &quot;Cancelled / Declined&quot;, &quot;&quot;) ) ) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Status</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Agreement Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Out for Signature</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Signed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <label>AgreementOld</label>
+    <nameField>
+        <label>Agreement Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>AgreementsOld</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Recipient__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Document__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Recipient__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Fill_Out_Opportunity</fullName>
+        <active>false</active>
+        <errorConditionFormula>NOT(
+OR( ISPICKVAL(Agreement_Type__c, &quot;Mutual NDA&quot;), 
+ISPICKVAL(Agreement_Type__c, &quot;Unilateral NDA&quot;), 
+ISPICKVAL(Agreement_Type__c,&quot;Partnership/Alliance Agreement&quot;),  
+ISPICKVAL(Agreement_Type__c,&quot;Professional Services Agreement&quot;)))</errorConditionFormula>
+        <errorMessage>You must populate an opportunity for this agreement type.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>RefreshStatus</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>100</height>
+        <isResizable>false</isResizable>
+        <linkType>sControl</linkType>
+        <masterLabel>Refresh Status</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <scontrol>RefreshStatus</scontrol>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <width>100</width>
+    </webLinks>
+    <webLinks>
+        <fullName>SendforSignature</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>100</height>
+        <isResizable>false</isResizable>
+        <linkType>sControl</linkType>
+        <masterLabel>Send for Signature</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <scontrol>SendforSignature</scontrol>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <width>100</width>
+    </webLinks>
+</CustomObject>

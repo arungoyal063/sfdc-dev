@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Invoices</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Contact_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Billing_Contact__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Billing Contact ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Cycle_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Cycle End Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Cycle_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Cycle Start Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Cycle__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Account__r.Billing_Cycle__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Billing Cycle</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Billing_Contact_Email__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Emailed_On__c</fullName>
+        <externalId>false</externalId>
+        <label>Emailed On</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Expense_Report__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Expense Report</label>
+        <referenceTo>appirio_pse_exp__Expense_Report__c</referenceTo>
+        <relationshipLabel>Invoices</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Generate_Invoice_URL_ELLUCIAN__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id + 
+&quot;&amp;ReportId=00O30000003sgk7&quot; + 
+&quot;&amp;TemplateId=a0Ea000000GktIU&quot; + 
+&quot;&amp;OFN=&quot; + Account__r.Name + &quot;-&quot; + Name + 
+&quot;&amp;QMode=3&quot; + 
+&quot;&amp;fp0=1&quot;+
+&quot;&amp;MFTS0=Emailed_On__c &quot;+ 
+&quot;&amp;MFTSValue0=Today&quot; + 
+&quot;&amp;LG4=1&quot;+ 
+&quot;&amp;EmailTemplateId=00X30000001SoeJ&quot;+ 
+&quot;&amp;EmailToId=&quot; + Billing_Contact_ID__c+ 
+&quot;&amp;EmailBCC=&quot;+ Other_Billing_Contacts__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Generate Invoice URL ELLUCIAN</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Generate_Invoice_URL__c</fullName>
+        <description>&quot;&amp;QMode=3&quot; is for auto email also need email2 id (contact id)&amp;
+email template id
+
+&quot;&amp;MFTS0=Emailed_On__c &quot;+
+&quot;&amp;MFTSValue0=Today&quot; +
+&quot;&amp;LG4=1&quot;+
+&quot;&amp;EmailTemplateId=00X30000001SoeJ&quot;+
+&quot;&amp;EmailToId=&quot; +  Billing_Contact_ID__c</description>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;ReportId=00O30000003sgk7&quot; +
+&quot;&amp;TemplateId=a0E3000000DmlE8&quot; +
+&quot;&amp;OFN=&quot; + Account__r.Name  + &quot;-&quot; +  Name + 
+&quot;&amp;QMode=3&quot; +
+&quot;&amp;fp0=1&quot;+
+&quot;&amp;MFTS0=Emailed_On__c &quot;+
+&quot;&amp;MFTSValue0=Today&quot; +
+&quot;&amp;LG4=1&quot;+
+&quot;&amp;EmailTemplateId= 00X30000001SoeJ&quot;+
+&quot;&amp;EmailToId=&quot; +  Billing_Contact_ID__c+
+&quot;&amp;EmailBCC=&quot;+ Other_Billing_Contacts__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Generate Invoice URL</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Generate_Invoice_URL_for_Accountant__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id + 
+&quot;&amp;ReportId=00O30000003sgk7&quot; + 
+&quot;&amp;TemplateId=a1F30000000VZmz&quot; + 
+&quot;&amp;OFN=&quot; + Account__r.Name + &quot;-&quot; + Name + 
+&quot;&amp;QMode=1&quot; + 
+&quot;&amp;fp0=1&quot;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Generate Invoice URL for Accountant</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>InstanceURL__c</fullName>
+        <externalId>false</externalId>
+        <formula>SUBSTITUTE(LEFT($Api.Enterprise_Server_URL_180, FIND(&quot;salesforce.com&quot;, $Api.Enterprise_Server_URL_180)-1), &quot;-api&quot;, &quot;&quot;)+&apos;salesforce.com/&apos;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>InstanceURL</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Invoice_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Amount</label>
+        <summarizedField>Invoice_Line_Item__c.Line_Item_Charge__c</summarizedField>
+        <summaryFilterItems>
+            <field>Invoice_Line_Item__c.Invoiced__c</field>
+            <operation>equals</operation>
+            <value>Invoiced</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Invoice_Line_Item__c.Invoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Number_Hidden__c</fullName>
+        <description>Used in email template</description>
+        <externalId>false</externalId>
+        <label>Invoice Number Hidden</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Invoice_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Notes</label>
+        <length>32000</length>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Other_Billing_Contacts__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Account__r.Additional_Billing_Contact__c  &lt;&gt; null,
+
+Account__r.Additional_Billing_Contact_Email__c&amp;&quot;,&quot;&amp; Account__r.Additional_Billing_Contact_Email_2__c &amp;&quot;,&quot;&amp;  Account__r.Additional_Billing_Contact4_Email__c,null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Other Billing Contacts</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>Appirio_PSAe__Proj__c</referenceTo>
+        <relationshipLabel>Invoices</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>TOTAL_INVOICE__c</fullName>
+        <externalId>false</externalId>
+        <formula>Invoice_Amount__c + Total_Expenses__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>TOTAL INVOICE</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Terms__c</fullName>
+        <externalId>false</externalId>
+        <label>Terms</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Net 15</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Net 30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Net 45</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Total_Expenses__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Expenses</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Hours</label>
+        <summarizedField>Invoice_Line_Item__c.Hours__c</summarizedField>
+        <summaryForeignKey>Invoice_Line_Item__c.Invoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Un_invoiced_Line_Item__c</fullName>
+        <externalId>false</externalId>
+        <label>Un-invoiced Line Item</label>
+        <summarizedField>Invoice_Line_Item__c.Line_Item_Charge__c</summarizedField>
+        <summaryFilterItems>
+            <field>Invoice_Line_Item__c.Invoiced__c</field>
+            <operation>notEqual</operation>
+            <value>Invoiced</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Invoice_Line_Item__c.Invoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Work_Performed__c</fullName>
+        <externalId>false</externalId>
+        <label>Work Performed</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Design</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Misc Configuration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Migration Planning</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Data Migration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Coding/Integration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Project Management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Testing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Documentation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Training</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <label>Invoice</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Invoice_Total__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Invoices_4_16</fullName>
+        <columns>Account__c</columns>
+        <columns>NAME</columns>
+        <columns>Terms__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Notes__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>4/16/2010</value>
+        </filters>
+        <label>Invoices 4.16</label>
+        <sharedTo>
+            <role>VPSales</role>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Invoices_for_410</fullName>
+        <columns>Account__c</columns>
+        <columns>Project__c</columns>
+        <columns>Terms__c</columns>
+        <columns>Work_Performed__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>NAME</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Invoice_Total__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>4/8/2010</value>
+        </filters>
+        <label>Invoices for 410</label>
+    </listViews>
+    <listViews>
+        <fullName>Last_Month_s_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Emailed_On__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>LAST_MONTH</value>
+        </filters>
+        <label>Last Month&apos;s Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Last_Week_s_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Project__c</columns>
+        <columns>Account__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Emailed_On__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>LAST_WEEK</value>
+        </filters>
+        <label>Last Week&apos;s Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Next_Week_s_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Total_Hours__c</columns>
+        <columns>Terms__c</columns>
+        <columns>Emailed_On__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>NEXT_WEEK</value>
+        </filters>
+        <filters>
+            <field>Account__c</field>
+            <operation>notContain</operation>
+            <value>rainmaker</value>
+        </filters>
+        <label>Next Week&apos;s Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Other_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Project__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Notes__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>5/17/2012</value>
+        </filters>
+        <label>Other Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>This_Month_s_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Project__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Total_Hours__c</columns>
+        <columns>Notes__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>THIS_MONTH</value>
+        </filters>
+        <label>This Month&apos;s Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>This_Week_s_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Project__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Total_Hours__c</columns>
+        <columns>Notes__c</columns>
+        <columns>Terms__c</columns>
+        <columns>Emailed_On__c</columns>
+        <columns>Billing_Contact_ID__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>THIS_WEEK</value>
+        </filters>
+        <label>This Week&apos;s Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>This_Week_s_Invoices_RMA_TEST</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Project__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Total_Hours__c</columns>
+        <columns>Terms__c</columns>
+        <columns>Notes__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Account__c</field>
+            <operation>contains</operation>
+            <value>rainmaker</value>
+        </filters>
+        <label>This Week&apos;s Invoices RMA TEST</label>
+    </listViews>
+    <listViews>
+        <fullName>This_Year_s_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Project__c</columns>
+        <columns>Invoice_Date__c</columns>
+        <columns>Invoice_Amount__c</columns>
+        <columns>Notes__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Invoice_Date__c</field>
+            <operation>equals</operation>
+            <value>THIS_YEAR</value>
+        </filters>
+        <label>This Year&apos;s Invoices</label>
+    </listViews>
+    <nameField>
+        <displayFormat>Rainmaker Invoice-{00000}</displayFormat>
+        <label>Invoice Number</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Invoices</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Account__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Invoice_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Invoice_Amount__c</customTabListAdditionalFields>
+        <excludedStandardButtons>Forward</excludedStandardButtons>
+        <listViewButtons>Email_Invoices_SendGrid</listViewButtons>
+        <listViewButtons>Generate_Invoice_for_Accountant</listViewButtons>
+        <listViewButtons>Email_Ellucian_Invoice_Send_Grid</listViewButtons>
+        <lookupDialogsAdditionalFields>Account__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Project__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Attach_Invoice_Line_Items</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Attach Invoice Line Items</masterLabel>
+        <openType>replace</openType>
+        <page>InvoiceItem</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Invoice_from_Project</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Create Invoice</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>https://na1.salesforce.com/a0e/e?retURL=/a0e/o&amp;
+CF00N30000003ZOCb={!Appirio_PSAe__Proj__c.Appirio_PSAe__Account__c}&amp;
+CF00N30000003ZOCb_lkid={!Appirio_PSAe__Proj__c.Appirio_PSAe__Account__c}}&amp;
+00N30000003ryEd={!TODAY()}&amp;
+00N30000003ryEn=
+&amp;CF00N30000003ZOCq={!Appirio_PSAe__Proj__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Email_ELLUCIAN_Invoice</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Email ELLUCIAN Invoice</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://www.appextremes.com/apps/Conga/PointMerge.aspx?SessionId={!API.Session_ID} 
+&amp;ServerUrl={!API.Partner_Server_URL_80} 
+&amp;id={!RMA_Invoice__c.Id} 
+&amp;ReportId=00O30000003sgk7 
+&amp;OFN={!RMA_Invoice__c.Account__c}+-+{!RMA_Invoice__c.Name} 
+&amp;TemplateId= a0Ea000000GktIU
+&amp;EmailTemplateId=00X30000001SoeJ 
+&amp;EmailToId={!RMA_Invoice__c.Billing_Contact_ID__c} 
+&amp;EmailRelatedToId={!RMA_Invoice__c.AccountId__c} 
+&amp;&amp;EmailCC={!RMA_Invoice__c.Other_Billing_Contacts__c} 
+&amp;MFTS0=Emailed_On__c 
+&amp;MFTSValue0=Today 
+&amp;LG4=1 
+&amp;DS7=0 
+&amp;BML=Generating+Invoice+To+Email</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Email_Ellucian_Invoice_Send_Grid</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Email Ellucian Invoice Send Grid</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>// STEP 1: CHANGE THE NEXT LINE TO THE TYPE OF RECORDS YOU&apos;RE ACCESSING ON THE VIEW 
+var idArray = {!GETRECORDIDS( $ObjectType.RMA_Invoice__c )}; 
+
+// STEP 2: CHANGE THE NEXT LINE TO THE API NAME OF THE FIELD THAT CONTAINS THE POINTMERGE URL 
+var urlFieldName=&quot;Generate_Invoice_URL_ELLUCIAN__c&quot;; 
+
+// STEP 3: CHOOSE THE ENDPOINT. FOR DEV INSTANCES USE &quot;CONDUCTOR-DEV.APPEXTREMES.COM&quot;. FOR SANDBOXES, PROFESSIONAL, ENTERPRISE AND UNLIMITED, USE &quot;CONDUCTOR.APPEXTREMES.COM&quot;. 
+//var endpoint=&quot;conductor-dev.appextremes.com&quot;; 
+var endpoint=&quot;conductor.appextremes.com&quot;; 
+
+// DO NOT MODIFY ANYTHING BELOW THIS POINT ******************** 
+
+// YOU MAY PASS UP TO 50 IDS 
+
+var CongaURL = &quot;https://&quot; + endpoint + &quot;/apps/Conga/Conductor/LaunchCC.aspx&quot; + 
+&quot;?MOID=&quot; + idArray + 
+&quot;&amp;SessionId={!$Api.Session_ID}&quot; + 
+&quot;&amp;ServerUrl={!$Api.Partner_Server_URL_160}&quot;+ 
+&quot;&amp;UrlFieldName=&quot;+urlFieldName; 
+
+window.open( CongaURL, &quot;Conga&quot;, &quot;width=700,height=450,menubar=0&quot; );</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Email_Invoice</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Email Individual Invoice</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://www.appextremes.com/apps/Conga/PointMerge.aspx?SessionId={!API.Session_ID} 
+&amp;ServerUrl={!API.Partner_Server_URL_80} 
+&amp;id={!RMA_Invoice__c.Id} 
+&amp;ReportId=00O30000003sgk7 
+&amp;OFN={!RMA_Invoice__c.Account__c}+-+{!RMA_Invoice__c.Name}
+&amp;TemplateId= a0E3000000DmlE8
+&amp;EmailTemplateId=00X30000001SoeJ
+&amp;EmailToId={!RMA_Invoice__c.Billing_Contact_ID__c}
+&amp;EmailRelatedToId={!RMA_Invoice__c.AccountId__c}
+&amp;&amp;EmailCC={!RMA_Invoice__c.Other_Billing_Contacts__c}
+&amp;MFTS0=Emailed_On__c
+&amp;MFTSValue0=Today
+&amp;LG4=1
+&amp;DS7=0
+&amp;BML=Generating+Invoice+To+Email
+&amp;DefaultPDF=True</url>
+        <width>700</width>
+    </webLinks>
+    <webLinks>
+        <fullName>Email_Invoices_SendGrid</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Email Invoices SendGrid</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>// STEP 1: CHANGE THE NEXT LINE TO THE TYPE OF RECORDS YOU&apos;RE ACCESSING ON THE VIEW
+var idArray = {!GETRECORDIDS(  $ObjectType.RMA_Invoice__c )};
+
+// STEP 2: CHANGE THE NEXT LINE TO THE API NAME OF THE FIELD THAT CONTAINS THE POINTMERGE URL
+var urlFieldName=&quot;Generate_Invoice_URL__c&quot;;
+
+// STEP 3: CHOOSE THE ENDPOINT. FOR DEV INSTANCES USE &quot;CONDUCTOR-DEV.APPEXTREMES.COM&quot;. FOR SANDBOXES, PROFESSIONAL, ENTERPRISE AND UNLIMITED, USE &quot;CONDUCTOR.APPEXTREMES.COM&quot;.
+//var endpoint=&quot;conductor-dev.appextremes.com&quot;;
+var endpoint=&quot;conductor.appextremes.com&quot;;
+
+// DO NOT MODIFY ANYTHING BELOW THIS POINT ********************
+
+// YOU MAY PASS UP TO 50 IDS
+
+var CongaURL = &quot;https://&quot; + endpoint + &quot;/apps/Conga/Conductor/LaunchCC.aspx&quot; +
+&quot;?MOID=&quot; + idArray +
+&quot;&amp;SessionId={!$Api.Session_ID}&quot; +
+&quot;&amp;ServerUrl={!$Api.Partner_Server_URL_160}&quot;+
+&quot;&amp;UrlFieldName=&quot;+urlFieldName;
+
+window.open( CongaURL, &quot;Conga&quot;, &quot;width=700,height=450,menubar=0&quot; );</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Generate_Invoice</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>450</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Generate Invoice</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://www.appextremes.com/apps/Conga/PointMerge.aspx?SessionId={!API.Session_ID}
+&amp;ServerUrl={!API.Partner_Server_URL_80}
+&amp;id={!RMA_Invoice__c.Id}
+&amp;ReportId=00O30000003sgk7
+&amp;OFN={!RMA_Invoice__c.Account__c}+-+{!RMA_Invoice__c.Name}
+&amp;TemplateId=01H30000000QYfl</url>
+        <width>625</width>
+    </webLinks>
+    <webLinks>
+        <fullName>Generate_Invoice_for_Accountant</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Generate Invoice for Accountant</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>// STEP 1: CHANGE THE NEXT LINE TO THE TYPE OF RECORDS YOU&apos;RE ACCESSING ON THE VIEW 
+var idArray = {!GETRECORDIDS( $ObjectType.RMA_Invoice__c )}; 
+
+// STEP 2: CHANGE THE NEXT LINE TO THE API NAME OF THE FIELD THAT CONTAINS THE POINTMERGE URL 
+var urlFieldName=&quot;Generate_Invoice_URL_for_Accountant__c&quot;; 
+
+// STEP 3: CHOOSE THE ENDPOINT. FOR DEV INSTANCES USE &quot;CONDUCTOR-DEV.APPEXTREMES.COM&quot;. FOR SANDBOXES, PROFESSIONAL, ENTERPRISE AND UNLIMITED, USE &quot;CONDUCTOR.APPEXTREMES.COM&quot;. 
+//var endpoint=&quot;conductor-dev.appextremes.com&quot;; 
+var endpoint=&quot;conductor.appextremes.com&quot;; 
+
+// DO NOT MODIFY ANYTHING BELOW THIS POINT ******************** 
+
+// YOU MAY PASS UP TO 50 IDS 
+
+var CongaURL = &quot;https://&quot; + endpoint + &quot;/apps/Conga/Conductor/LaunchCC.aspx&quot; + 
+&quot;?MOID=&quot; + idArray + 
+&quot;&amp;SessionId={!$Api.Session_ID}&quot; + 
+&quot;&amp;ServerUrl={!$Api.Partner_Server_URL_160}&quot;+ 
+&quot;&amp;UrlFieldName=&quot;+urlFieldName; 
+
+window.open( CongaURL, &quot;Conga&quot;, &quot;width=700,height=450,menubar=0&quot; );</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Invoice_Report</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Invoice Report</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>https://na1.salesforce.com/00O30000003si74?
+pv0={!RMA_Invoice__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Customer_Invoice_from_Account</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Customer Invoice</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>https://na1.salesforce.com/a0e/e?retURL=/a0e/o&amp;
+CF00N30000003ZOCb={!Account.Name}&amp;
+CF00N30000003ZOCb_lkid={!Account.Id}&amp;
+00N30000003ryEd={!TODAY()}&amp;
+00N30000003ryEn={!Account.Terms__c}</url>
+    </webLinks>
+</CustomObject>
