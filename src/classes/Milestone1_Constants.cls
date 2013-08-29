@@ -49,7 +49,7 @@ public with sharing class Milestone1_Constants {
     static public String OBJ_NAME_TASK = 'Milestone1_Task__c';
     static public String OJB_NAME_EXPENSE = 'Milestone1_Expense__c';
     static public String OBJ_NAME_TIME = 'Milestone1_Time__c';
-    
+    static public String OBJ_NAME_User_STORY = 'User_Story__c';
     
     static public List<String> XML_OBJECT_PROCESS_ORDER = new List<String>{OBJ_NAME_MILESTONE,OBJ_NAME_LOG};
 }

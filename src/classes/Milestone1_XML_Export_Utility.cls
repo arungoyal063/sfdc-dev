@@ -55,7 +55,7 @@ global with sharing class Milestone1_XML_Export_Utility {
         *Comments:Importing the project with all the relationships intact.
         */
         //Retrieve all the Milestones
-        milestones = [Select m1.Id, m1.Name, m1.Alias__c,m1.Predecessor_Milestone__c, m1.Deadline__c, m1.Kickoff__c, m1.Complete__c,m1.Description__c, m1.Expense_Budget__c,  m1.Project__c, m1.Hours_Budget__c From Milestone1_Milestone__c m1 where Project__c = :project.Id and Parent_Milestone__c = null];
+        milestones = [Select m1.Id, m1.Name,m1.Parent_Milestone__c, m1.Alias__c,m1.Predecessor_Milestone__c, m1.Deadline__c, m1.Kickoff__c, m1.Complete__c,m1.Description__c, m1.Expense_Budget__c,  m1.Project__c, m1.Hours_Budget__c From Milestone1_Milestone__c m1 where Project__c = :project.Id and Parent_Milestone__c = null];
         for(Milestone1_Milestone__c milestone : milestones)
         {
             milestonesMap.put(milestone.Id,milestone);
@@ -125,7 +125,7 @@ global with sharing class Milestone1_XML_Export_Utility {
     }
     
     global void writeMilestoneToXML(XMLstreamwriter out, Milestone1_Milestone__c milestone, Boolean isParentMilestone )
-    {
+    {	
         List<Milestone1_Task__c> tasks;
         if(isParentMilestone)
         {
@@ -150,20 +150,22 @@ global with sharing class Milestone1_XML_Export_Utility {
         writeElement(out,'Predecessor_Milestone__c',milestone.Predecessor_Milestone__c);
         writeElement(out,'Kickoff__c',milestone.Kickoff__c);
         writeElement(out,'Deadline__c',milestone.Deadline__c);
-               for(Milestone1_Task__c task : tasks)
-            {
+        //To add US 
+        for(User_Story__c uss:getUSBymilestoneId(milestone)){
+			writeUSToXML(out,uss);
+		}
+        for(Milestone1_Task__c task : tasks){
             if(task.Project_Milestone__c == milestone.Id)
             {
                 writeTaskToXML(out,task);
             }
         }
-        for(Milestone1_Milestone__c subMilestone : subMilestones)
-        {
+        for(Milestone1_Milestone__c subMilestone : subMilestones){
             if(isParentMilestone && subMilestone.Parent_Milestone__c == milestone.Id)
             {
                 writeMilestoneToXML(out,subMilestone,false);
             }
-        }
+        }		
         out.writeEndElement();  
     }
     
@@ -195,6 +197,38 @@ global with sharing class Milestone1_XML_Export_Utility {
             out.writeEndElement();
         }  
     }
+    //Element for US
+    global void writeUSToXML(XMLstreamwriter out, User_Story__c uS){    	
+        out.writeStartElement(null, Milestone1_Constants.OBJ_NAME_User_STORY, null);
+        writeElement(out,'Id', uS.Id); 
+        writeElement(out,'Name', uS.Name);
+        writeElement(out,'Acceptance_Criteria__c', uS.Acceptance_Criteria__c);
+        writeElement(out,'Actual_Hours__c', uS.Actual_Hours__c);
+        writeElement(out,'Case__c', uS.Case__c);
+        writeElement(out,'Backlog__c', uS.Backlog__c);
+        writeElement(out,'Blocked_Reason__c', uS.Blocked_Reason__c);
+        writeElement(out,'Blocked__c', uS.Blocked__c);
+        writeElement(out,'ConnectionReceivedId', uS.ConnectionReceivedId);
+        writeElement(out,'ConnectionSentId', uS.ConnectionSentId);
+        writeElement(out,'CurrencyIsoCode', uS.CurrencyIsoCode);
+        writeElement(out,'End_Date__c', uS.End_Date__c);
+        writeElement(out,'Estimated_Hours__c', uS.Estimated_Hours__c);
+        writeElement(out,'Feature_Request__c', uS.Feature_Request__c);
+        writeElement(out,'Planned_End_Date__c', uS.Planned_End_Date__c);
+        writeElement(out,'Planned_Start_Date__c', uS.Planned_Start_Date__c);
+        writeElement(out,'Start_Date__c', uS.Start_Date__c);
+        writeElement(out,'Status__c', uS.Status__c);
+        for(User_Story__c us1:uS.Feature_Requests__r){
+        	writeUSToXML(out,uS1);
+        }
+        for(Milestone1_Task__c task : uS.Tasks__r){
+        	writeTaskToXML(out, task);
+        }       
+        out.writeEndElement();  
+    }
     
+    global list<User_Story__c> getUSBymilestoneId(Milestone1_Milestone__c objMilestone1_Milestones){
+		return [Select Acceptance_Criteria__c,Actual_Hours__c,Case__c,Backlog__c,Blocked_Reason__c,Blocked__c,ConnectionReceivedId,ConnectionSentId,CurrencyIsoCode,End_Date__c,Estimated_Hours__c,Feature_Request__c,Planned_End_Date__c,Planned_Start_Date__c,Start_Date__c,Status__c,Name,Milestone1_Milestone__c, (Select Name,ConnectionReceivedId, ConnectionSentId, Notes__c, Status__c, Owner__c, Milestone__c, Case__c, Blocked__c, Blocked_Reason__c, Planned_Start_Date__c, Planned_End_Date__c, Start_Date__c, End_Date__c, Planned_Estimates__c, Estimated_Hours__c, Actual_Hours__c, Feature_Request__c, Acceptance_Criteria__c, Name__c, Milestone1_Milestone__c, Backlog__c From Feature_Requests__r), (Select Name, CurrencyIsoCode, Project_Milestone__c, Assigned_To__c, Blocked_Reason__c, Blocked__c, Class__c, Complete__c, Days_Late_Formula__c, Days_Late__c, Description__c, Due_Date__c, Email_GUID__c, Estimated_Expense__c, Estimated_Hours__c, Expense_Balance__c, Hours_Balance__c, Index_Helper__c, Index__c, Last_Email_Received__c, Milestone_Grandparent__c, Overall_Status__c, Predecessor_Task_Import_Id__c, Predecessor_Task__c, Priority__c, ProjectId__c, ProjectStatus__c, Project__c, Short_ID__c, Start_Date__c, Task_Number__c, Task_Stage__c, Total_Expense__c, Total_Hours__c, User_Story__c From Tasks__r) From User_Story__c WHERE Milestone1_Milestone__c =:objMilestone1_Milestones.Id];	
+    }
     
 }

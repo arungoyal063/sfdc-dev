@@ -62,6 +62,65 @@ global with sharing class Milestone1_Clone_Utility {
         return recMap;
     }
     
+    global static void cloneUserStoryIntoMap2(List<Map<String, Object>> userStoryTree, Map<String, User_Story__c> recMap, Map<String, Milestone1_Milestone__c> allNewMilestoneMap, User_Story__c parentUserStory, Integer level){
+        for(Map<String, Object> userStoryMapObj : userStoryTree)
+        {
+        	User_Story__c userStoryObj = null;
+        	User_Story__c newUserStoryObj = null;
+            if(userStoryMapObj.get('userStory') != null)
+            {
+            	userStoryObj = (User_Story__c)userStoryMapObj.get('userStory');
+            	newUserStoryObj = userStoryObj.clone(false);
+                if(level == 1)
+                {
+	            	if(allNewMilestoneMap.get(userStoryObj.Milestone1_Milestone__c) != null)
+	                	newUserStoryObj.Milestone1_Milestone__c = allNewMilestoneMap.get(userStoryObj.Milestone1_Milestone__c).Id;
+                }
+                else if(level > 1)
+                {
+                	if(allNewMilestoneMap.get(userStoryObj.Milestone1_Milestone__c) != null)
+                	{
+                		newUserStoryObj.Milestone1_Milestone__c = allNewMilestoneMap.get(userStoryObj.Milestone1_Milestone__c).Id;
+                	}
+                	if(parentUserStory != null)
+                	{
+                		newUserStoryObj.Feature_Request__c = parentUserStory.Id;
+                	}
+                }
+                insert newUserStoryObj;
+                recMap.put(userStoryObj.id, newUserStoryObj);
+            } 
+            if(userStoryMapObj.get('children') != null)
+            {
+            	if( ((List<Map<String, Object>>)userStoryMapObj.get('children') ).size() > 0 && newUserStoryObj != null)
+            	{
+            		cloneUserStoryIntoMap2((List<Map<String, Object>>)userStoryMapObj.get('children'), recMap, allNewMilestoneMap , newUserStoryObj, level+1);
+            	}
+            }
+        }
+    }
+    
+    global static Map<String, Object> getUserListChildren(List<User_Story__c> child){
+    	list<User_Story__c> userStoryList = new list<User_Story__c>([SELECT Milestone1_Milestone__c, Id, Name__c, Backlog__c, Feature_Request__c, (Select Id, Name__c, Backlog__c, Feature_Request__c, Milestone1_Milestone__c From Feature_Requests__r) FROM User_Story__c WHERE ID IN:child]);
+	    Map<String, Object> userStory = new Map<String, Object>();
+        if(userStoryList.size() == 1)
+        {
+	        for(User_Story__c uStory : userStoryList)
+	        {
+	        	userStory.put('userStory',uStory);
+	        	List<Map<String, Object>> children = new List<Map<String, Object>>();
+	            for(User_Story__c lChild : uStory.Feature_Requests__r)
+	            {
+                	List<User_Story__c> aChild = new List<User_Story__c>();
+                	aChild.add(lChild);
+	            	children.add(getUserListChildren(aChild));
+	            }
+	        	userStory.put('children',children);
+	        }	        
+        }
+        return userStory;
+    }
+    
     global static Map<String, Milestone1_Task__c> cloneTasksIntoMap(List<Milestone1_Task__c> recs){
         Map<String, Milestone1_Task__c> recMap = new Map<String, Milestone1_Task__c>();
         for(Milestone1_Task__c rec : recs){

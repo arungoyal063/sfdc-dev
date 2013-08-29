@@ -118,6 +118,12 @@ public with sharing class Milestone1_Charts_GanttController {
     	
     	String query = 'Select '+idFieldName+','+startDateFieldName+','+endDateFieldName+','+nameFieldName+','+completedFieldName+
     				   ' from '+objectType+ ' where '+filterFieldName+'=\''+mytarget+'\' order by Name';
+    		
+    	// for milestone sorted by kickoff date	   
+    	if(mytarget.startsWith(Schema.SObjectType.Milestone1_Project__c.getKeyPrefix())){
+    		query = 'Select '+idFieldName+','+startDateFieldName+','+endDateFieldName+','+nameFieldName+','+completedFieldName+
+    				   ' from '+objectType+ ' where '+filterFieldName+'=\''+mytarget+'\' order by Kickoff__c';
+    	}
     	sobjectList = Database.query(query);
     }
     

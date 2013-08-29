@@ -49,21 +49,8 @@ public with sharing class Milestone1_Clone_Project_Controller {
                       OwnerId                      
                FROM Milestone1_Project__c
                WHERE Id = :stc.getId()
-              ];
+              ];        
         
-        /*List<Milestone1_Project__c> projectsList = [Select Id, (Select Id From Project_Milestones__r) From Milestone1_Project__c
-        											WHERE ID =: rec.Id];
-        List<Milestone1_Milestone__c> milestonesList = [Select Id, (Select Id, Feature_Request__c From User_Stories__r), (Select Id From Project_Tasks__r), 
-        												(Select Id, Parent_Milestone__c From Child_Milestones__r) From Milestone1_Milestone__c
-        												WHERE Project__c =: rec.Id];
-        List<User_Story__c> userStoryList = new List<User_Story__c>();
-        List<Milestone1_Task__c> maileStoneTaskList = new List<Milestone1_Task__c>();											
-        for(Milestone1_Milestone__c mileStoneObj : milestonesList){
-        	userStoryList.add(mileStoneObj.User_Stories__r);
-        	maileStoneTaskList.add(mileStoneObj.Project_Tasks__r);
-        }        
-        List<Milestone1_Task__c> userStoryTaskList = [Select Id From Milestone1_Task__c WHERE User_Story__c IN: userStoryList];
-        						*/
         //query milestone records
         milestones = [SELECT Id,
                              Name,
@@ -159,18 +146,42 @@ public with sharing class Milestone1_Clone_Project_Controller {
             allNewMilestoneMap.putAll(newBottomMilestoneMap);            
             
             
-            list<User_Story__c> userStoryList = new list<User_Story__c>([SELECT Milestone1_Milestone__c, Id, Name__c, Backlog__c, Feature_Request__c FROM User_Story__c WHERE Milestone1_Milestone__c IN:milestones]);
-            list<User_Story__c> childUserStoryList = new list<User_Story__c>([SELECT Milestone1_Milestone__c, Id, Name__c, Backlog__c, Feature_Request__c FROM User_Story__c WHERE Id IN:userStoryList OR Feature_Request__c IN:userStoryList]);
+            list<User_Story__c> userStoryList = new list<User_Story__c>([SELECT Milestone1_Milestone__c, Id, Name__c, Backlog__c, Feature_Request__c, (Select Id, Name__c, Backlog__c, Feature_Request__c, Milestone1_Milestone__c From Feature_Requests__r) FROM User_Story__c WHERE Milestone1_Milestone__c IN:milestones]);
+            //list<User_Story__c> allUserStoryList = new list<User_Story__c>([SELECT Milestone1_Milestone__c, Id, Name__c, Backlog__c, Feature_Request__c, (Select Id From Feature_Requests__r) FROM User_Story__c WHERE Id IN:userStoryList OR Feature_Request__c IN:userStoryList]);
             //separate user story records into parents and subs
-            List<User_Story__c> topUserStory = new List<User_Story__c>();
+            /*List<User_Story__c> topUserStory = new List<User_Story__c>();
             List<User_Story__c> bottomUserStory = new List<User_Story__c>();
-            for(User_Story__c oldUS : childUserStoryList){
-                if(oldUS.Feature_Request__c == null){
+            for(User_Story__c oldUS : userStoryList){
+                //if(oldUS.Feature_Requests__r == null || oldUS.Feature_Requests__r.isEmpty()){
                     topUserStory.add(oldUS);
-                } else {
-                    bottomUserStory.add(oldUS);
+                //} else {
+                	for(User_Story__c childUS : oldUS.Feature_Requests__r){
+                		bottomUserStory.add(childUS);
+                	}
+                    //bottomUserStory.add(oldUS);
+                //}
+            }*/
+            List<Map<String, Object>> userStoryTree = new List<Map<String, Object>>();
+            for(User_Story__c uStory : userStoryList)
+            {
+            	Map<String, Object> userStory = new Map<String, Object>();
+            	userStory.put('userStory',uStory);
+            	List<Map<String, Object>> children = new List<Map<String, Object>>();
+                for(User_Story__c child : uStory.Feature_Requests__r)
+                {
+                	List<User_Story__c> aChild = new List<User_Story__c>();
+                	aChild.add(child); 
+                	children.add(Milestone1_Clone_Utility.getUserListChildren(aChild));
                 }
-            }            
+            	userStory.put('children',children);
+            	userStoryTree.add(userStory);
+            }
+            system.debug('userStoryTree>>>>>>>>>>>' + userStoryTree);
+            Map<String, User_Story__c> recMap = new Map<String, User_Story__c>();
+            Milestone1_Clone_Utility.cloneUserStoryIntoMap2(userStoryTree, recMap, allNewMilestoneMap, null, 1);
+            system.debug('<<<<<<<<<recMap'+ recMap);
+            /*system.debug('topUserStory>>>>>>>>>>>' + topUserStory);
+            system.debug('bottomUserStory>>>>>>>>>>>' + bottomUserStory);
             //clone and insert top user story records
             Map<String, User_Story__c> newTopUserStoryMap = Milestone1_Clone_Utility.cloneUserStoryIntoMap(topUserStory);
             for(User_Story__c newUS : newTopUserStoryMap.values()){
@@ -191,7 +202,7 @@ public with sharing class Milestone1_Clone_Project_Controller {
             //collect all milestones into one map
             Map<String, User_Story__c> allNewUserStoryMap = new Map<String, User_Story__c>();
             allNewUserStoryMap.putAll(newTopUserStoryMap);
-            allNewUserStoryMap.putAll(newBottomUserStoryMap);
+            allNewUserStoryMap.putAll(newBottomUserStoryMap);*/
             
             /*// To clone User stories
             map<Id,User_Story__c> objUS = new map<Id,User_Story__c>([SELECT Milestone1_Milestone__c, Id, Name__c, Backlog__c FROM User_Story__c WHERE Milestone1_Milestone__c IN:milestones]);
@@ -225,9 +236,13 @@ public with sharing class Milestone1_Clone_Project_Controller {
             List<Milestone1_Task__c> newTasks = Milestone1_Clone_Utility.cloneTasksIntoList(tasks);
             for(Milestone1_Task__c newTask : newTasks){
                 newTask.Project_Milestone__c = allNewMilestoneMap.get(newTask.Project_Milestone__c).Id;
-                if(allNewUserStoryMap.get(newTask.User_Story__c) != null){
-                	newTask.User_Story__c = allNewUserStoryMap.get(newTask.User_Story__c).Id;
+                if(recMap.get(newTask.User_Story__c) != null){
+                	system.debug('<<<<<<recMap.get(newTask.User_Story__c).Id'+ recMap.get(newTask.User_Story__c).Id);
+                	newTask.User_Story__c = recMap.get(newTask.User_Story__c).Id;
                 }
+                /*if(allNewUserStoryMap.get(newTask.User_Story__c) != null){
+                	newTask.User_Story__c = allNewUserStoryMap.get(newTask.User_Story__c).Id;
+                }*/
             }
             insert newTasks;
             

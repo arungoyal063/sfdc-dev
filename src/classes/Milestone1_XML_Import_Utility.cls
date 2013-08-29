@@ -49,6 +49,9 @@ global with sharing class Milestone1_XML_Import_Utility {
     List<Milestone1_Task__c> tasks;
     List<Milestone1_Task__c> subTasks;
     List<Milestone1_Time__c> times;
+      
+    //List<User_Story__c> userStories;
+    
     XML_Metadata metadata = new XML_Metadata();
 
     global Milestone1_XML_Import_Utility()
@@ -70,26 +73,26 @@ global with sharing class Milestone1_XML_Import_Utility {
     
     global Milestone1_Project__c importProject(String xml) {
 
-Savepoint sp = Database.setSavepoint();
-try{
-Xmlstreamreader reader = new Xmlstreamreader(xml);
-while (reader.hasNext()) {
-if (reader.getEventType() == XmlTag.START_ELEMENT && reader.getLocalName() == Milestone1_Constants.XML_META) {
-//System.debug(LoggingLevel.warn, 'Parse XML Metadata');
-parseMeta(reader);
-}
-if (reader.getEventType() == XmlTag.START_ELEMENT && reader.getLocalName() == Milestone1_Constants.OBJ_NAME_PROJECT) {
-//System.debug(LoggingLevel.warn, 'Parse XML Project');
-parseProject(reader);
-}
-reader.next();
-}
-insertSalesforceObjects();
-}catch(Exception ex){
-Database.rollback(sp);
-throw ex;
-//throw new Milestone1_Import_Exception(Milestone1_Import_Exception.ERROR_INVALID_XML);
-}
+	Savepoint sp = Database.setSavepoint();
+		try{
+			Xmlstreamreader reader = new Xmlstreamreader(xml);
+			while (reader.hasNext()) {
+			if (reader.getEventType() == XmlTag.START_ELEMENT && reader.getLocalName() == Milestone1_Constants.XML_META) {
+			//System.debug(LoggingLevel.warn, 'Parse XML Metadata');
+			parseMeta(reader);
+			}
+			if (reader.getEventType() == XmlTag.START_ELEMENT && reader.getLocalName() == Milestone1_Constants.OBJ_NAME_PROJECT) {
+			//System.debug(LoggingLevel.warn, 'Parse XML Project');
+			parseProject(reader);
+			}
+			reader.next();
+			}
+			insertSalesforceObjects();
+		}catch(Exception ex){
+			Database.rollback(sp);
+			throw ex;
+			//throw new Milestone1_Import_Exception(Milestone1_Import_Exception.ERROR_INVALID_XML);
+		}
         return project;
     }
 
@@ -387,6 +390,7 @@ throw ex;
                 //system.debug('Break out of TASK');
                 break;
             }
+            
             reader.next();
         }
         if(parentMilestone != null)
@@ -514,6 +518,96 @@ throw ex;
         }
         times.add(currentTime);
     }
+    
+     /*global void parseUserStory(XMLStreamreader reader, User_Story__c us){
+        User_Story__c objUserStory = new User_Story__c();
+        objUserStory.Milestone1_Milestone__c = us.Milestone1_Milestone__c;
+        while(reader.hasNext())
+        {
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Id') {
+                reader.next();
+                //objUserStory.ImportID__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Name') {
+                reader.next();
+                //objUserStory.Name = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Acceptance_Criteria__c') {
+                reader.next();
+                objUserStory.Acceptance_Criteria__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Case__c') {
+                reader.next();
+                objUserStory.Case__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Backlog__c') {
+                reader.next();
+                //objUserStory.Backlog__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Blocked_Reason__c') {
+                reader.next();
+                objUserStory.Blocked_Reason__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'ConnectionReceivedId') {
+                reader.next();
+                //objUserStory.ConnectionReceivedId = getDecodedString(reader);
+            }
+            
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'ConnectionSentId') {
+                reader.next();
+                //objUserStory.ConnectionSentId = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'CurrencyIsoCode') {
+                reader.next();
+                objUserStory.CurrencyIsoCode = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'End_Date__c') {
+                reader.next();
+                //objUserStory.End_Date__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Estimated_Hours__c') {
+                reader.next();
+                String val = getDecodedString(reader);
+                if(val != null || val != 'null'){
+                	objUserStory.Estimated_Hours__c = Decimal.valueOf(val);
+                }
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Feature_Request__c') {
+                reader.next();
+                objUserStory.Feature_Request__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Planned_End_Date__c') {
+                reader.next();
+                //objUserStory.Planned_End_Date__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Planned_Start_Date__c') {
+                reader.next();
+                //objUserStory.Planned_Start_Date__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Start_Date__c') {
+                reader.next();
+                //objUserStory.Start_Date__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Status__c') {
+                reader.next();
+                objUserStory.Status__c = getDecodedString(reader);
+            }
+            if (reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'Actual_Hours__c') {
+                reader.next();
+                String val = getDecodedString(reader);
+                if(val != null || val != 'null'){
+                    objUserStory.Actual_Hours__c = Decimal.valueOf(val);
+                }
+            }
+            if(reader.getEventType() == XMLTag.END_ELEMENT && reader.getLocalName() == Milestone1_Constants.OBJ_NAME_TIME)
+            {
+                //system.debug('Break out of TASK');
+                break;
+            }
+            reader.next();
+        }
+        userStories.add(objUserStory);
+    }*/
     
     global void parseMeta(Xmlstreamreader reader) {
         //system.debug('Process Metadata');
